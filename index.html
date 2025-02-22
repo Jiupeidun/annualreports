@@ -1,50 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Reports</title>
+    <title>Rapports financiers</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #fff1e5; /* Soft peach background */
+            font-style: italic;
+            background-color: #fff1e5;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 100vh;
+            overflow-y: auto;
         }
         table {
-            width: 60%;
-            margin-top: 20px;
+            width: 100%;
+            max-width: 900px;
+            margin: 20px;
             border-collapse: collapse;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: #ffffff; /* White background for the table */
+            background-color: #ffffff;
         }
         th, td {
-            padding: 15px;
+            padding: 12px 15px;
             text-align: left;
-            font-size: 16px;
+            font-size: 14px;
         }
         th {
-            background-color: #f1d2b8; /* Soft beige for table header */
-            color: #333; /* Dark text for better readability */
+            background-color: #f1d2b8;
+            color: #333;
             text-transform: uppercase;
         }
         td {
-            border-bottom: 1px solid #f0e0d2; /* Light beige border */
+            border-bottom: 1px solid #f0e0d2;
         }
         tr:hover td {
-            background-color: #f9f2e1; /* Very light peach when hovering */
+            background-color: #f9f2e1;
         }
         a {
             text-decoration: none;
-            color: #333; /* Dark gray for links */
+            color: #333;
             font-weight: bold;
         }
         a:hover {
-            color: #d87c44; /* A muted orange color for hover */
+            color: #d87c44;
+        }
+        img {
+            width: 50px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            table {
+                width: 90%;
+            }
+            th, td {
+                font-size: 13px;
+                padding: 10px;
+            }
+            img {
+                width: 70px;
+            }
+        }
+        @media (max-width: 480px) {
+            th, td {
+                font-size: 12px;
+                padding: 8px;
+            }
+            img {
+                width: 60px;
+            }
         }
     </style>
 </head>
@@ -53,34 +83,41 @@
     <table>
         <thead>
             <tr>
+                <th>No.</th>
                 <th>FY</th>
-                <th>Financial Report</th>
+                <th>FR</th>
             </tr>
         </thead>
         <tbody>
             <tr>
+                <td>1</td>
                 <td>2019</td>
-                <td><a href="2019financialReport.pdf" target="_blank">2019financialReport.pdf</a></td>
+                <td><a href="2019financialReport.pdf" target="_blank"><img src="2019financialReport_cover.jpg" alt="2019financialReport"></a></td>
             </tr>
             <tr>
+                <td>2</td>
                 <td>2020</td>
-                <td><a href="2020financialReport.pdf" target="_blank">2020financialReport.pdf</a></td>
+                <td><a href="2020financialReport.pdf" target="_blank"><img src="2020financialReport_cover.jpg" alt="2020financialReport"></a></td>
             </tr>
             <tr>
+                <td>3</td>
                 <td>2021</td>
-                <td><a href="2021financialReport.pdf" target="_blank">2021financialReport.pdf</a></td>
+                <td><a href="2021financialReport.pdf" target="_blank"><img src="2021financialReport_cover.jpg" alt="2021financialReport"></a></td>
             </tr>
             <tr>
+                <td>4</td>
                 <td>2022</td>
-                <td><a href="2022financialReport.pdf" target="_blank">2022financialReport.pdf</a></td>
+                <td><a href="2022financialReport.pdf" target="_blank"><img src="2022financialReport_cover.jpg" alt="2022financialReport"></a></td>
             </tr>
             <tr>
+                <td>5</td>
                 <td>2023</td>
-                <td><a href="2023financialReport.pdf" target="_blank">2023financialReport.pdf</a></td>
+                <td><a href="2023financialReport.pdf" target="_blank"><img src="2023financialReport_cover.jpg" alt="2023financialReport"></a></td>
             </tr>
             <tr>
+                <td>6</td>
                 <td>2024</td>
-                <td><a href="2024financialReport.pdf" target="_blank">2024financialReport.pdf</a></td>
+                <td><a href="2024financialReport.pdf" target="_blank"><img src="2024financialReport_cover.jpg" alt="2024financialReport"></a></td>
             </tr>
         </tbody>
     </table>
