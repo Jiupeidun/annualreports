@@ -16,6 +16,8 @@
         }
         :root {
             --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --box-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
         
         .container {
@@ -27,7 +29,7 @@
             max-width: 1000px;
             background-color: #ffffff;
             border-radius: var(--border-radius);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--box-shadow);
             padding: 30px;
             box-sizing: border-box;
         }
@@ -83,7 +85,7 @@
             margin: 20px;
             border-collapse: separate;
             border-spacing: 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
             background-color: #ffffff;
             transition: background-color 0.3s ease;
             border-radius: var(--border-radius);
@@ -126,14 +128,14 @@
         img {
             width: 100px;
             height: auto;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border-radius: var(--border-radius);
             display: block;
         }
         img:hover {
             transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--box-shadow-hover);
         }
         @media (max-width: 768px) {
             .container {
