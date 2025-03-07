@@ -175,6 +175,72 @@
                 font-size: 14px;
             }
         }
+        .stock-ticker {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 15px;
+            background-color: #f0f5fa;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .ticker-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            border-radius: var(--border-radius);
+            min-width: 120px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .ticker-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow-hover);
+        }
+        
+        .ticker-symbol {
+            font-family: 'TrajanPro', serif;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .ticker-price {
+            font-family: 'TrajanPro', serif;
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .ticker-label {
+            font-family: 'TrajanPro', serif;
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .ticker-timestamp {
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
     </style>
 </head>
 <body>
@@ -183,6 +249,20 @@
         <h1>Kertin Capital</h1>
         <p class="subtitle">Rapports Financiers Annuels</p>
     </header>
+    
+    <div class="stock-ticker">
+        <div class="ticker-item">
+            <span class="ticker-symbol">TQQQ</span>
+            <span class="ticker-price" id="tqqq-price">Loading...</span>
+            <span class="ticker-label">Last Close</span>
+        </div>
+        <div class="ticker-item">
+            <span class="ticker-symbol">SPY</span>
+            <span class="ticker-price" id="spy-price">Loading...</span>
+            <span class="ticker-label">Last Close</span>
+        </div>
+        <div class="ticker-timestamp" id="price-timestamp">Last updated: -</div>
+    </div>
     <table>
         <thead>
             <tr>
@@ -245,8 +325,72 @@
     </table>
 
     <div class="footer">
-        Dernière mise à jour : 7 mars 2025
+        Dernière mise à jour : 8 mars 2025
     </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to fetch last close price data using Financial Modeling Prep API
+            async function fetchStockData() {
+                try {
+                    // Financial Modeling Prep API key - free tier with generous limits
+                    // Sign up for your own key at https://financialmodelingprep.com/developer/docs/
+                    const apiKey = 'b922393424a8774196e1ec9237c001bf';
+                    
+                    // Fetch TQQQ data
+                    const tqqqResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/TQQQ?apikey=${apiKey}`);
+                    const tqqqData = await tqqqResponse.json();
+                    
+                    // Fetch SPX data
+                    const spxResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/SPY?apikey=${apiKey}`);
+                    const spxData = await spxResponse.json();
+                    
+                    // Process TQQQ data
+                    if (tqqqData && tqqqData.length > 0) {
+                        const quote = tqqqData[0];
+                        const tqqqPrice = parseFloat(quote.previousClose).toFixed(2);
+                        
+                        document.getElementById('tqqq-price').textContent = `$${tqqqPrice}`;
+                    } else {
+                        document.getElementById('tqqq-price').textContent = 'N/A';
+                    }
+                    
+                    // Process SPY data
+                    if (spxData && spxData.length > 0) {
+                        const quote = spxData[0];
+                        const spyPrice = parseFloat(quote.previousClose).toFixed(2);
+                    
+                        document.getElementById('spy-price').textContent = `$${spyPrice}`;
+                    } else {
+                        document.getElementById('spy-price').textContent = 'N/A';
+                    }
+                    
+                    // Update timestamp
+                    const now = new Date();
+                    document.getElementById('price-timestamp').textContent = `Last updated: ${now.toLocaleString()}`;
+                    
+                    // Remove loading animation
+                    document.getElementById('tqqq-price').classList.remove('loading');
+                    document.getElementById('spy-price').classList.remove('loading');
+                } catch (error) {
+                    console.error('Error fetching stock data:', error);
+                    document.getElementById('tqqq-price').textContent = 'Error';
+                    document.getElementById('ndx-price').textContent = 'Error';
+                }
+            }
+            
+            // Add loading animation
+            document.getElementById('tqqq-price').classList.add('loading');
+            document.getElementById('spy-price').classList.add('loading');
+            
+            // Fetch data immediately
+            fetchStockData();
+            
+            // Then refresh once a day (86400000 ms) since we only need closing prices
+            // For testing purposes, you might want to use a shorter interval initially
+            setInterval(fetchStockData, 86400000);
+        });
+    </script>
 </body>
 </html>
