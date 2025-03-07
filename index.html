@@ -5,33 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kertin Capital</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'TrajanPro';
+            src: url('TrajanPro-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
         .container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
+            max-width: 1000px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+        
+        .page-header h1 {
+            font-family: 'TrajanPro', serif;
+            font-size: 32px;
+            margin: 0 0 10px 0;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            margin: 0;
+            color: #666;
         }
         .footer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
             font-size: 14px;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             transition: color 0.3s ease;
+            padding-top: 20px;
+            border-top: 1px solid #f0e0d2;
+            width: 100%;
         }
         body {
-            font-family: 'Arial', sans-serif;
-            font-style: italic;
+            font-family: 'Source Sans Pro', sans-serif;
             background-color: #fff1e5;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            height: 100vh;
+            min-height: 100vh;
             overflow-y: auto;
+            padding: 20px 0;
+            box-sizing: border-box;
         }
         table {
             width: 100%;
@@ -52,6 +90,9 @@
             background-color: #f1d2b8;
             color: #333;
             border: 1px solid transparent;
+            font-family: 'TrajanPro', serif;
+            font-weight: normal;
+            letter-spacing: 1px;
         }
         td {
             border-bottom: 1px solid #f0e0d2;
@@ -75,14 +116,21 @@
             width: 100px;
             height: auto;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 4px;
+            display: block;
         }
         img:hover {
             transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 0 15px;
+            }
             table {
-                width: 90%;
+                width: 100%;
             }
             th, td {
                 font-size: 13px;
@@ -91,8 +139,15 @@
             img {
                 width: 70px;
             }
+            .page-header h1 {
+                font-size: 28px;
+            }
         }
         @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                margin: 0 10px;
+            }
             th, td {
                 font-size: 12px;
                 padding: 8px;
@@ -100,11 +155,21 @@
             img {
                 width: 60px;
             }
+            .page-header h1 {
+                font-size: 24px;
+            }
+            .subtitle {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+    <header class="page-header">
+        <h1>Kertin Capital</h1>
+        <p class="subtitle">Rapports Financiers Annuels</p>
+    </header>
     <table>
         <thead>
             <tr>
