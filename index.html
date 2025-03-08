@@ -179,7 +179,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 20px;
             width: 100%;
             padding: 15px;
@@ -192,12 +192,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 20px;
+            padding: 10px 15px;
             background-color: #ffffff;
             border-radius: var(--border-radius);
-            min-width: 120px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-width: 130px;
+            transition: all 0.3s ease, background-color 0.3s ease;
+            position: relative;
+            margin: 0 2px;
         }
+        
+        .ticker-item.positive {
+            background-color: rgba(0, 128, 0, 0.1); /* Light green */
+        }
+        
+        .ticker-item.negative {
+            background-color: rgba(255, 0, 0, 0.1); /* Light red */
+        }
+        
+
         
         .ticker-item:hover {
             transform: translateY(-3px);
@@ -224,13 +236,31 @@
             margin-top: 3px;
         }
         
-        .ticker-timestamp {
-            width: 100%;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
+        .ticker-range {
+            font-family: 'TrajanPro', serif;
+            font-size: 11px;
+            color: #888;
             margin-top: 5px;
+            text-align: center;
         }
+        
+        .ticker-change {
+            font-family: 'TrajanPro', serif;
+            font-size: 13px;
+            margin-top: 2px;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .ticker-change.positive {
+            color: #008800;
+        }
+        
+        .ticker-change.negative {
+            color: #cc0000;
+        }
+        
+
         
         @keyframes pulse {
             0% { opacity: 1; }
@@ -251,17 +281,76 @@
     </header>
     
     <div class="stock-ticker">
-        <div class="ticker-item">
-            <span class="ticker-symbol">TQQQ</span>
-            <span class="ticker-price" id="tqqq-price">Loading...</span>
-            <span class="ticker-label">Last Close</span>
-        </div>
-        <div class="ticker-item">
+        <div class="ticker-item" id="spy-item">
             <span class="ticker-symbol">SPY</span>
             <span class="ticker-price" id="spy-price">Loading...</span>
+            <span class="ticker-change" id="spy-change">0.00%</span>
             <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="spy-range">52w: - / -</span>
         </div>
-        <div class="ticker-timestamp" id="price-timestamp">Last updated: -</div>
+        <div class="ticker-item" id="tqqq-item">
+            <span class="ticker-symbol">TQQQ</span>
+            <span class="ticker-price" id="tqqq-price">Loading...</span>
+            <span class="ticker-change" id="tqqq-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="tqqq-range">52w: - / -</span>
+        </div>
+        <div class="ticker-item" id="aapl-item">
+            <span class="ticker-symbol">AAPL</span>
+            <span class="ticker-price" id="aapl-price">Loading...</span>
+            <span class="ticker-change" id="aapl-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="aapl-range">52w: - / -</span>
+        </div>
+        <div class="ticker-item" id="msft-item">
+            <span class="ticker-symbol">MSFT</span>
+            <span class="ticker-price" id="msft-price">Loading...</span>
+            <span class="ticker-change" id="msft-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="msft-range">52w: - / -</span>
+        </div>
+        <div class="ticker-item" id="nvda-item">
+            <span class="ticker-symbol">NVDA</span>
+            <span class="ticker-price" id="nvda-price">Loading...</span>
+            <span class="ticker-change" id="nvda-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="nvda-range">52w: - / -</span>
+        </div>
+        <div class="ticker-item" id="googl-item">
+            <span class="ticker-symbol">GOOGL</span>
+            <span class="ticker-price" id="googl-price">Loading...</span>
+            <span class="ticker-change" id="googl-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="googl-range">52w: - / -</span>
+        </div>
+        <div class="ticker-item" id="amzn-item">
+            <span class="ticker-symbol">AMZN</span>
+            <span class="ticker-price" id="amzn-price">Loading...</span>
+            <span class="ticker-change" id="amzn-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="amzn-range">52w: - / -</span>
+        </div>
+        <div class="ticker-item" id="meta-item">
+            <span class="ticker-symbol">META</span>
+            <span class="ticker-price" id="meta-price">Loading...</span>
+            <span class="ticker-change" id="meta-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="meta-range">52w: - / -</span>
+        </div>
+        <div class="ticker-item" id="tsla-item">
+            <span class="ticker-symbol">TSLA</span>
+            <span class="ticker-price" id="tsla-price">Loading...</span>
+            <span class="ticker-change" id="tsla-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="tsla-range">52w: - / -</span>
+        </div>
+        <div class="ticker-item" id="nflx-item">
+            <span class="ticker-symbol">NFLX</span>
+            <span class="ticker-price" id="nflx-price">Loading...</span>
+            <span class="ticker-change" id="nflx-change">0.00%</span>
+            <span class="ticker-label">Last Close</span>
+            <span class="ticker-range" id="nflx-range">52w: - / -</span>
+        </div>
     </div>
     <table>
         <thead>
@@ -331,65 +420,146 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Function to fetch last close price data using Financial Modeling Prep API
             async function fetchStockData() {
                 try {
-                    // Financial Modeling Prep API key - free tier with generous limits
-                    // Sign up for your own key at https://financialmodelingprep.com/developer/docs/
                     const apiKey = 'b922393424a8774196e1ec9237c001bf';
-                    
-                    // Fetch TQQQ data
+
+                    const spyResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/SPY?apikey=${apiKey}`);
+                    const spyData = await spyResponse.json();
+
                     const tqqqResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/TQQQ?apikey=${apiKey}`);
                     const tqqqData = await tqqqResponse.json();
-                    
-                    // Fetch SPX data
-                    const spxResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/SPY?apikey=${apiKey}`);
-                    const spxData = await spxResponse.json();
-                    
-                    // Process TQQQ data
-                    if (tqqqData && tqqqData.length > 0) {
-                        const quote = tqqqData[0];
-                        const tqqqPrice = parseFloat(quote.previousClose).toFixed(2);
-                        
-                        document.getElementById('tqqq-price').textContent = `$${tqqqPrice}`;
-                    } else {
-                        document.getElementById('tqqq-price').textContent = 'N/A';
+
+                    const aaplResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/AAPL?apikey=${apiKey}`);
+                    const aaplData = await aaplResponse.json();
+
+                    const msftResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/MSFT?apikey=${apiKey}`);
+                    const msftData = await msftResponse.json();
+
+                    const nvdaResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/NVDA?apikey=${apiKey}`);
+                    const nvdaData = await nvdaResponse.json();
+
+                    const googlResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/GOOGL?apikey=${apiKey}`);
+                    const googlData = await googlResponse.json();
+
+                    const amznResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/AMZN?apikey=${apiKey}`);
+                    const amznData = await amznResponse.json();
+
+                    const metaResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/META?apikey=${apiKey}`);
+                    const metaData = await metaResponse.json();
+
+                    const tslaResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/TSLA?apikey=${apiKey}`);
+                    const tslaData = await tslaResponse.json();
+
+                    const nflxResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/NFLX?apikey=${apiKey}`);
+                    const nflxData = await nflxResponse.json();
+
+                    function updateTicker(data, symbol) {
+                        if (data && data.length > 0) {
+                            const quote = data[0];
+                            const price = parseFloat(quote.previousClose).toFixed(2);
+                            const yearLow = parseFloat(quote.yearLow).toFixed(2);
+                            const yearHigh = parseFloat(quote.yearHigh).toFixed(2);
+                            const changePercent = quote.changesPercentage;
+                            
+                            // Update price and range
+                            document.getElementById(`${symbol}-price`).textContent = `$${price}`;
+                            document.getElementById(`${symbol}-range`).textContent = `52w: $${yearLow} / $${yearHigh}`;
+                            
+                            // Update change percentage
+                            const changeElement = document.getElementById(`${symbol}-change`);
+                            const tickerItem = document.getElementById(`${symbol}-item`);
+                            
+                            // Format the change percentage
+                            if (changeElement) {
+                                const formattedChange = changePercent.toFixed(2);
+                                changeElement.textContent = `${formattedChange > 0 ? '+' : ''}${formattedChange}%`;
+                            }
+                            
+                            // Apply color based on change percentage
+                            if (changeElement && tickerItem) {
+                                if (changePercent > 0) {
+                                    // Positive change - green
+                                    changeElement.classList.add('positive');
+                                    changeElement.classList.remove('negative');
+                                    tickerItem.classList.add('positive');
+                                    tickerItem.classList.remove('negative');
+                                    
+                                    // Calculate opacity based on percentage (max 5% for full intensity)
+                                    // More granular color levels for better readability
+                                    let intensity;
+                                    if (changePercent < 1) {
+                                        intensity = 0.05;
+                                    } else if (changePercent < 2) {
+                                        intensity = 0.1;
+                                    } else if (changePercent < 3) {
+                                        intensity = 0.15;
+                                    } else if (changePercent < 4) {
+                                        intensity = 0.2;
+                                    } else {
+                                        intensity = 0.25;
+                                    }
+                                    tickerItem.style.backgroundColor = `rgba(0, 128, 0, ${intensity})`;
+                                } else if (changePercent < 0) {
+                                    // Negative change - red
+                                    changeElement.classList.add('negative');
+                                    changeElement.classList.remove('positive');
+                                    tickerItem.classList.add('negative');
+                                    tickerItem.classList.remove('positive');
+                                    
+                                    // Calculate opacity based on percentage (max 5% for full intensity)
+                                    // More granular color levels for better readability
+                                    let intensity;
+                                    if (Math.abs(changePercent) < 1) {
+                                        intensity = 0.05;
+                                    } else if (Math.abs(changePercent) < 2) {
+                                        intensity = 0.1;
+                                    } else if (Math.abs(changePercent) < 3) {
+                                        intensity = 0.15;
+                                    } else if (Math.abs(changePercent) < 4) {
+                                        intensity = 0.2;
+                                    } else {
+                                        intensity = 0.25;
+                                    }
+                                    tickerItem.style.backgroundColor = `rgba(204, 0, 0, ${intensity})`;
+                                } else {
+                                    // No change - neutral
+                                    changeElement.classList.remove('positive', 'negative');
+                                    tickerItem.classList.remove('positive', 'negative');
+                                    tickerItem.style.backgroundColor = '';
+                                }
+                            }
+                        } else {
+                            document.getElementById(`${symbol}-price`).textContent = 'N/A';
+                            document.getElementById(`${symbol}-range`).textContent = '52w: - / -';
+                            const changeEl = document.getElementById(`${symbol}-change`);
+                            if (changeEl) changeEl.textContent = '0.00%';
+                            const itemEl = document.getElementById(`${symbol}-item`);
+                            if (itemEl) itemEl.style.backgroundColor = '';
+                        }
                     }
-                    
-                    // Process SPY data
-                    if (spxData && spxData.length > 0) {
-                        const quote = spxData[0];
-                        const spyPrice = parseFloat(quote.previousClose).toFixed(2);
-                    
-                        document.getElementById('spy-price').textContent = `$${spyPrice}`;
-                    } else {
-                        document.getElementById('spy-price').textContent = 'N/A';
-                    }
-                    
-                    // Update timestamp
-                    const now = new Date();
-                    document.getElementById('price-timestamp').textContent = `Last updated: ${now.toLocaleString()}`;
-                    
-                    // Remove loading animation
-                    document.getElementById('tqqq-price').classList.remove('loading');
-                    document.getElementById('spy-price').classList.remove('loading');
+
+                    updateTicker(spyData, 'spy');
+                    updateTicker(tqqqData, 'tqqq');
+                    updateTicker(aaplData, 'aapl');
+                    updateTicker(msftData, 'msft');
+                    updateTicker(nvdaData, 'nvda');
+                    updateTicker(googlData, 'googl');
+                    updateTicker(amznData, 'amzn');
+                    updateTicker(metaData, 'meta');
+                    updateTicker(tslaData, 'tsla');
+                    updateTicker(nflxData, 'nflx');
+
+                    document.querySelectorAll('.ticker-price').forEach(el => el.classList.remove('loading'));
                 } catch (error) {
                     console.error('Error fetching stock data:', error);
-                    document.getElementById('tqqq-price').textContent = 'Error';
-                    document.getElementById('ndx-price').textContent = 'Error';
+                    document.querySelectorAll('.ticker-price').forEach(el => el.textContent = 'Error');
                 }
             }
-            
-            // Add loading animation
-            document.getElementById('tqqq-price').classList.add('loading');
-            document.getElementById('spy-price').classList.add('loading');
-            
-            // Fetch data immediately
+
+            document.querySelectorAll('.ticker-price').forEach(el => el.classList.add('loading'));
+
             fetchStockData();
-            
-            // Then refresh once a day (86400000 ms) since we only need closing prices
-            // For testing purposes, you might want to use a shorter interval initially
-            setInterval(fetchStockData, 86400000);
         });
     </script>
 </body>
