@@ -277,7 +277,7 @@
     <div class="container">
     <header class="page-header">
         <h1>Kertin Capital</h1>
-        <p class="subtitle">Rapports Financiers Annuels</p>
+        <p class="subtitle">9 mars 2025, 02:24</p>
     </header>
     
     <div class="stock-ticker">
@@ -414,12 +414,24 @@
     </table>
 
     <div class="footer">
-        Dernière mise à jour : 8 mars 2025
+        Dernière mise à jour : 9 mars 2025
     </div>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Function to update the time in the subtitle
+            function updateSubtitleTime() {
+                const now = new Date();
+                const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                const formattedDate = now.toLocaleDateString('fr-FR', options);
+                document.querySelector('.subtitle').textContent = formattedDate;
+            }
+            
+            // Update time immediately and then every minute
+            updateSubtitleTime();
+            setInterval(updateSubtitleTime, 60000);
+            
             async function fetchStockData() {
                 try {
                     const apiKey = 'b922393424a8774196e1ec9237c001bf';
