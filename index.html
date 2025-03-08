@@ -457,7 +457,7 @@
                     function updateTicker(data, symbol) {
                         if (data && data.length > 0) {
                             const quote = data[0];
-                            const price = parseFloat(quote.previousClose).toFixed(2);
+                            const price = parseFloat(quote.price).toFixed(2);
                             const yearLow = parseFloat(quote.yearLow).toFixed(2);
                             const yearHigh = parseFloat(quote.yearHigh).toFixed(2);
                             const changePercent = quote.changesPercentage;
