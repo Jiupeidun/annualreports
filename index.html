@@ -202,11 +202,11 @@
         }
         
         .ticker-item.positive {
-            background-color: rgba(0, 128, 0, 0.1); /* Light green */
+            background-color: rgba(255, 0, 0, 0.1); /* Light red for up */
         }
         
         .ticker-item.negative {
-            background-color: rgba(255, 0, 0, 0.1); /* Light red */
+            background-color: rgba(0, 128, 0, 0.1); /* Light green for down */
         }
         
 
@@ -253,11 +253,11 @@
         }
         
         .ticker-change.positive {
-            color: #008800;
+            color: #cc0000;
         }
         
         .ticker-change.negative {
-            color: #cc0000;
+            color: #008800;
         }
         
 
@@ -284,70 +284,70 @@
         <div class="ticker-item" id="spy-item">
             <span class="ticker-symbol">SPY</span>
             <span class="ticker-price" id="spy-price">Loading...</span>
-            <span class="ticker-change" id="spy-change">0.00%</span>
+            <span class="ticker-change" id="spy-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="spy-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="tqqq-item">
             <span class="ticker-symbol">TQQQ</span>
             <span class="ticker-price" id="tqqq-price">Loading...</span>
-            <span class="ticker-change" id="tqqq-change">0.00%</span>
+            <span class="ticker-change" id="tqqq-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="tqqq-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="aapl-item">
             <span class="ticker-symbol">AAPL</span>
             <span class="ticker-price" id="aapl-price">Loading...</span>
-            <span class="ticker-change" id="aapl-change">0.00%</span>
+            <span class="ticker-change" id="aapl-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="aapl-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="msft-item">
             <span class="ticker-symbol">MSFT</span>
             <span class="ticker-price" id="msft-price">Loading...</span>
-            <span class="ticker-change" id="msft-change">0.00%</span>
+            <span class="ticker-change" id="msft-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="msft-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="nvda-item">
             <span class="ticker-symbol">NVDA</span>
             <span class="ticker-price" id="nvda-price">Loading...</span>
-            <span class="ticker-change" id="nvda-change">0.00%</span>
+            <span class="ticker-change" id="nvda-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="nvda-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="googl-item">
             <span class="ticker-symbol">GOOGL</span>
             <span class="ticker-price" id="googl-price">Loading...</span>
-            <span class="ticker-change" id="googl-change">0.00%</span>
+            <span class="ticker-change" id="googl-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="googl-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="amzn-item">
             <span class="ticker-symbol">AMZN</span>
             <span class="ticker-price" id="amzn-price">Loading...</span>
-            <span class="ticker-change" id="amzn-change">0.00%</span>
+            <span class="ticker-change" id="amzn-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="amzn-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="meta-item">
             <span class="ticker-symbol">META</span>
             <span class="ticker-price" id="meta-price">Loading...</span>
-            <span class="ticker-change" id="meta-change">0.00%</span>
+            <span class="ticker-change" id="meta-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="meta-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="tsla-item">
             <span class="ticker-symbol">TSLA</span>
             <span class="ticker-price" id="tsla-price">Loading...</span>
-            <span class="ticker-change" id="tsla-change">0.00%</span>
+            <span class="ticker-change" id="tsla-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="tsla-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="nflx-item">
             <span class="ticker-symbol">NFLX</span>
             <span class="ticker-price" id="nflx-price">Loading...</span>
-            <span class="ticker-change" id="nflx-change">0.00%</span>
+            <span class="ticker-change" id="nflx-ytd">YTD: 0.00%</span>
             <span class="ticker-label">Last Close</span>
             <span class="ticker-range" id="nflx-range">52w: - / -</span>
         </div>
@@ -423,108 +423,96 @@
             async function fetchStockData() {
                 try {
                     const apiKey = 'b922393424a8774196e1ec9237c001bf';
+                    const symbols = ['SPY', 'TQQQ', 'AAPL', 'MSFT', 'NVDA', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NFLX'];
+                    
+                    // Fetch price data for all symbols
+                    const pricePromises = symbols.map(symbol => 
+                        fetch(`https://financialmodelingprep.com/api/v3/quote/${symbol}?apikey=${apiKey}`)
+                            .then(response => response.json())
+                    );
+                    
+                    // Fetch YTD return data for all symbols
+                    const ytdPromises = symbols.map(symbol => 
+                        fetch(`https://financialmodelingprep.com/api/v3/stock-price-change/${symbol}?apikey=${apiKey}`)
+                            .then(response => response.json())
+                    );
+                    
+                    // Wait for all requests to complete
+                    const priceResults = await Promise.all(pricePromises);
+                    const ytdResults = await Promise.all(ytdPromises);
 
-                    const spyResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/SPY?apikey=${apiKey}`);
-                    const spyData = await spyResponse.json();
-
-                    const tqqqResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/TQQQ?apikey=${apiKey}`);
-                    const tqqqData = await tqqqResponse.json();
-
-                    const aaplResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/AAPL?apikey=${apiKey}`);
-                    const aaplData = await aaplResponse.json();
-
-                    const msftResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/MSFT?apikey=${apiKey}`);
-                    const msftData = await msftResponse.json();
-
-                    const nvdaResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/NVDA?apikey=${apiKey}`);
-                    const nvdaData = await nvdaResponse.json();
-
-                    const googlResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/GOOGL?apikey=${apiKey}`);
-                    const googlData = await googlResponse.json();
-
-                    const amznResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/AMZN?apikey=${apiKey}`);
-                    const amznData = await amznResponse.json();
-
-                    const metaResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/META?apikey=${apiKey}`);
-                    const metaData = await metaResponse.json();
-
-                    const tslaResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/TSLA?apikey=${apiKey}`);
-                    const tslaData = await tslaResponse.json();
-
-                    const nflxResponse = await fetch(`https://financialmodelingprep.com/api/v3/quote/NFLX?apikey=${apiKey}`);
-                    const nflxData = await nflxResponse.json();
-
-                    function updateTicker(data, symbol) {
-                        if (data && data.length > 0) {
-                            const quote = data[0];
+                    function updateTicker(priceData, ytdData, symbol, index) {
+                        if (priceData && priceData.length > 0 && ytdData && ytdData.length > 0) {
+                            const quote = priceData[0];
+                            const ytdInfo = ytdData[0];
                             const price = parseFloat(quote.price).toFixed(2);
                             const yearLow = parseFloat(quote.yearLow).toFixed(2);
                             const yearHigh = parseFloat(quote.yearHigh).toFixed(2);
-                            const changePercent = quote.changesPercentage;
+                            const ytdReturn = ytdInfo.ytd;
                             
                             // Update price and range
                             document.getElementById(`${symbol}-price`).textContent = `$${price}`;
                             document.getElementById(`${symbol}-range`).textContent = `52w: $${yearLow} / $${yearHigh}`;
                             
-                            // Update change percentage
-                            const changeElement = document.getElementById(`${symbol}-change`);
+                            // Update YTD return
+                            const ytdElement = document.getElementById(`${symbol}-ytd`);
                             const tickerItem = document.getElementById(`${symbol}-item`);
                             
-                            // Format the change percentage
-                            if (changeElement) {
-                                const formattedChange = changePercent.toFixed(2);
-                                changeElement.textContent = `${formattedChange > 0 ? '+' : ''}${formattedChange}%`;
+                            // Format the YTD return percentage
+                            if (ytdElement) {
+                                const formattedReturn = ytdReturn.toFixed(2);
+                                ytdElement.textContent = `YTD: ${formattedReturn > 0 ? '+' : ''}${formattedReturn}%`;
                             }
                             
-                            // Apply color based on change percentage
-                            if (changeElement && tickerItem) {
-                                if (changePercent > 0) {
-                                    // Positive change - green
-                                    changeElement.classList.add('positive');
-                                    changeElement.classList.remove('negative');
+                            // Apply color based on YTD return
+                            if (ytdElement && tickerItem) {
+                                if (ytdReturn > 0) {
+                                    // Positive return - red (for up)
+                                    ytdElement.classList.add('positive');
+                                    ytdElement.classList.remove('negative');
                                     tickerItem.classList.add('positive');
                                     tickerItem.classList.remove('negative');
                                     
-                                    // Calculate opacity based on percentage (max 5% for full intensity)
+                                    // Calculate opacity based on percentage (max 20% for full intensity)
                                     // More granular color levels for better readability
                                     let intensity;
-                                    if (changePercent < 1) {
+                                    if (ytdReturn < 5) {
                                         intensity = 0.05;
-                                    } else if (changePercent < 2) {
+                                    } else if (ytdReturn < 10) {
                                         intensity = 0.1;
-                                    } else if (changePercent < 3) {
+                                    } else if (ytdReturn < 15) {
                                         intensity = 0.15;
-                                    } else if (changePercent < 4) {
-                                        intensity = 0.2;
-                                    } else {
-                                        intensity = 0.25;
-                                    }
-                                    tickerItem.style.backgroundColor = `rgba(0, 128, 0, ${intensity})`;
-                                } else if (changePercent < 0) {
-                                    // Negative change - red
-                                    changeElement.classList.add('negative');
-                                    changeElement.classList.remove('positive');
-                                    tickerItem.classList.add('negative');
-                                    tickerItem.classList.remove('positive');
-                                    
-                                    // Calculate opacity based on percentage (max 5% for full intensity)
-                                    // More granular color levels for better readability
-                                    let intensity;
-                                    if (Math.abs(changePercent) < 1) {
-                                        intensity = 0.05;
-                                    } else if (Math.abs(changePercent) < 2) {
-                                        intensity = 0.1;
-                                    } else if (Math.abs(changePercent) < 3) {
-                                        intensity = 0.15;
-                                    } else if (Math.abs(changePercent) < 4) {
+                                    } else if (ytdReturn < 20) {
                                         intensity = 0.2;
                                     } else {
                                         intensity = 0.25;
                                     }
                                     tickerItem.style.backgroundColor = `rgba(204, 0, 0, ${intensity})`;
+                                } else if (ytdReturn < 0) {
+                                    // Negative return - green (for down)
+                                    ytdElement.classList.add('negative');
+                                    ytdElement.classList.remove('positive');
+                                    tickerItem.classList.add('negative');
+                                    tickerItem.classList.remove('positive');
+                                    
+                                    // Calculate opacity based on percentage (max 20% for full intensity)
+                                    // More granular color levels for better readability
+                                    let intensity;
+                                    if (Math.abs(ytdReturn) < 5) {
+                                        intensity = 0.05;
+                                    } else if (Math.abs(ytdReturn) < 10) {
+                                        intensity = 0.1;
+                                    } else if (Math.abs(ytdReturn) < 15) {
+                                        intensity = 0.15;
+                                    } else if (Math.abs(ytdReturn) < 20) {
+                                        intensity = 0.2;
+                                    } else {
+                                        intensity = 0.25;
+                                    }
+                                    tickerItem.style.backgroundColor = `rgba(0, 128, 0, ${intensity})`;
                                 } else {
                                     // No change - neutral
-                                    changeElement.classList.remove('positive', 'negative');
+                                    ytdElement.classList.remove('positive', 'negative');
                                     tickerItem.classList.remove('positive', 'negative');
                                     tickerItem.style.backgroundColor = '';
                                 }
@@ -532,23 +520,18 @@
                         } else {
                             document.getElementById(`${symbol}-price`).textContent = 'N/A';
                             document.getElementById(`${symbol}-range`).textContent = '52w: - / -';
-                            const changeEl = document.getElementById(`${symbol}-change`);
-                            if (changeEl) changeEl.textContent = '0.00%';
+                            const ytdEl = document.getElementById(`${symbol}-ytd`);
+                            if (ytdEl) ytdEl.textContent = 'YTD: 0.00%';
                             const itemEl = document.getElementById(`${symbol}-item`);
                             if (itemEl) itemEl.style.backgroundColor = '';
                         }
                     }
 
-                    updateTicker(spyData, 'spy');
-                    updateTicker(tqqqData, 'tqqq');
-                    updateTicker(aaplData, 'aapl');
-                    updateTicker(msftData, 'msft');
-                    updateTicker(nvdaData, 'nvda');
-                    updateTicker(googlData, 'googl');
-                    updateTicker(amznData, 'amzn');
-                    updateTicker(metaData, 'meta');
-                    updateTicker(tslaData, 'tsla');
-                    updateTicker(nflxData, 'nflx');
+                    // Update all tickers with price and YTD data
+                    symbols.forEach((symbol, index) => {
+                        const lowerSymbol = symbol.toLowerCase();
+                        updateTicker(priceResults[index], ytdResults[index], lowerSymbol, index);
+                    });
 
                     document.querySelectorAll('.ticker-price').forEach(el => el.classList.remove('loading'));
                 } catch (error) {
