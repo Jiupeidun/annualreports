@@ -281,12 +281,12 @@
     </header>
     
     <div class="stock-ticker">
-        <div class="ticker-item" id="spy-item">
-            <span class="ticker-symbol">SPY</span>
-            <span class="ticker-price" id="spy-price">Loading...</span>
+        <div class="ticker-item" id="voo-item">
+            <span class="ticker-symbol">VOO</span>
+            <span class="ticker-price" id="voo-price">Loading...</span>
             <span class="ticker-label">Last Close</span>
-            <span class="ticker-change" id="spy-ytd">YTD: 0.00%</span>
-            <span class="ticker-range" id="spy-range">52w: - / -</span>
+            <span class="ticker-change" id="voo-ytd">YTD: 0.00%</span>
+            <span class="ticker-range" id="voo-range">52w: - / -</span>
         </div>
         <div class="ticker-item" id="tqqq-item">
             <span class="ticker-symbol">TQQQ</span>
@@ -414,7 +414,7 @@
     </table>
 
     <div class="footer">
-        Dernière mise à jour : 9 mars 2025
+        Dernière mise à jour : 19 avr. 2025
     </div>
     </div>
     
@@ -435,7 +435,7 @@
             async function fetchStockData() {
                 try {
                     const apiKey = 'b922393424a8774196e1ec9237c001bf';
-                    const symbols = ['SPY', 'TQQQ', 'AAPL', 'MSFT', 'NVDA', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NFLX'];
+                    const symbols = ['VOO', 'TQQQ', 'AAPL', 'MSFT', 'NVDA', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NFLX'];
                     
                     // Fetch price data for all symbols
                     const pricePromises = symbols.map(symbol => 
