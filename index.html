@@ -8,15 +8,16 @@
     <title>Rapports Financiers</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     
+    <!-- DNS prefetch for external resources if any -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    
+    <!-- Critical font preload -->
     <link rel="preload" href="GoldmanSans_Rg.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="preload" href="2019financialReport_cover.jpg" as="image">
-    <link rel="preload" href="2020financialReport_cover.jpg" as="image">
-    <link rel="preload" href="2021financialReport_cover.jpg" as="image">
-    <link rel="preload" href="2022financialReport_cover.jpg" as="image">
-    <link rel="preload" href="2023financialReport_cover.jpg" as="image">
-    <link rel="preload" href="2024financialReport_cover.jpg" as="image">
-    <link rel="preload" href="2025financialReport_cover.jpg" as="image">
-    <link rel="preload" href="2026financialReport_cover.jpg" as="image">
+    
+    <!-- Only preload the most critical images (first 3) -->
+    <link rel="preload" href="2019financialReport_cover.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="2020financialReport_cover.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="2021financialReport_cover.jpg" as="image" fetchpriority="high">
 
     <style>
         @font-face {
@@ -39,8 +40,9 @@
             margin: 0;
             padding: 20px 0;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
             min-height: 100vh;
             overflow-y: auto;
             box-sizing: border-box;
@@ -58,6 +60,7 @@
             box-shadow: var(--box-shadow);
             padding: 30px;
             box-sizing: border-box;
+            margin-bottom: 20px;
         }
         
         .page-header {
@@ -107,9 +110,6 @@
             border-bottom: 1px solid #f0e0d2;
         }
         
-        tr {
-        }
-        
         tr:hover td, td:hover {
             background-color: #f9f2e1;
         }
@@ -133,6 +133,7 @@
             border-radius: var(--border-radius);
             display: block;
             loading: lazy;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         img:hover {
@@ -140,10 +141,25 @@
             box-shadow: var(--box-shadow-hover);
         }
         
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #666;
+            font-family: 'GoldmanSans', serif;
+            font-size: 14px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        .footer p {
+            margin: 0;
+            line-height: 1.5;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
-                margin: 0 15px;
+                margin: 0 15px 20px 15px;
             }
             table {
                 width: 100%;
@@ -158,12 +174,16 @@
             .page-header h1 {
                 font-size: 28px;
             }
+            .footer {
+                padding: 15px 0;
+                font-size: 13px;
+            }
         }
         
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
-                margin: 0 10px;
+                margin: 0 10px 15px 10px;
             }
             th, td {
                 font-size: 12px;
@@ -174,6 +194,10 @@
             }
             .page-header h1 {
                 font-size: 24px;
+            }
+            .footer {
+                padding: 10px 0;
+                font-size: 12px;
             }
         }
     </style>
@@ -198,52 +222,56 @@
                     <td>1</td>
                     <td>2019</td>
                     <td>Jan 1, 2019 - Mar 12, 2020</td>
-                    <td><a href="2019financialReport.pdf" target="_blank"><img src="2019financialReport_cover.jpg" alt="2019financialReport" loading="lazy"></a></td>
+                    <td><a href="2019financialReport.pdf" target="_blank"><img src="2019financialReport_cover.jpg" alt="2019financialReport" loading="lazy" decoding="async"></a></td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>2020</td>
                     <td>Mar 13, 2020 - Jan 7, 2021</td>
-                    <td><a href="2020financialReport.pdf" target="_blank"><img src="2020financialReport_cover.jpg" alt="2020financialReport" loading="lazy"></a></td>
+                    <td><a href="2020financialReport.pdf" target="_blank"><img src="2020financialReport_cover.jpg" alt="2020financialReport" loading="lazy" decoding="async"></a></td>
                 </tr>
                 <tr>
                     <td>3</td>
                     <td>2021</td>
                     <td>Jan 8, 2021 - Fév 6, 2022</td>
-                    <td><a href="2021financialReport.pdf" target="_blank"><img src="2021financialReport_cover.jpg" alt="2021financialReport" loading="lazy"></a></td>
+                    <td><a href="2021financialReport.pdf" target="_blank"><img src="2021financialReport_cover.jpg" alt="2021financialReport" loading="lazy" decoding="async"></a></td>
                 </tr>
                 <tr>
                     <td>4</td>
                     <td>2022</td>
                     <td>Fév 7, 2022 - Jan 23, 2023</td>
-                    <td><a href="2022financialReport.pdf" target="_blank"><img src="2022financialReport_cover.jpg" alt="2022financialReport" loading="lazy"></a></td>
+                    <td><a href="2022financialReport.pdf" target="_blank"><img src="2022financialReport_cover.jpg" alt="2022financialReport" loading="lazy" decoding="async"></a></td>
                 </tr>
                 <tr>
                     <td>5</td>
                     <td>2023</td>
                     <td>Jan 24, 2023 - Fév 14, 2024</td>
-                    <td><a href="2023financialReport.pdf" target="_blank"><img src="2023financialReport_cover.jpg" alt="2023financialReport" loading="lazy"></a></td>
+                    <td><a href="2023financialReport.pdf" target="_blank"><img src="2023financialReport_cover.jpg" alt="2023financialReport" loading="lazy" decoding="async"></a></td>
                 </tr>
                 <tr>
                     <td>6</td>
                     <td>2024</td>
                     <td>Fév 15, 2024 - Fév 12, 2025</td>
-                    <td><a href="2024financialReport.pdf" target="_blank"><img src="2024financialReport_cover.jpg" alt="2024financialReport" loading="lazy"></a></td>
+                    <td><a href="2024financialReport.pdf" target="_blank"><img src="2024financialReport_cover.jpg" alt="2024financialReport" loading="lazy" decoding="async"></a></td>
                 </tr>
                 <tr>
                     <td>7</td>
                     <td>2025</td>
                     <td>Fév 13, 2025 - </td>
-                    <td><img src="2025financialReport_cover.jpg" alt="2025financialReport" loading="lazy"></td>
+                    <td><img src="2025financialReport_cover.jpg" alt="2025financialReport" loading="lazy" decoding="async"></td>
                 </tr>
                 <tr>
                     <td>8</td>
                     <td>2026</td>
                     <td>-</td>
-                    <td><img src="2026financialReport_cover.jpg" alt="2026financialReport" loading="lazy"></td>
+                    <td><img src="2026financialReport_cover.jpg" alt="2026financialReport" loading="lazy" decoding="async"></td>
                 </tr>
             </tbody>
         </table>
     </div>
+    
+    <footer class="footer">
+        <p>&copy; Kertin. Tous droits réservés.</p>
+    </footer>
 </body>
 </html>
