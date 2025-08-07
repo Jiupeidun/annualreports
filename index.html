@@ -92,8 +92,25 @@
         
         th, td {
             padding: 12px 15px;
-            text-align: left;
+            text-align: center;
             font-size: 14px;
+        }
+        
+        /* 设置表格列宽 */
+        th:nth-child(1), td:nth-child(1) { /* N° 列 */
+            width: 8%;
+        }
+        
+        th:nth-child(2), td:nth-child(2) { /* AF 列 */
+            width: 12%;
+        }
+        
+        th:nth-child(3), td:nth-child(3) { /* Durée 列 */
+            width: 35%;
+        }
+        
+        th:nth-child(4), td:nth-child(4) { /* RF 列 - 最宽 */
+            width: 45%;
         }
         
         th {
@@ -127,11 +144,12 @@
         }
         
         img {
-            width: 100px;
+            width: 150px;
             height: auto;
             box-shadow: var(--box-shadow);
             border-radius: var(--border-radius);
             display: block;
+            margin: 0 auto;
             loading: lazy;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -169,7 +187,7 @@
                 padding: 10px;
             }
             img {
-                width: 70px;
+                width: 100px;
             }
             .page-header h1 {
                 font-size: 28px;
@@ -190,7 +208,7 @@
                 padding: 8px;
             }
             img {
-                width: 60px;
+                width: 80px;
             }
             .page-header h1 {
                 font-size: 24px;
