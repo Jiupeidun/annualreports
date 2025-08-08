@@ -32,11 +32,158 @@
             --border-radius: 8px;
             --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --box-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
+            
+            /* Light mode colors */
+            --bg-color: #fff1e5;
+            --container-bg: #ffffff;
+            --text-color: #333;
+            --header-bg: #f1d2b8;
+            --border-color: #f0e0d2;
+            --hover-bg: #f9f2e1;
+            --link-hover: #d87c44;
+            --footer-color: #666;
+        }
+        
+        /* Dark mode colors */
+        [data-theme="dark"] {
+            --bg-color: #0a0a0a;
+            --container-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --header-bg: #2a2a2a;
+            --border-color: #333333;
+            --hover-bg: #2a2a2a;
+            --link-hover: #ff8c42;
+            --footer-color: #cccccc;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            --box-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Glowing text effect for dark mode */
+        [data-theme="dark"] .page-header h1 {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        /* Glow animation */
+        @keyframes glow {
+            0% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3); }
+            100% { text-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.5), 0 0 75px rgba(255, 255, 255, 0.3); }
+        }
+        
+        /* Upward moving starfield background effect */
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        [data-theme="dark"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(3px 3px at 20px 30px, #ff6b6b, transparent),
+                radial-gradient(2px 2px at 40px 70px, #4ecdc4, transparent),
+                radial-gradient(1px 1px at 90px 40px, #45b7d1, transparent),
+                radial-gradient(1px 1px at 130px 80px, #96ceb4, transparent),
+                radial-gradient(2px 2px at 160px 30px, #feca57, transparent),
+                radial-gradient(1px 1px at 200px 60px, #ff9ff3, transparent),
+                radial-gradient(1px 1px at 240px 20px, #54a0ff, transparent),
+                radial-gradient(2px 2px at 280px 70px, #5f27cd, transparent),
+                radial-gradient(1px 1px at 320px 40px, #00d2d3, transparent),
+                radial-gradient(1px 1px at 360px 80px, #ff9f43, transparent),
+                radial-gradient(2px 2px at 400px 30px, #ee5a24, transparent),
+                radial-gradient(1px 1px at 440px 60px, #a55eea, transparent),
+                radial-gradient(1px 1px at 480px 20px, #26de81, transparent),
+                radial-gradient(2px 2px at 520px 70px, #fd79a8, transparent),
+                radial-gradient(1px 1px at 560px 40px, #fdcb6e, transparent),
+                radial-gradient(1px 1px at 600px 80px, #6c5ce7, transparent),
+                radial-gradient(2px 2px at 640px 30px, #00b894, transparent),
+                radial-gradient(1px 1px at 680px 60px, #e84393, transparent),
+                radial-gradient(1px 1px at 720px 20px, #74b9ff, transparent),
+                radial-gradient(2px 2px at 760px 70px, #fd79a8, transparent),
+                radial-gradient(1px 1px at 800px 40px, #a29bfe, transparent),
+                radial-gradient(1px 1px at 840px 80px, #55a3ff, transparent),
+                radial-gradient(2px 2px at 880px 30px, #ff7675, transparent),
+                radial-gradient(1px 1px at 920px 60px, #00cec9, transparent),
+                radial-gradient(1px 1px at 960px 20px, #fdcb6e, transparent),
+                radial-gradient(2px 2px at 1000px 70px, #6c5ce7, transparent),
+                radial-gradient(1px 1px at 1040px 40px, #00b894, transparent),
+                radial-gradient(1px 1px at 1080px 80px, #e84393, transparent),
+                radial-gradient(2px 2px at 1120px 30px, #74b9ff, transparent),
+                radial-gradient(1px 1px at 1160px 60px, #fd79a8, transparent),
+                radial-gradient(1px 1px at 1200px 20px, #a29bfe, transparent),
+                radial-gradient(2px 2px at 1240px 70px, #55a3ff, transparent),
+                radial-gradient(1px 1px at 1280px 40px, #ff7675, transparent),
+                radial-gradient(1px 1px at 1320px 80px, #00cec9, transparent),
+                radial-gradient(2px 2px at 1360px 30px, #fdcb6e, transparent),
+                radial-gradient(1px 1px at 1400px 60px, #6c5ce7, transparent),
+                radial-gradient(1px 1px at 1440px 20px, #00b894, transparent),
+                radial-gradient(2px 2px at 1480px 70px, #e84393, transparent),
+                radial-gradient(1px 1px at 1520px 40px, #74b9ff, transparent),
+                radial-gradient(1px 1px at 1560px 80px, #fd79a8, transparent),
+                radial-gradient(2px 2px at 1600px 30px, #a29bfe, transparent),
+                radial-gradient(1px 1px at 1640px 60px, #55a3ff, transparent),
+                radial-gradient(1px 1px at 1680px 20px, #ff7675, transparent),
+                radial-gradient(2px 2px at 1720px 70px, #00cec9, transparent),
+                radial-gradient(1px 1px at 1760px 40px, #fdcb6e, transparent),
+                radial-gradient(1px 1px at 1800px 80px, #6c5ce7, transparent),
+                radial-gradient(2px 2px at 1840px 30px, #00b894, transparent),
+                radial-gradient(1px 1px at 1880px 60px, #e84393, transparent),
+                radial-gradient(1px 1px at 1920px 20px, #74b9ff, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            opacity: 0.4;
+            z-index: -1;
+            animation: starfieldUpward 8s linear infinite;
+        }
+        
+        [data-theme="dark"] body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 50px 50px, #ff6b6b, transparent),
+                radial-gradient(1px 1px at 150px 150px, #4ecdc4, transparent),
+                radial-gradient(1px 1px at 250px 100px, #45b7d1, transparent),
+                radial-gradient(2px 2px at 350px 200px, #96ceb4, transparent),
+                radial-gradient(1px 1px at 450px 50px, #feca57, transparent),
+                radial-gradient(1px 1px at 550px 150px, #ff9ff3, transparent),
+                radial-gradient(2px 2px at 650px 100px, #54a0ff, transparent),
+                radial-gradient(1px 1px at 750px 200px, #5f27cd, transparent),
+                radial-gradient(1px 1px at 850px 50px, #00d2d3, transparent),
+                radial-gradient(2px 2px at 950px 150px, #ff9f43, transparent),
+                radial-gradient(1px 1px at 1050px 100px, #ee5a24, transparent),
+                radial-gradient(1px 1px at 1150px 200px, #a55eea, transparent),
+                radial-gradient(2px 2px at 1250px 50px, #26de81, transparent),
+                radial-gradient(1px 1px at 1350px 150px, #fd79a8, transparent),
+                radial-gradient(1px 1px at 1450px 100px, #fdcb6e, transparent),
+                radial-gradient(2px 2px at 1550px 200px, #6c5ce7, transparent),
+                radial-gradient(1px 1px at 1650px 50px, #00b894, transparent),
+                radial-gradient(1px 1px at 1750px 150px, #e84393, transparent),
+                radial-gradient(2px 2px at 1850px 100px, #74b9ff, transparent),
+                radial-gradient(1px 1px at 1950px 200px, #fd79a8, transparent);
+            background-repeat: repeat;
+            background-size: 300px 200px;
+            opacity: 0.2;
+            z-index: -1;
+            animation: starfieldUpward 6s linear infinite;
+        }
+        
+        @keyframes starfieldUpward {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); }
         }
         
         body {
             font-family: 'GoldmanSans', serif;
-            background-color: #fff1e5;
+            background-color: var(--bg-color);
             margin: 0;
             padding: 20px 0;
             display: flex;
@@ -46,6 +193,7 @@
             min-height: 100vh;
             overflow-y: auto;
             box-sizing: border-box;
+            transition: background-color 0.3s ease;
         }
         
         .container {
@@ -55,12 +203,13 @@
             align-items: center;
             width: 100%;
             max-width: 1000px;
-            background-color: #ffffff;
+            background-color: var(--container-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             padding: 30px;
             box-sizing: border-box;
             margin-bottom: 20px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
         
         .page-header {
@@ -75,6 +224,8 @@
             margin: 0 0 10px 0;
             font-weight: normal;
             letter-spacing: 1px;
+            color: var(--text-color);
+            transition: color 0.3s ease;
         }
 
         table {
@@ -84,8 +235,8 @@
             border-collapse: separate;
             border-spacing: 0;
             box-shadow: var(--box-shadow);
-            background-color: #ffffff;
-            transition: background-color 0.3s ease;
+            background-color: var(--container-bg);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
             border-radius: var(--border-radius);
             overflow: hidden;
         }
@@ -94,53 +245,58 @@
             padding: 12px 15px;
             text-align: center;
             font-size: 14px;
+            color: var(--text-color);
+            transition: color 0.3s ease;
         }
         
-        /* 设置表格列宽 */
-        th:nth-child(1), td:nth-child(1) { /* N° 列 */
+        /* Table column width settings */
+        th:nth-child(1), td:nth-child(1) { /* Number column */
             width: 8%;
         }
         
-        th:nth-child(2), td:nth-child(2) { /* AF 列 */
+        th:nth-child(2), td:nth-child(2) { /* Year column */
             width: 12%;
         }
         
-        th:nth-child(3), td:nth-child(3) { /* Durée 列 */
+        th:nth-child(3), td:nth-child(3) { /* Duration column */
             width: 35%;
         }
         
-        th:nth-child(4), td:nth-child(4) { /* RF 列 - 最宽 */
+        th:nth-child(4), td:nth-child(4) { /* Report column - widest */
             width: 45%;
         }
         
         th {
-            background-color: #f1d2b8;
-            color: #333;
+            background-color: var(--header-bg);
+            color: var(--text-color);
             border: 1px solid transparent;
             font-family: 'GoldmanSans', serif;
             font-weight: normal;
             letter-spacing: 1px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         td {
             font-family: 'GoldmanSans', serif;
-            border-bottom: 1px solid #f0e0d2;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color 0.3s ease;
         }
         
         tr:hover td, td:hover {
-            background-color: #f9f2e1;
+            background-color: var(--hover-bg);
+            transition: background-color 0.3s ease;
         }
         
         a {
             font-family: 'GoldmanSans', serif;
             text-decoration: none;
-            color: #333;
+            color: var(--text-color);
             font-weight: normal;
             transition: color 0.3s ease;
         }
         
         a:hover {
-            color: #d87c44;
+            color: var(--link-hover);
         }
         
         img {
@@ -162,11 +318,12 @@
         .footer {
             text-align: center;
             padding: 20px 0;
-            color: #666;
+            color: var(--footer-color);
             font-family: 'GoldmanSans', serif;
             font-size: 14px;
             width: 100%;
             max-width: 1000px;
+            transition: color 0.3s ease;
         }
         
         .footer p {
@@ -291,5 +448,44 @@
     <footer class="footer">
         <p>&copy; Kertin. Tous droits réservés.</p>
     </footer>
+
+    <script>
+        // High-performance dark mode switching - delayed execution to avoid affecting first screen loading
+        (function() {
+            'use strict';
+            
+            // Wait for page to load before executing
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initDarkMode);
+            } else {
+                initDarkMode();
+            }
+            
+            function initDarkMode() {
+                // Get current time
+                const now = new Date();
+                const currentHour = now.getHours();
+                
+                // Simple sunset time judgment (18:00 - 6:00 is dark mode)
+                const isDarkMode = currentHour >= 18 || currentHour < 6;
+                
+                // Apply theme
+                document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+                
+                // Check time changes every hour
+                setInterval(function() {
+                    const currentTime = new Date();
+                    const hour = currentTime.getHours();
+                    const shouldBeDark = hour >= 18 || hour < 6;
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const targetTheme = shouldBeDark ? 'dark' : 'light';
+                    
+                    if (currentTheme !== targetTheme) {
+                        document.documentElement.setAttribute('data-theme', targetTheme);
+                    }
+                }, 60000); // Check every minute
+            }
+        })();
+    </script>
 </body>
 </html>
