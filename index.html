@@ -45,8 +45,6 @@
             --footer-color: #666;
         }
         
-
-        
         body {
             font-family: 'GoldmanSans', serif;
             background-color: var(--bg-color);
@@ -164,6 +162,14 @@
         a:hover {
             color: var(--link-hover);
         }
+
+        /* ✅ Fix: make <a> same size as <img> */
+        td a {
+            display: inline-block;
+        }
+        td a img {
+            display: block;
+        }
         
         img {
             width: 150px;
@@ -232,6 +238,9 @@
             }
             img {
                 width: 80px;
+            }
+            a {
+                display: inline-block;
             }
             .page-header h1 {
                 font-size: 24px;
