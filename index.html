@@ -3,20 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Rapports Financiers - Rapports Financiers Annuels">
     <title>Rapports Financiers</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    
+    <link rel="icon" href="favicon.ico">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="preload" href="GoldmanSans_Rg.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="2019financialReport_cover.jpg" as="image" fetchpriority="high">
     <link rel="preload" href="2020financialReport_cover.jpg" as="image" fetchpriority="high">
-    <link rel="preload" href="2021financialReport_cover.jpg" as="image" fetchpriority="high">
-    <link rel="preload" href="2022financialReport_cover.jpg" as="image" fetchpriority="high">
-    <link rel="preload" href="2023financialReport_cover.jpg" as="image" fetchpriority="high">
-    <link rel="preload" href="2024financialReport_cover.jpg" as="image" fetchpriority="high">
-    <link rel="preload" href="2025financialReport_cover.jpg" as="image" fetchpriority="high">
-    <!-- <link rel="preload" href="2026financialReport_cover.jpg" as="image" fetchpriority="high"> -->
 
     <style>
         @font-face {
@@ -28,13 +21,10 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        
         :root {
             --border-radius: 8px;
             --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --box-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
-            
-            /* Light mode colors */
             --bg-color: #fff1e5;
             --container-bg: #ffffff;
             --text-color: #333;
@@ -44,7 +34,7 @@
             --link-hover: #d87c44;
             --footer-color: #666;
         }
-        
+        * { box-sizing: border-box; }
         body {
             font-family: 'GoldmanSans', serif;
             background-color: var(--bg-color);
@@ -52,18 +42,12 @@
             padding: 20px 0;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
-            overflow-y: auto;
-            box-sizing: border-box;
-            transition: background-color 0.3s ease;
         }
-        
         .container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             width: 100%;
             max-width: 1000px;
@@ -71,27 +55,19 @@
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             padding: 30px;
-            box-sizing: border-box;
             margin-bottom: 20px;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
-        
         .page-header {
             text-align: center;
             margin-bottom: 25px;
-            width: 100%;
         }
-        
         .page-header h1 {
-            font-family: 'GoldmanSans', serif;
             font-size: 32px;
             margin: 0 0 10px 0;
             font-weight: normal;
             letter-spacing: 1px;
             color: var(--text-color);
-            transition: color 0.3s ease;
         }
-
         table {
             width: 100%;
             max-width: 900px;
@@ -100,116 +76,73 @@
             border-spacing: 0;
             box-shadow: var(--box-shadow);
             background-color: var(--container-bg);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
             border-radius: var(--border-radius);
             overflow: hidden;
         }
-        
         th, td {
             padding: 12px 15px;
             text-align: center;
             font-size: 14px;
             color: var(--text-color);
-            transition: color 0.3s ease;
         }
-        
-        /* Table column width settings */
-        th:nth-child(1), td:nth-child(1) { /* Number column */
-            width: 8%;
-        }
-        
-        th:nth-child(2), td:nth-child(2) { /* Year column */
-            width: 12%;
-        }
-        
-        th:nth-child(3), td:nth-child(3) { /* Duration column */
-            width: 35%;
-        }
-        
-        th:nth-child(4), td:nth-child(4) { /* Report column - widest */
-            width: 45%;
-        }
-        
+        th:nth-child(1), td:nth-child(1) { width: 8%; }
+        th:nth-child(2), td:nth-child(2) { width: 12%; }
+        th:nth-child(3), td:nth-child(3) { width: 35%; }
+        th:nth-child(4), td:nth-child(4) { width: 45%; }
         th {
             background-color: var(--header-bg);
-            color: var(--text-color);
             border: 1px solid transparent;
-            font-family: 'GoldmanSans', serif;
             font-weight: normal;
             letter-spacing: 1px;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        
         td {
-            font-family: 'GoldmanSans', serif;
             border-bottom: 1px solid var(--border-color);
-            transition: border-color 0.3s ease;
         }
-        
         tr:hover td, td:hover {
             background-color: var(--hover-bg);
-            transition: background-color 0.3s ease;
         }
-        
         a {
-            font-family: 'GoldmanSans', serif;
             text-decoration: none;
             color: var(--text-color);
             font-weight: normal;
-            transition: color 0.3s ease;
         }
-        
         a:hover {
             color: var(--link-hover);
         }
-
-        /* ✅ Fix: make <a> same size as <img> */
         td a {
             display: inline-block;
         }
         td a img {
             display: block;
         }
-        
         img {
             width: 150px;
-            height: auto;
+            aspect-ratio: 150/212;
             box-shadow: var(--box-shadow);
             border-radius: var(--border-radius);
             display: block;
             margin: 0 auto;
-            loading: lazy;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform .3s ease, box-shadow .3s ease;
         }
-        
         img:hover {
             transform: scale(1.1);
             box-shadow: var(--box-shadow-hover);
         }
-        
         .footer {
             text-align: center;
             padding: 20px 0;
             color: var(--footer-color);
-            font-family: 'GoldmanSans', serif;
             font-size: 14px;
-            width: 100%;
             max-width: 1000px;
-            transition: color 0.3s ease;
         }
-        
         .footer p {
             margin: 0;
             line-height: 1.5;
         }
-        
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
                 margin: 0 15px 20px 15px;
-            }
-            table {
-                width: 100%;
             }
             th, td {
                 font-size: 13px;
@@ -226,7 +159,6 @@
                 font-size: 13px;
             }
         }
-        
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
@@ -239,9 +171,6 @@
             img {
                 width: 80px;
             }
-            a {
-                display: inline-block;
-            }
             .page-header h1 {
                 font-size: 24px;
             }
@@ -252,14 +181,17 @@
         }
     </style>
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VMYN05WBBT"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-VMYN05WBBT');
+      window.addEventListener('load',function(){
+        var s=document.createElement('script');
+        s.async=true;
+        s.src='https://www.googletagmanager.com/gtag/js?id=G-VMYN05WBBT';
+        document.head.appendChild(s);
+        window.dataLayer=window.dataLayer||[];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js',new Date());
+        gtag('config','G-VMYN05WBBT');
+      });
     </script>
 </head>
 <body>
@@ -282,75 +214,73 @@
                     <td>1</td>
                     <td>2019</td>
                     <td>1er janv. 2019 - 12 mars 2020</td>
-                    <td><a href="2019financialReport.pdf" target="_blank"><img src="2019financialReport_cover.jpg" alt="2019financialReport" loading="lazy" decoding="async"></a></td>
+                    <td><a href="2019financialReport.pdf" target="_blank"><img src="2019financialReport_cover.jpg" alt="2019financialReport" width="150" height="212" fetchpriority="high"></a></td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>2020</td>
                     <td>13 mars 2020 - 7 janv. 2021</td>
-                    <td><a href="2020financialReport.pdf" target="_blank"><img src="2020financialReport_cover.jpg" alt="2020financialReport" loading="lazy" decoding="async"></a></td>
+                    <td><a href="2020financialReport.pdf" target="_blank"><img src="2020financialReport_cover.jpg" alt="2020financialReport" width="150" height="212" fetchpriority="high"></a></td>
                 </tr>
                 <tr>
                     <td>3</td>
                     <td>2021</td>
                     <td>8 janv. 2021 - 6 fév. 2022</td>
-                    <td><a href="2021financialReport.pdf" target="_blank"><img src="2021financialReport_cover.jpg" alt="2021financialReport" loading="lazy" decoding="async"></a></td>
+                    <td><a href="2021financialReport.pdf" target="_blank"><img src="2021financialReport_cover.jpg" alt="2021financialReport" width="150" height="212"></a></td>
                 </tr>
                 <tr>
                     <td>4</td>
                     <td>2022</td>
                     <td>7 fév. 2022 - 23 janv. 2023</td>
-                    <td><a href="2022financialReport.pdf" target="_blank"><img src="2022financialReport_cover.jpg" alt="2022financialReport" loading="lazy" decoding="async"></a></td>
+                    <td><a href="2022financialReport.pdf" target="_blank"><img src="2022financialReport_cover.jpg" alt="2022financialReport" width="150" height="212"></a></td>
                 </tr>
                 <tr>
                     <td>5</td>
                     <td>2023</td>
                     <td>24 janv. 2023 - 14 fév. 2024</td>
-                    <td><a href="2023financialReport.pdf" target="_blank"><img src="2023financialReport_cover.jpg" alt="2023financialReport" loading="lazy" decoding="async"></a></td>
+                    <td><a href="2023financialReport.pdf" target="_blank"><img src="2023financialReport_cover.jpg" alt="2023financialReport" width="150" height="212"></a></td>
                 </tr>
                 <tr>
                     <td>6</td>
                     <td>2024</td>
                     <td>15 fév. 2024 - 12 fév. 2025</td>
-                    <td><a href="Rapport financier 2024.pdf" target="_blank"><img src="Rapport_financier_2024_couverture.jpg" alt="Rapport financier 2024" loading="lazy" decoding="async"></a></td>
+                    <td><a href="Rapport financier 2024.pdf" target="_blank"><img src="Rapport_financier_2024_couverture.jpg" alt="Rapport financier 2024" width="150" height="212" loading="lazy"></a></td>
                 </tr>
                 <tr>
                     <td>7</td>
                     <td>2025</td>
                     <td>13 fév. 2025 - </td>
-                    <td><a href="Rapport financier 2025.pdf" target="_blank"><img src="Rapport_financier_2025_couverture.jpg" alt="Rapport financier 2025" loading="lazy" decoding="async"></a></td>
+                    <td><a href="Rapport financier 2025.pdf" target="_blank"><img src="Rapport_financier_2025_couverture.jpg" alt="Rapport financier 2025" width="150" height="212" loading="lazy"></a></td>
                 </tr>
                 <tr>
                     <td>8</td>
                     <td>2026</td>
                     <td>-</td>
-                    <td><img src="Rapport_financier_2026_couverture.jpg" alt="Rapport financier 2026" loading="lazy" decoding="async"></td>
-                    <!-- <td><a href="Rapport financier 2026.pdf" target="_blank"><img src="Rapport_financier_2026_couverture.jpg" alt="Rapport financier 2026" loading="lazy" decoding="async"></a></td> -->
+                    <td><img src="Rapport_financier_2026_couverture.jpg" alt="Rapport financier 2026" width="150" height="212" loading="lazy"></td>
                 </tr>
                 <tr>
                     <td>9</td>
                     <td>2027</td>
                     <td>-</td>
-                    <td><img src="Rapport_financier_2027_couverture.jpg" alt="Rapport financier 2027" loading="lazy" decoding="async"></td>
-                    <!-- <td><a href="Rapport financier 2027.pdf" target="_blank"><img src="Rapport_financier_2026_couverture.jpg" alt="Rapport financier 2026" loading="lazy" decoding="async"></a></td> -->
+                    <td><img src="Rapport_financier_2027_couverture.jpg" alt="Rapport financier 2027" width="150" height="212" loading="lazy"></td>
                 </tr>
                 <tr>
                     <td>10</td>
                     <td>2028</td>
                     <td>-</td>
-                    <td><img src="Rapport_financier_2028_couverture.jpg" alt="Rapport financier 2028" loading="lazy" decoding="async"></td>
+                    <td><img src="Rapport_financier_2028_couverture.jpg" alt="Rapport financier 2028" width="150" height="212" loading="lazy"></td>
                 </tr>
                 <tr>
                     <td>11</td>
                     <td>2029</td>
                     <td>-</td>
-                    <td><img src="Rapport_financier_2029_couverture.jpg" alt="Rapport financier 2029" loading="lazy" decoding="async"></td>
+                    <td><img src="Rapport_financier_2029_couverture.jpg" alt="Rapport financier 2029" width="150" height="212" loading="lazy"></td>
                 </tr>
                 <tr>
                     <td>12</td>
                     <td>2030</td>
                     <td>-</td>
-                    <td><img src="Rapport_financier_2030_couverture.jpg" alt="Rapport financier 2030" loading="lazy" decoding="async"></td>
+                    <td><img src="Rapport_financier_2030_couverture.jpg" alt="Rapport financier 2030" width="150" height="212" loading="lazy"></td>
                 </tr>
             </tbody>
         </table>
@@ -359,6 +289,5 @@
     <footer class="footer">
         <p>&copy; Kertin. Tous droits réservés.</p>
     </footer>
-
 </body>
 </html>
