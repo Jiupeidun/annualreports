@@ -143,3 +143,9 @@ Thumbs.db
 # *.png
 # *.gif
 # *.svg 
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
