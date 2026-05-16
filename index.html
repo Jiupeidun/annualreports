@@ -1,1 +1,622 @@
-<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Annual Reports"><title>Financial Reports</title><link rel=icon href=favicon.ico><style>:root{--b:8px;--s:0 4px 12px rgba(0,0,0,.08);--bg:#fff1e5;--c:#fff;--t:#333;--f:#666}*{box-sizing:border-box}body{font-family:system-ui,Arial,sans-serif;background:var(--bg);margin:0;padding:40px 20px;display:flex;flex-direction:column;align-items:center;color:var(--t)}h1{font-size:32px;font-weight:400;letter-spacing:1px;margin:0 0 40px}main{width:100%;max-width:900px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:30px;margin-bottom:60px}.i{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}img{width:100%;max-width:150px;height:auto;aspect-ratio:150/212;background:var(--c);border-radius:var(--b);box-shadow:var(--s);transition:transform .3s;display:block}img:hover{transform:scale(1.05)}.y{font-size:16px;font-weight:400}.p{font-size:12px;color:var(--f);line-height:1.2}a{text-decoration:none;color:inherit}footer{color:var(--f);font-size:14px}@media(max-width:480px){main{grid-template-columns:1fr 1fr;gap:20px}h1{font-size:24px}}</style><script>addEventListener('load',function(){(window.requestIdleCallback||function(c){setTimeout(c,1500)})(function(){var s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=G-VMYN05WBBT';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}g('js',new Date);g('config','G-VMYN05WBBT')})})</script><script>function reportDateUrl(a){var d=new Date;a.href='2026_Annual_Report.pdf?v='+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')}addEventListener('DOMContentLoaded',function(){var a=document.getElementById('r2026');if(a)reportDateUrl(a)})</script></head><body><h1>Annual Reports</h1><main><a href=2019financialReport.pdf target=_blank rel=noopener class=i><img src=compressed/2019financialReport_cover.jpg width=300 height=424 alt=2019 decoding=async fetchpriority=high><div class=y>2019</div><div class=p>Jan 2019 - Mar 2020</div></a><a href=2020financialReport.pdf target=_blank rel=noopener class=i><img src=compressed/2020financialReport_cover.jpg width=300 height=424 alt=2020 decoding=async><div class=y>2020</div><div class=p>Mar 2020 - Jan 2021</div></a><a href=2021financialReport.pdf target=_blank rel=noopener class=i><img src=compressed/2021financialReport_cover.jpg width=300 height=424 alt=2021 decoding=async><div class=y>2021</div><div class=p>Jan 2021 - Feb 2022</div></a><a href=2022financialReport.pdf target=_blank rel=noopener class=i><img src=compressed/2022financialReport_cover.jpg width=300 height=424 alt=2022 decoding=async><div class=y>2022</div><div class=p>Feb 2022 - Jan 2023</div></a><a href=2023financialReport.pdf target=_blank rel=noopener class=i><img src=compressed/2023financialReport_cover.jpg width=300 height=424 alt=2023 loading=lazy decoding=async><div class=y>2023</div><div class=p>Jan 2023 - Feb 2024</div></a><a href=Rapport_financier_2024.pdf target=_blank rel=noopener class=i><img src=compressed/Rapport_financier_2024_couverture.jpg width=300 height=424 alt=2024 loading=lazy decoding=async><div class=y>2024</div><div class=p>Feb 2024 - Feb 2025</div></a><a href=2025_Annual_Report.pdf target=_blank rel=noopener class=i><img src=compressed/2025_Annual_Report_cover.jpg width=300 height=424 alt=2025 loading=lazy decoding=async><div class=y>2025</div><div class=p>Feb 2025 - Apr 2026</div></a><a id=r2026 href=2026_Annual_Report.pdf target=_blank rel=noopener class=i onpointerdown=reportDateUrl(this) onclick=reportDateUrl(this) onfocus=reportDateUrl(this)><img src=compressed/2026_Annual_Report_cover.jpg width=300 height=424 alt=2026 loading=lazy decoding=async><div class=y>2026</div><div class=p>Apr 2026 - Present</div></a></main><footer><p>&copy; Kertin. All rights reserved.</p></footer></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Annual Reports">
+  <title>Financial Reports</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    :root {
+      --page-w: 1120px;
+      --edge: 40px;
+      --radius: 8px;
+      --sky-top: #060815;
+      --sky-mid: #101b31;
+      --ground: #07101d;
+      --page-text: #f4f7fb;
+      --muted-text: #a8b4c5;
+      --surface-rgb: 17, 26, 41;
+      --line-rgb: 198, 214, 238;
+      --surface-alpha: .8;
+      --line-alpha: .23;
+      --shadow-alpha: .38;
+      --accent: #8bd3ff;
+      color-scheme: light dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      font-synthesis: none;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--ground);
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      overflow-x: auto;
+      background: var(--ground);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      min-width: calc(var(--page-w) + (var(--edge) * 2));
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: var(--edge) 0;
+      color: var(--page-text);
+      background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--ground) 100%);
+      transition: background 900ms linear, color 700ms linear;
+    }
+
+    .page {
+      width: var(--page-w);
+      margin: 0 auto;
+    }
+
+    .masthead {
+      min-height: 72px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 56px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 40px;
+      line-height: 1.2;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .reports {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 30px 24px;
+    }
+
+    .report-link {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 14px;
+      contain: layout paint style;
+      color: var(--page-text);
+      transition: color 700ms linear, transform 160ms linear;
+    }
+
+    .report-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .report-link:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 52%, transparent);
+      outline-offset: 4px;
+      border-radius: var(--radius);
+    }
+
+    .report-cover {
+      width: 150px;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+      border-radius: var(--radius);
+      background: rgba(var(--surface-rgb), var(--surface-alpha));
+      box-shadow:
+        0 18px 42px rgba(0, 0, 0, var(--shadow-alpha));
+      transition: background 700ms linear, box-shadow 700ms linear;
+    }
+
+    .report-meta {
+      min-width: 0;
+      text-align: center;
+    }
+
+    .report-year {
+      display: block;
+      font-size: 1rem;
+      font-weight: 620;
+      line-height: 1.2;
+    }
+
+    .report-period {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted-text);
+      font-size: .78rem;
+      line-height: 1.35;
+      transition: color 700ms linear;
+    }
+
+    footer {
+      margin-top: 58px;
+      color: var(--muted-text);
+      font-size: .86rem;
+      line-height: 1.35;
+      text-align: center;
+      transition: color 700ms linear;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .app,
+      .report-link,
+      .report-cover,
+      .report-period,
+      footer {
+        transition: none;
+      }
+
+      .report-link:hover {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        overflow-x: hidden;
+      }
+
+      .app {
+        min-width: 0;
+        min-height: 100svh;
+        padding: 28px 0;
+      }
+
+      .page {
+        width: calc(100vw - 28px);
+      }
+
+      .masthead {
+        min-height: 52px;
+        margin-bottom: 34px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .reports {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px 18px;
+      }
+
+      footer {
+        margin-top: 42px;
+      }
+    }
+  </style>
+  <script>
+    (function () {
+      var rad = Math.PI / 180;
+      var dayMs = 86400000;
+      var J1970 = 2440588;
+      var J2000 = 2451545;
+      var e = rad * 23.4397;
+      var rootStyle = document.documentElement.style;
+      var activeVars = {};
+      var debugTime = parseDebugTime();
+      var locationState = {
+        lat: 31.2304,
+        lon: 121.4737,
+        timeZone: "Asia/Shanghai"
+      };
+      var themeTimer = 0;
+      var palettes = {
+        night: {
+          skyTop: "#060815",
+          skyMid: "#101b31",
+          ground: "#07101d",
+          text: "#f4f7fb",
+          muted: "#a8b4c5",
+          surface: "#111a29",
+          line: "#c6d6ee",
+          accent: "#8bd3ff"
+        },
+        dawn: {
+          skyTop: "#607ea2",
+          skyMid: "#e8ad86",
+          ground: "#eef1df",
+          text: "#21313b",
+          muted: "#5e6d78",
+          surface: "#fff8ec",
+          line: "#6d746c",
+          accent: "#d47442"
+        },
+        day: {
+          skyTop: "#89cef5",
+          skyMid: "#f7fbff",
+          ground: "#e8f2df",
+          text: "#1d2d35",
+          muted: "#586875",
+          surface: "#ffffff",
+          line: "#39515a",
+          accent: "#c56a3a"
+        },
+        dusk: {
+          skyTop: "#354965",
+          skyMid: "#c87963",
+          ground: "#1b2531",
+          text: "#fff5ec",
+          muted: "#ccb1a6",
+          surface: "#1a2431",
+          line: "#f1ccb9",
+          accent: "#ffb36d"
+        }
+      };
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function parseDebugTime() {
+        var value = new URLSearchParams(location.search).get("time");
+        var date = value ? new Date(value) : null;
+        return date && Number.isFinite(date.valueOf()) ? date : null;
+      }
+
+      function getThemeTime() {
+        return debugTime || new Date();
+      }
+
+      function toJulian(date) {
+        return date.valueOf() / dayMs - .5 + J1970;
+      }
+
+      function fromJulian(j) {
+        return new Date((j + .5 - J1970) * dayMs);
+      }
+
+      function toDays(date) {
+        return toJulian(date) - J2000;
+      }
+
+      function declination(l, b) {
+        return Math.asin(Math.sin(b) * Math.cos(e) + Math.cos(b) * Math.sin(e) * Math.sin(l));
+      }
+
+      function solarMeanAnomaly(d) {
+        return rad * (357.5291 + .98560028 * d);
+      }
+
+      function eclipticLongitude(M) {
+        var C = rad * (1.9148 * Math.sin(M) + .02 * Math.sin(2 * M) + .0003 * Math.sin(3 * M));
+        return M + C + rad * 102.9372 + Math.PI;
+      }
+
+      function julianCycle(d, lw) {
+        return Math.round(d - .0009 - lw / (2 * Math.PI));
+      }
+
+      function approxTransit(Ht, lw, n) {
+        return .0009 + (Ht + lw) / (2 * Math.PI) + n;
+      }
+
+      function solarTransitJ(ds, M, L) {
+        return J2000 + ds + .0053 * Math.sin(M) - .0069 * Math.sin(2 * L);
+      }
+
+      function hourAngle(horizon, phi, dec) {
+        return Math.acos((Math.sin(horizon) - Math.sin(phi) * Math.sin(dec)) / (Math.cos(phi) * Math.cos(dec)));
+      }
+
+      function getSunTimes(date, lat, lon) {
+        var lw = rad * -lon;
+        var phi = rad * lat;
+        var d = toDays(date);
+        var n = julianCycle(d, lw);
+        var ds = approxTransit(0, lw, n);
+        var M = solarMeanAnomaly(ds);
+        var L = eclipticLongitude(M);
+        var dec = declination(L, 0);
+        var Jnoon = solarTransitJ(ds, M, L);
+        var Jset = solarTransitJ(approxTransit(hourAngle(-.833 * rad, phi, dec), lw, n), M, L);
+        var Jrise = Jnoon - (Jset - Jnoon);
+
+        if (![Jrise, Jnoon, Jset].every(Number.isFinite)) {
+          var fallback = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0));
+          return {
+            sunrise: new Date(fallback.getTime() + 6 * 60 * 60 * 1000),
+            sunset: new Date(fallback.getTime() + 18 * 60 * 60 * 1000)
+          };
+        }
+
+        return {
+          sunrise: fromJulian(Jrise),
+          sunset: fromJulian(Jset)
+        };
+      }
+
+      function getZonedParts(date, timeZone) {
+        var formatter = new Intl.DateTimeFormat("en-CA", {
+          timeZone: timeZone,
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        });
+        var values = {};
+        formatter.formatToParts(date).forEach(function (part) {
+          values[part.type] = part.value;
+        });
+        return {
+          year: Number(values.year),
+          month: Number(values.month),
+          day: Number(values.day)
+        };
+      }
+
+      function getTimesForZonedDate(now, location, offsetDays) {
+        var parts = getZonedParts(now, location.timeZone);
+        var localNoon = new Date(Date.UTC(parts.year, parts.month - 1, parts.day + offsetDays, 12));
+        return getSunTimes(localNoon, location.lat, location.lon);
+      }
+
+      function hexToRgb(hex) {
+        var raw = hex.replace("#", "");
+        return {
+          r: parseInt(raw.slice(0, 2), 16),
+          g: parseInt(raw.slice(2, 4), 16),
+          b: parseInt(raw.slice(4, 6), 16)
+        };
+      }
+
+      function rgbToHex(rgb) {
+        return "#" + [rgb.r, rgb.g, rgb.b].map(function (part) {
+          return Math.round(part).toString(16).padStart(2, "0");
+        }).join("");
+      }
+
+      function mixColor(a, b, t) {
+        var ca = hexToRgb(a);
+        var cb = hexToRgb(b);
+        return rgbToHex({
+          r: ca.r + (cb.r - ca.r) * t,
+          g: ca.g + (cb.g - ca.g) * t,
+          b: ca.b + (cb.b - ca.b) * t
+        });
+      }
+
+      function mixPalette(a, b, t) {
+        var palette = {};
+        Object.keys(a).forEach(function (key) {
+          palette[key] = mixColor(a[key], b[key], t);
+        });
+        return palette;
+      }
+
+      function rgbCsv(hex) {
+        var rgb = hexToRgb(hex);
+        return rgb.r + ", " + rgb.g + ", " + rgb.b;
+      }
+
+      function midpoint(start, end) {
+        return new Date((start.valueOf() + end.valueOf()) / 2);
+      }
+
+      function progressBetween(now, start, end) {
+        return clamp((now - start) / (end - start), 0, 1);
+      }
+
+      function linearTheme(from, to, progress, fromLight, toLight) {
+        return {
+          light: fromLight + (toLight - fromLight) * progress,
+          palette: mixPalette(from, to, progress)
+        };
+      }
+
+      function buildSolarModel(now, location) {
+        var today = getTimesForZonedDate(now, location, 0);
+        var previous = getTimesForZonedDate(now, location, -1);
+        var next = getTimesForZonedDate(now, location, 1);
+        var isDay = now >= today.sunrise && now < today.sunset;
+
+        if (isDay) {
+          var noon = midpoint(today.sunrise, today.sunset);
+          if (now < noon) {
+            return linearTheme(palettes.dawn, palettes.day, progressBetween(now, today.sunrise, noon), .35, 1);
+          }
+          return linearTheme(palettes.day, palettes.dusk, progressBetween(now, noon, today.sunset), 1, .74);
+        }
+
+        var nightStart = now < today.sunrise ? previous.sunset : today.sunset;
+        var nightEnd = now < today.sunrise ? today.sunrise : next.sunrise;
+        var nightMiddle = midpoint(nightStart, nightEnd);
+        if (now < nightMiddle) {
+          return linearTheme(palettes.dusk, palettes.night, progressBetween(now, nightStart, nightMiddle), .74, .05);
+        }
+        return linearTheme(palettes.night, palettes.dawn, progressBetween(now, nightMiddle, nightEnd), .05, .35);
+      }
+
+      function setThemeVars(model) {
+        var p = model.palette;
+        var vars = {
+          "--sky-top": p.skyTop,
+          "--sky-mid": p.skyMid,
+          "--ground": p.ground,
+          "--page-text": p.text,
+          "--muted-text": p.muted,
+          "--surface-rgb": rgbCsv(p.surface),
+          "--line-rgb": rgbCsv(p.line),
+          "--surface-alpha": String(clamp(.62 + (1 - model.light) * .18, .62, .84).toFixed(3)),
+          "--line-alpha": String(clamp(.13 + (1 - model.light) * .1, .13, .26).toFixed(3)),
+          "--shadow-alpha": String(clamp(.12 + (1 - model.light) * .28, .12, .42).toFixed(3)),
+          "--accent": p.accent
+        };
+
+        Object.keys(vars).forEach(function (name) {
+          if (activeVars[name] !== vars[name]) {
+            activeVars[name] = vars[name];
+            rootStyle.setProperty(name, vars[name]);
+          }
+        });
+      }
+
+      function applyTheme() {
+        setThemeVars(buildSolarModel(getThemeTime(), locationState));
+      }
+
+      function scheduleTheme() {
+        clearTimeout(themeTimer);
+        if (document.visibilityState === "hidden") {
+          return;
+        }
+        applyTheme();
+        if (debugTime) {
+          return;
+        }
+        themeTimer = setTimeout(scheduleTheme, 60000 - Date.now() % 60000);
+      }
+
+      function idle(callback) {
+        (window.requestIdleCallback || function (run) {
+          setTimeout(run, 1200);
+        })(callback);
+      }
+
+      applyTheme();
+
+      document.addEventListener("visibilitychange", scheduleTheme, { passive: true });
+      addEventListener("pageshow", scheduleTheme, { passive: true });
+      addEventListener("DOMContentLoaded", function () {
+        var report2026 = document.getElementById("r2026");
+        function updateReportVersion() {
+          var stamp = new Date();
+          var version = stamp.getFullYear() + String(stamp.getMonth() + 1).padStart(2, "0") + String(stamp.getDate()).padStart(2, "0");
+          report2026.href = "2026_Annual_Report.pdf?v=" + version;
+        }
+
+        if (report2026) {
+          updateReportVersion();
+          report2026.addEventListener("pointerdown", updateReportVersion, { passive: true });
+          report2026.addEventListener("focus", updateReportVersion, { passive: true });
+        }
+
+        idle(function () {
+          if (!navigator.geolocation || !navigator.permissions) {
+            return;
+          }
+          navigator.permissions.query({ name: "geolocation" }).then(function (permission) {
+            if (permission.state !== "granted") {
+              return;
+            }
+            navigator.geolocation.getCurrentPosition(function (position) {
+              locationState = {
+                lat: position.coords.latitude,
+                lon: position.coords.longitude,
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
+              };
+              scheduleTheme();
+            }, function () {}, {
+              enableHighAccuracy: false,
+              maximumAge: 30 * 60 * 1000,
+              timeout: 7000
+            });
+          }).catch(function () {});
+        });
+
+        idle(function () {
+          var script = document.createElement("script");
+          script.async = true;
+          script.src = "https://www.googletagmanager.com/gtag/js?id=G-VMYN05WBBT";
+          document.head.appendChild(script);
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () {
+            dataLayer.push(arguments);
+          };
+          window.gtag("js", new Date());
+          window.gtag("config", "G-VMYN05WBBT");
+        });
+      }, { once: true });
+    })();
+  </script>
+</head>
+<body>
+  <main class="app">
+    <div class="page">
+      <header class="masthead">
+        <h1>Annual Reports</h1>
+      </header>
+      <section class="reports" aria-label="Annual reports">
+        <a href="2019financialReport.pdf" target="_blank" rel="noopener" class="report-link">
+          <img class="report-cover" src="compressed/2019financialReport_cover.jpg" width="300" height="424" alt="2019 annual report cover" decoding="async" fetchpriority="high">
+          <span class="report-meta">
+            <span class="report-year">2019</span>
+            <span class="report-period">Jan 2019 - Mar 2020</span>
+          </span>
+        </a>
+        <a href="2020financialReport.pdf" target="_blank" rel="noopener" class="report-link">
+          <img class="report-cover" src="compressed/2020financialReport_cover.jpg" width="300" height="424" alt="2020 annual report cover" decoding="async" fetchpriority="high">
+          <span class="report-meta">
+            <span class="report-year">2020</span>
+            <span class="report-period">Mar 2020 - Jan 2021</span>
+          </span>
+        </a>
+        <a href="2021financialReport.pdf" target="_blank" rel="noopener" class="report-link">
+          <img class="report-cover" src="compressed/2021financialReport_cover.jpg" width="300" height="424" alt="2021 annual report cover" decoding="async" fetchpriority="high">
+          <span class="report-meta">
+            <span class="report-year">2021</span>
+            <span class="report-period">Jan 2021 - Feb 2022</span>
+          </span>
+        </a>
+        <a href="2022financialReport.pdf" target="_blank" rel="noopener" class="report-link">
+          <img class="report-cover" src="compressed/2022financialReport_cover.jpg" width="300" height="424" alt="2022 annual report cover" decoding="async" fetchpriority="high">
+          <span class="report-meta">
+            <span class="report-year">2022</span>
+            <span class="report-period">Feb 2022 - Jan 2023</span>
+          </span>
+        </a>
+        <a href="2023financialReport.pdf" target="_blank" rel="noopener" class="report-link">
+          <img class="report-cover" src="compressed/2023financialReport_cover.jpg" width="300" height="424" alt="2023 annual report cover" decoding="async" fetchpriority="high">
+          <span class="report-meta">
+            <span class="report-year">2023</span>
+            <span class="report-period">Jan 2023 - Feb 2024</span>
+          </span>
+        </a>
+        <a href="Rapport_financier_2024.pdf" target="_blank" rel="noopener" class="report-link">
+          <img class="report-cover" src="compressed/Rapport_financier_2024_couverture.jpg" width="300" height="424" alt="2024 annual report cover" loading="lazy" decoding="async">
+          <span class="report-meta">
+            <span class="report-year">2024</span>
+            <span class="report-period">Feb 2024 - Feb 2025</span>
+          </span>
+        </a>
+        <a href="2025_Annual_Report.pdf" target="_blank" rel="noopener" class="report-link">
+          <img class="report-cover" src="compressed/2025_Annual_Report_cover.jpg" width="300" height="424" alt="2025 annual report cover" loading="lazy" decoding="async">
+          <span class="report-meta">
+            <span class="report-year">2025</span>
+            <span class="report-period">Feb 2025 - Apr 2026</span>
+          </span>
+        </a>
+        <a id="r2026" href="2026_Annual_Report.pdf" target="_blank" rel="noopener" class="report-link">
+          <img class="report-cover" src="compressed/2026_Annual_Report_cover.jpg" width="300" height="424" alt="2026 annual report cover" loading="lazy" decoding="async">
+          <span class="report-meta">
+            <span class="report-year">2026</span>
+            <span class="report-period">Apr 2026 - Present</span>
+          </span>
+        </a>
+      </section>
+      <footer>
+        <p>&copy; Kertin. All rights reserved.</p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
