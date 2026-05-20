@@ -21,6 +21,20 @@
       --surface-alpha: .8;
       --line-alpha: .23;
       --accent: #8bd3ff;
+      --solar-rgb: 139, 211, 255;
+      --horizon-rgb: 198, 214, 238;
+      --counter-rgb: 139, 211, 255;
+      --glow-alpha: .07;
+      --glow-soft-alpha: .024;
+      --counter-alpha: .018;
+      --arc-alpha: .008;
+      --grain-alpha: .012;
+      --veil-alpha: .045;
+      --beam-alpha: .008;
+      --horizon-alpha: .05;
+      --vignette-alpha: .1;
+      --atmosphere-x: 50%;
+      --atmosphere-y: 112%;
       color-scheme: light dark;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 16px;
@@ -51,14 +65,49 @@
     }
 
     .app {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
       min-width: calc(var(--page-w) + (var(--edge) * 2));
       min-height: 100svh;
       display: grid;
       place-items: center;
       padding: var(--edge) 0;
       color: var(--page-text);
-      background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--ground) 100%);
+      background:
+        radial-gradient(60% 42% at calc(100% - var(--atmosphere-x)) 8%, rgba(var(--counter-rgb), var(--counter-alpha)) 0%, transparent 68%),
+        radial-gradient(100% 44% at 50% 58%, rgba(var(--horizon-rgb), var(--horizon-alpha)) 0%, transparent 68%),
+        radial-gradient(118% 82% at var(--atmosphere-x) var(--atmosphere-y), rgba(var(--solar-rgb), var(--glow-alpha)) 0%, rgba(var(--solar-rgb), var(--glow-soft-alpha)) 27%, transparent 62%),
+        linear-gradient(180deg, rgba(var(--horizon-rgb), var(--veil-alpha)) 0%, transparent 42%),
+        linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--ground) 100%);
       transition: background 900ms linear, color 700ms linear;
+    }
+
+    .app::before,
+    .app::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .app::before {
+      background:
+        radial-gradient(92% 72% at var(--atmosphere-x) var(--atmosphere-y), transparent 0 40%, rgba(var(--horizon-rgb), var(--arc-alpha)) 40.2%, transparent 41.6%),
+        radial-gradient(116% 78% at calc(100% - var(--atmosphere-x)) calc(100% - var(--atmosphere-y)), transparent 0 48%, rgba(var(--line-rgb), var(--arc-alpha)) 48.2%, transparent 49.4%),
+        linear-gradient(116deg, transparent 0 37%, rgba(var(--line-rgb), var(--beam-alpha)) 37.16%, transparent 37.72% 100%),
+        linear-gradient(64deg, transparent 0 61%, rgba(var(--horizon-rgb), var(--beam-alpha)) 61.16%, transparent 61.68% 100%);
+      opacity: .62;
+    }
+
+    .app::after {
+      background:
+        radial-gradient(120% 86% at 50% 100%, rgba(0, 0, 0, var(--vignette-alpha)) 0%, transparent 58%),
+        repeating-linear-gradient(102deg, rgba(var(--line-rgb), var(--grain-alpha)) 0 1px, transparent 1px 7px),
+        linear-gradient(180deg, transparent 0%, rgba(var(--horizon-rgb), var(--horizon-alpha)) 49%, transparent 72%);
+      mix-blend-mode: soft-light;
+      opacity: .72;
     }
 
     .page {
@@ -103,6 +152,11 @@
       outline: 3px solid color-mix(in srgb, var(--accent) 52%, transparent);
       outline-offset: 4px;
       border-radius: var(--radius);
+    }
+
+    .report-picture {
+      display: block;
+      min-width: 0;
     }
 
     .report-cover {
@@ -221,7 +275,10 @@
           muted: "#a8b4c5",
           surface: "#111a29",
           line: "#c6d6ee",
-          accent: "#8bd3ff"
+          accent: "#8bd3ff",
+          glow: "#8bd3ff",
+          horizon: "#233d62",
+          counter: "#162845"
         },
         dawn: {
           skyTop: "#607ea2",
@@ -231,7 +288,10 @@
           muted: "#5e6d78",
           surface: "#fff8ec",
           line: "#6d746c",
-          accent: "#d47442"
+          accent: "#d47442",
+          glow: "#ffd2a1",
+          horizon: "#fff0d5",
+          counter: "#7aa6bd"
         },
         day: {
           skyTop: "#89cef5",
@@ -241,7 +301,10 @@
           muted: "#586875",
           surface: "#ffffff",
           line: "#39515a",
-          accent: "#c56a3a"
+          accent: "#c56a3a",
+          glow: "#fff8d6",
+          horizon: "#ffffff",
+          counter: "#75bce4"
         },
         dusk: {
           skyTop: "#354965",
@@ -251,7 +314,10 @@
           muted: "#ccb1a6",
           surface: "#1a2431",
           line: "#f1ccb9",
-          accent: "#ffb36d"
+          accent: "#ffb36d",
+          glow: "#ffb36d",
+          horizon: "#ffd0bd",
+          counter: "#55637d"
         }
       };
 
@@ -407,9 +473,11 @@
         return clamp((now - start) / (end - start), 0, 1);
       }
 
-      function linearTheme(from, to, progress, fromLight, toLight) {
+      function linearTheme(from, to, progress, fromLight, toLight, fromX, toX, fromY, toY) {
         return {
           light: fromLight + (toLight - fromLight) * progress,
+          sunX: fromX + (toX - fromX) * progress,
+          sunY: fromY + (toY - fromY) * progress,
           palette: mixPalette(from, to, progress)
         };
       }
@@ -423,22 +491,23 @@
         if (isDay) {
           var noon = midpoint(today.sunrise, today.sunset);
           if (now < noon) {
-            return linearTheme(palettes.dawn, palettes.day, progressBetween(now, today.sunrise, noon), .35, 1);
+            return linearTheme(palettes.dawn, palettes.day, progressBetween(now, today.sunrise, noon), .35, 1, 22, 50, 62, 18);
           }
-          return linearTheme(palettes.day, palettes.dusk, progressBetween(now, noon, today.sunset), 1, .74);
+          return linearTheme(palettes.day, palettes.dusk, progressBetween(now, noon, today.sunset), 1, .74, 50, 78, 18, 64);
         }
 
         var nightStart = now < today.sunrise ? previous.sunset : today.sunset;
         var nightEnd = now < today.sunrise ? today.sunrise : next.sunrise;
         var nightMiddle = midpoint(nightStart, nightEnd);
         if (now < nightMiddle) {
-          return linearTheme(palettes.dusk, palettes.night, progressBetween(now, nightStart, nightMiddle), .74, .05);
+          return linearTheme(palettes.dusk, palettes.night, progressBetween(now, nightStart, nightMiddle), .74, .05, 78, 50, 64, 112);
         }
-        return linearTheme(palettes.night, palettes.dawn, progressBetween(now, nightMiddle, nightEnd), .05, .35);
+        return linearTheme(palettes.night, palettes.dawn, progressBetween(now, nightMiddle, nightEnd), .05, .35, 50, 22, 112, 62);
       }
 
       function setThemeVars(model) {
         var p = model.palette;
+        var glow = clamp(.045 + model.light * .235, .045, .28);
         var vars = {
           "--sky-top": p.skyTop,
           "--sky-mid": p.skyMid,
@@ -449,7 +518,21 @@
           "--line-rgb": rgbCsv(p.line),
           "--surface-alpha": String(clamp(.62 + (1 - model.light) * .18, .62, .84).toFixed(3)),
           "--line-alpha": String(clamp(.13 + (1 - model.light) * .1, .13, .26).toFixed(3)),
-          "--accent": p.accent
+          "--accent": p.accent,
+          "--solar-rgb": rgbCsv(p.glow),
+          "--horizon-rgb": rgbCsv(p.horizon),
+          "--counter-rgb": rgbCsv(p.counter),
+          "--glow-alpha": String(glow.toFixed(3)),
+          "--glow-soft-alpha": String((glow * .34).toFixed(3)),
+          "--counter-alpha": String(clamp(.018 + model.light * .047, .018, .065).toFixed(3)),
+          "--arc-alpha": String(clamp(.006 + model.light * .019, .006, .025).toFixed(3)),
+          "--grain-alpha": String(clamp(.006 + (1 - model.light) * .012, .006, .018).toFixed(3)),
+          "--veil-alpha": String(clamp(.04 + model.light * .14, .04, .18).toFixed(3)),
+          "--beam-alpha": String(clamp(.006 + model.light * .017, .006, .023).toFixed(3)),
+          "--horizon-alpha": String(clamp(.05 + model.light * .11, .05, .16).toFixed(3)),
+          "--vignette-alpha": String(clamp(.045 + (1 - model.light) * .09, .045, .135).toFixed(3)),
+          "--atmosphere-x": model.sunX.toFixed(2) + "%",
+          "--atmosphere-y": model.sunY.toFixed(2) + "%"
         };
 
         Object.keys(vars).forEach(function (name) {
@@ -547,56 +630,80 @@
       </header>
       <section class="reports" aria-label="Annual reports">
         <a href="2019financialReport.pdf" target="_blank" rel="noopener" class="report-link">
-          <img class="report-cover" src="compressed/2019financialReport_cover.jpg" width="300" height="424" alt="2019 annual report cover" decoding="async" fetchpriority="high">
+          <picture class="report-picture">
+            <source srcset="compressed/2019financialReport_cover.webp" type="image/webp">
+            <img class="report-cover" src="compressed/2019financialReport_cover.jpg" width="300" height="424" alt="2019 annual report cover" decoding="async" fetchpriority="high">
+          </picture>
           <span class="report-meta">
             <span class="report-year">2019</span>
             <span class="report-period">Jan 2019 - Mar 2020</span>
           </span>
         </a>
         <a href="2020financialReport.pdf" target="_blank" rel="noopener" class="report-link">
-          <img class="report-cover" src="compressed/2020financialReport_cover.jpg" width="300" height="424" alt="2020 annual report cover" decoding="async" fetchpriority="high">
+          <picture class="report-picture">
+            <source srcset="compressed/2020financialReport_cover.webp" type="image/webp">
+            <img class="report-cover" src="compressed/2020financialReport_cover.jpg" width="300" height="424" alt="2020 annual report cover" decoding="async" fetchpriority="high">
+          </picture>
           <span class="report-meta">
             <span class="report-year">2020</span>
             <span class="report-period">Mar 2020 - Jan 2021</span>
           </span>
         </a>
         <a href="2021financialReport.pdf" target="_blank" rel="noopener" class="report-link">
-          <img class="report-cover" src="compressed/2021financialReport_cover.jpg" width="300" height="424" alt="2021 annual report cover" decoding="async" fetchpriority="high">
+          <picture class="report-picture">
+            <source srcset="compressed/2021financialReport_cover.webp" type="image/webp">
+            <img class="report-cover" src="compressed/2021financialReport_cover.jpg" width="300" height="424" alt="2021 annual report cover" decoding="async" fetchpriority="high">
+          </picture>
           <span class="report-meta">
             <span class="report-year">2021</span>
             <span class="report-period">Jan 2021 - Feb 2022</span>
           </span>
         </a>
         <a href="2022financialReport.pdf" target="_blank" rel="noopener" class="report-link">
-          <img class="report-cover" src="compressed/2022financialReport_cover.jpg" width="300" height="424" alt="2022 annual report cover" decoding="async" fetchpriority="high">
+          <picture class="report-picture">
+            <source srcset="compressed/2022financialReport_cover.webp" type="image/webp">
+            <img class="report-cover" src="compressed/2022financialReport_cover.jpg" width="300" height="424" alt="2022 annual report cover" decoding="async" fetchpriority="high">
+          </picture>
           <span class="report-meta">
             <span class="report-year">2022</span>
             <span class="report-period">Feb 2022 - Jan 2023</span>
           </span>
         </a>
         <a href="2023financialReport.pdf" target="_blank" rel="noopener" class="report-link">
-          <img class="report-cover" src="compressed/2023financialReport_cover.jpg" width="300" height="424" alt="2023 annual report cover" decoding="async" fetchpriority="high">
+          <picture class="report-picture">
+            <source srcset="compressed/2023financialReport_cover.webp" type="image/webp">
+            <img class="report-cover" src="compressed/2023financialReport_cover.jpg" width="300" height="424" alt="2023 annual report cover" decoding="async" fetchpriority="high">
+          </picture>
           <span class="report-meta">
             <span class="report-year">2023</span>
             <span class="report-period">Jan 2023 - Feb 2024</span>
           </span>
         </a>
         <a href="Rapport_financier_2024.pdf" target="_blank" rel="noopener" class="report-link">
-          <img class="report-cover" src="compressed/Rapport_financier_2024_couverture.jpg" width="300" height="424" alt="2024 annual report cover" loading="lazy" decoding="async">
+          <picture class="report-picture">
+            <source srcset="compressed/Rapport_financier_2024_couverture.webp" type="image/webp">
+            <img class="report-cover" src="compressed/Rapport_financier_2024_couverture.jpg" width="300" height="424" alt="2024 annual report cover" loading="lazy" decoding="async">
+          </picture>
           <span class="report-meta">
             <span class="report-year">2024</span>
             <span class="report-period">Feb 2024 - Feb 2025</span>
           </span>
         </a>
         <a href="2025_Annual_Report.pdf" target="_blank" rel="noopener" class="report-link">
-          <img class="report-cover" src="compressed/2025_Annual_Report_cover.jpg" width="300" height="424" alt="2025 annual report cover" loading="lazy" decoding="async">
+          <picture class="report-picture">
+            <source srcset="compressed/2025_Annual_Report_cover.webp" type="image/webp">
+            <img class="report-cover" src="compressed/2025_Annual_Report_cover.jpg" width="300" height="424" alt="2025 annual report cover" loading="lazy" decoding="async">
+          </picture>
           <span class="report-meta">
             <span class="report-year">2025</span>
             <span class="report-period">Feb 2025 - Apr 2026</span>
           </span>
         </a>
         <a id="r2026" href="2026_Annual_Report.pdf" target="_blank" rel="noopener" class="report-link">
-          <img class="report-cover" src="compressed/2026_Annual_Report_cover.jpg" width="300" height="424" alt="2026 annual report cover" loading="lazy" decoding="async">
+          <picture class="report-picture">
+            <source srcset="compressed/2026_Annual_Report_cover.webp" type="image/webp">
+            <img class="report-cover" src="compressed/2026_Annual_Report_cover.jpg" width="300" height="424" alt="2026 annual report cover" loading="lazy" decoding="async">
+          </picture>
           <span class="report-meta">
             <span class="report-year">2026</span>
             <span class="report-period">Apr 2026 - Present</span>
