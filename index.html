@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Annual Reports">
+  <meta name="theme-color" content="#060815">
   <title>Financial Reports</title>
   <link rel="icon" href="favicon.ico">
   <style>
@@ -68,10 +69,23 @@
     }
 
     body {
+      position: relative;
       min-height: 100%;
       min-height: 100dvh;
       margin: 0;
       overflow-x: auto;
+      background: var(--atmosphere-background);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
       background: var(--atmosphere-background);
     }
 
@@ -83,6 +97,7 @@
     .app {
       position: relative;
       isolation: isolate;
+      z-index: 1;
       overflow: hidden;
       min-width: calc(var(--page-w) + (var(--edge) * 2));
       min-height: 100vh;
@@ -273,6 +288,7 @@
       var J2000 = 2451545;
       var e = rad * 23.4397;
       var rootStyle = document.documentElement.style;
+      var themeMeta = document.querySelector('meta[name="theme-color"]');
       var activeVars = {};
       var debugTime = parseDebugTime();
       var locationState = {
@@ -567,6 +583,10 @@
           "--moon-x": model.moonX.toFixed(2) + "%",
           "--moon-y": model.moonY.toFixed(2) + "%"
         };
+
+        if (themeMeta && themeMeta.content !== p.skyTop) {
+          themeMeta.content = p.skyTop;
+        }
 
         Object.keys(vars).forEach(function (name) {
           if (activeVars[name] !== vars[name]) {
