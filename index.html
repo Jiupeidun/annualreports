@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Annual Reports">
   <title>Financial Reports</title>
   <link rel="icon" href="favicon.ico">
@@ -22,10 +22,14 @@
       --line-alpha: .23;
       --accent: #8bd3ff;
       --solar-rgb: 139, 211, 255;
+      --moon-rgb: 205, 224, 255;
       --horizon-rgb: 198, 214, 238;
       --counter-rgb: 139, 211, 255;
       --glow-alpha: .07;
       --glow-soft-alpha: .024;
+      --sun-disc-alpha: 0;
+      --moon-disc-alpha: .1;
+      --moon-halo-alpha: .035;
       --counter-alpha: .018;
       --arc-alpha: .008;
       --grain-alpha: .012;
@@ -35,6 +39,17 @@
       --vignette-alpha: .1;
       --atmosphere-x: 50%;
       --atmosphere-y: 112%;
+      --moon-x: 50%;
+      --moon-y: 8%;
+      --atmosphere-background:
+        radial-gradient(circle at var(--atmosphere-x) var(--atmosphere-y), rgba(255, 249, 214, var(--sun-disc-alpha)) 0 1.8%, transparent 4.4%),
+        radial-gradient(circle at var(--moon-x) var(--moon-y), rgba(var(--moon-rgb), var(--moon-disc-alpha)) 0 1.35%, transparent 3.4%),
+        radial-gradient(34% 24% at var(--moon-x) var(--moon-y), rgba(var(--moon-rgb), var(--moon-halo-alpha)) 0%, transparent 72%),
+        radial-gradient(60% 42% at calc(100% - var(--atmosphere-x)) 8%, rgba(var(--counter-rgb), var(--counter-alpha)) 0%, transparent 68%),
+        radial-gradient(100% 44% at 50% 58%, rgba(var(--horizon-rgb), var(--horizon-alpha)) 0%, transparent 68%),
+        radial-gradient(118% 82% at var(--atmosphere-x) var(--atmosphere-y), rgba(var(--solar-rgb), var(--glow-alpha)) 0%, rgba(var(--solar-rgb), var(--glow-soft-alpha)) 27%, transparent 62%),
+        linear-gradient(180deg, rgba(var(--horizon-rgb), var(--veil-alpha)) 0%, transparent 42%),
+        linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--ground) 100%);
       color-scheme: light dark;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 16px;
@@ -49,14 +64,15 @@
 
     html {
       min-height: 100%;
-      background: var(--ground);
+      background: var(--atmosphere-background);
     }
 
     body {
       min-height: 100%;
+      min-height: 100dvh;
       margin: 0;
       overflow-x: auto;
-      background: var(--ground);
+      background: var(--atmosphere-background);
     }
 
     a {
@@ -69,17 +85,14 @@
       isolation: isolate;
       overflow: hidden;
       min-width: calc(var(--page-w) + (var(--edge) * 2));
+      min-height: 100vh;
       min-height: 100svh;
+      min-height: 100dvh;
       display: grid;
       place-items: center;
-      padding: var(--edge) 0;
+      padding: calc(var(--edge) + env(safe-area-inset-top, 0px)) 0 calc(var(--edge) + env(safe-area-inset-bottom, 0px));
       color: var(--page-text);
-      background:
-        radial-gradient(60% 42% at calc(100% - var(--atmosphere-x)) 8%, rgba(var(--counter-rgb), var(--counter-alpha)) 0%, transparent 68%),
-        radial-gradient(100% 44% at 50% 58%, rgba(var(--horizon-rgb), var(--horizon-alpha)) 0%, transparent 68%),
-        radial-gradient(118% 82% at var(--atmosphere-x) var(--atmosphere-y), rgba(var(--solar-rgb), var(--glow-alpha)) 0%, rgba(var(--solar-rgb), var(--glow-soft-alpha)) 27%, transparent 62%),
-        linear-gradient(180deg, rgba(var(--horizon-rgb), var(--veil-alpha)) 0%, transparent 42%),
-        linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--ground) 100%);
+      background: var(--atmosphere-background);
       transition: background 900ms linear, color 700ms linear;
     }
 
@@ -223,8 +236,10 @@
 
       .app {
         min-width: 0;
+        min-height: 100vh;
         min-height: 100svh;
-        padding: 28px 0;
+        min-height: 100dvh;
+        padding: calc(28px + env(safe-area-inset-top, 0px)) 0 calc(28px + env(safe-area-inset-bottom, 0px));
       }
 
       .page {
@@ -276,7 +291,8 @@
           surface: "#111a29",
           line: "#c6d6ee",
           accent: "#8bd3ff",
-          glow: "#8bd3ff",
+          glow: "#d4e4ff",
+          moon: "#d7e6ff",
           horizon: "#233d62",
           counter: "#162845"
         },
@@ -289,7 +305,8 @@
           surface: "#fff8ec",
           line: "#6d746c",
           accent: "#d47442",
-          glow: "#ffd2a1",
+          glow: "#ffd69a",
+          moon: "#e6efff",
           horizon: "#fff0d5",
           counter: "#7aa6bd"
         },
@@ -302,7 +319,8 @@
           surface: "#ffffff",
           line: "#39515a",
           accent: "#c56a3a",
-          glow: "#fff8d6",
+          glow: "#fff1b8",
+          moon: "#eef5ff",
           horizon: "#ffffff",
           counter: "#75bce4"
         },
@@ -315,7 +333,8 @@
           surface: "#1a2431",
           line: "#f1ccb9",
           accent: "#ffb36d",
-          glow: "#ffb36d",
+          glow: "#ffbf7a",
+          moon: "#dce8ff",
           horizon: "#ffd0bd",
           counter: "#55637d"
         }
@@ -482,6 +501,12 @@
         };
       }
 
+      function withMoon(model) {
+        model.moonX = 100 - model.sunX;
+        model.moonY = clamp(112 - model.sunY, 8, 70);
+        return model;
+      }
+
       function buildSolarModel(now, location) {
         var today = getTimesForZonedDate(now, location, 0);
         var previous = getTimesForZonedDate(now, location, -1);
@@ -491,23 +516,25 @@
         if (isDay) {
           var noon = midpoint(today.sunrise, today.sunset);
           if (now < noon) {
-            return linearTheme(palettes.dawn, palettes.day, progressBetween(now, today.sunrise, noon), .35, 1, 22, 50, 62, 18);
+            return withMoon(linearTheme(palettes.dawn, palettes.day, progressBetween(now, today.sunrise, noon), .35, 1, 22, 50, 62, 18));
           }
-          return linearTheme(palettes.day, palettes.dusk, progressBetween(now, noon, today.sunset), 1, .74, 50, 78, 18, 64);
+          return withMoon(linearTheme(palettes.day, palettes.dusk, progressBetween(now, noon, today.sunset), 1, .74, 50, 78, 18, 64));
         }
 
         var nightStart = now < today.sunrise ? previous.sunset : today.sunset;
         var nightEnd = now < today.sunrise ? today.sunrise : next.sunrise;
         var nightMiddle = midpoint(nightStart, nightEnd);
         if (now < nightMiddle) {
-          return linearTheme(palettes.dusk, palettes.night, progressBetween(now, nightStart, nightMiddle), .74, .05, 78, 50, 64, 112);
+          return withMoon(linearTheme(palettes.dusk, palettes.night, progressBetween(now, nightStart, nightMiddle), .74, .05, 78, 50, 64, 112));
         }
-        return linearTheme(palettes.night, palettes.dawn, progressBetween(now, nightMiddle, nightEnd), .05, .35, 50, 22, 112, 62);
+        return withMoon(linearTheme(palettes.night, palettes.dawn, progressBetween(now, nightMiddle, nightEnd), .05, .35, 50, 22, 112, 62));
       }
 
       function setThemeVars(model) {
         var p = model.palette;
         var glow = clamp(.045 + model.light * .235, .045, .28);
+        var sunStrength = clamp((model.light - .28) / .72, 0, 1);
+        var moonStrength = clamp((.42 - model.light) / .42, 0, 1);
         var vars = {
           "--sky-top": p.skyTop,
           "--sky-mid": p.skyMid,
@@ -520,10 +547,14 @@
           "--line-alpha": String(clamp(.13 + (1 - model.light) * .1, .13, .26).toFixed(3)),
           "--accent": p.accent,
           "--solar-rgb": rgbCsv(p.glow),
+          "--moon-rgb": rgbCsv(p.moon),
           "--horizon-rgb": rgbCsv(p.horizon),
           "--counter-rgb": rgbCsv(p.counter),
-          "--glow-alpha": String(glow.toFixed(3)),
-          "--glow-soft-alpha": String((glow * .34).toFixed(3)),
+          "--glow-alpha": String((glow + sunStrength * .045 + moonStrength * .025).toFixed(3)),
+          "--glow-soft-alpha": String((glow * .34 + sunStrength * .018 + moonStrength * .022).toFixed(3)),
+          "--sun-disc-alpha": String((sunStrength * .18).toFixed(3)),
+          "--moon-disc-alpha": String((moonStrength * .22).toFixed(3)),
+          "--moon-halo-alpha": String((moonStrength * .115).toFixed(3)),
           "--counter-alpha": String(clamp(.018 + model.light * .047, .018, .065).toFixed(3)),
           "--arc-alpha": String(clamp(.006 + model.light * .019, .006, .025).toFixed(3)),
           "--grain-alpha": String(clamp(.006 + (1 - model.light) * .012, .006, .018).toFixed(3)),
@@ -532,7 +563,9 @@
           "--horizon-alpha": String(clamp(.05 + model.light * .11, .05, .16).toFixed(3)),
           "--vignette-alpha": String(clamp(.045 + (1 - model.light) * .09, .045, .135).toFixed(3)),
           "--atmosphere-x": model.sunX.toFixed(2) + "%",
-          "--atmosphere-y": model.sunY.toFixed(2) + "%"
+          "--atmosphere-y": model.sunY.toFixed(2) + "%",
+          "--moon-x": model.moonX.toFixed(2) + "%",
+          "--moon-y": model.moonY.toFixed(2) + "%"
         };
 
         Object.keys(vars).forEach(function (name) {
