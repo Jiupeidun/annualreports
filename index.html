@@ -28,25 +28,31 @@
       --surface-alpha: .8;
       --line-alpha: .23;
       --accent: #8bd3ff;
-      --ambient-rgb: 77, 85, 104;
-      --mist-rgb: 185, 196, 214;
-      --sheen-rgb: 120, 163, 200;
-      --fluid-a-rgb: 97, 114, 216;
-      --fluid-b-rgb: 37, 184, 165;
-      --fluid-c-rgb: 192, 106, 134;
-      --fluid-a-alpha: .145;
-      --fluid-a-soft-alpha: .045;
-      --fluid-b-alpha: .13;
-      --fluid-b-soft-alpha: .04;
-      --fluid-c-alpha: .12;
-      --fluid-c-soft-alpha: .038;
-      --mist-alpha: .022;
-      --sheen-alpha: .03;
-      --horizon-alpha: .07;
-      --grain-alpha: .012;
-      --vignette-alpha: .1;
-      --glow-layer-opacity: .46;
-      --texture-layer-opacity: .58;
+      --ambient-rgb: 8, 16, 40;
+      --mist-rgb: 122, 191, 255;
+      --sheen-rgb: 244, 112, 255;
+      --energy-rgb: 146, 85, 255;
+      --energy-core-rgb: 58, 224, 255;
+      --fluid-a-rgb: 74, 47, 255;
+      --fluid-b-rgb: 255, 70, 204;
+      --fluid-c-rgb: 0, 207, 232;
+      --fluid-a-alpha: .36;
+      --fluid-a-soft-alpha: .14;
+      --fluid-b-alpha: .34;
+      --fluid-b-soft-alpha: .13;
+      --fluid-c-alpha: .3;
+      --fluid-c-soft-alpha: .12;
+      --energy-alpha: .14;
+      --energy-soft-alpha: .08;
+      --ridge-alpha: .24;
+      --ridge-soft-alpha: .12;
+      --ridge-glow-alpha: .18;
+      --mist-alpha: .05;
+      --sheen-alpha: .08;
+      --horizon-alpha: .12;
+      --vignette-alpha: .12;
+      --glow-layer-opacity: .48;
+      --texture-layer-opacity: .18;
       --fluid-a-x: 18%;
       --fluid-a-y: 24%;
       --fluid-b-x: 78%;
@@ -54,12 +60,15 @@
       --fluid-c-x: 50%;
       --fluid-c-y: 76%;
       --atmosphere-background:
-        radial-gradient(115% 72% at 50% 112%, rgba(var(--ambient-rgb), var(--horizon-alpha)) 0%, transparent 66%),
-        radial-gradient(90% 66% at var(--fluid-a-x) var(--fluid-a-y), rgba(var(--fluid-a-rgb), var(--fluid-a-alpha)) 0%, rgba(var(--fluid-a-rgb), var(--fluid-a-soft-alpha)) 42%, transparent 78%),
-        radial-gradient(78% 62% at var(--fluid-b-x) var(--fluid-b-y), rgba(var(--fluid-b-rgb), var(--fluid-b-alpha)) 0%, rgba(var(--fluid-b-rgb), var(--fluid-b-soft-alpha)) 46%, transparent 82%),
-        radial-gradient(96% 70% at var(--fluid-c-x) var(--fluid-c-y), rgba(var(--fluid-c-rgb), var(--fluid-c-alpha)) 0%, rgba(var(--fluid-c-rgb), var(--fluid-c-soft-alpha)) 44%, transparent 80%),
-        linear-gradient(126deg, rgba(var(--sheen-rgb), var(--sheen-alpha)) 0%, transparent 44%),
-        linear-gradient(180deg, rgba(var(--mist-rgb), var(--mist-alpha)) 0%, transparent 38%),
+        radial-gradient(82% 72% at 8% 10%, rgba(var(--mist-rgb), var(--mist-alpha)) 0%, transparent 62%),
+        radial-gradient(112% 148% at 84% -22%, transparent 0 27%, rgba(var(--energy-core-rgb), var(--ridge-glow-alpha)) 34%, rgba(var(--energy-rgb), var(--ridge-alpha)) 42%, rgba(var(--fluid-b-rgb), var(--ridge-soft-alpha)) 53%, transparent 70%),
+        radial-gradient(124% 138% at 84% -18%, transparent 0 22%, rgba(var(--energy-core-rgb), var(--energy-alpha)) 34%, rgba(var(--energy-rgb), var(--energy-soft-alpha)) 48%, rgba(var(--fluid-b-rgb), var(--fluid-b-soft-alpha)) 60%, transparent 76%),
+        radial-gradient(108% 118% at 96% -8%, rgba(var(--mist-rgb), var(--mist-alpha)) 0%, rgba(var(--fluid-a-rgb), var(--fluid-a-soft-alpha)) 34%, transparent 66%),
+        radial-gradient(96% 86% at -8% 30%, rgba(var(--fluid-b-rgb), var(--fluid-b-alpha)) 0%, rgba(var(--fluid-b-rgb), var(--fluid-b-soft-alpha)) 40%, transparent 70%),
+        radial-gradient(110% 84% at 102% 42%, rgba(var(--fluid-a-rgb), var(--fluid-a-alpha)) 0%, rgba(var(--fluid-a-rgb), var(--fluid-a-soft-alpha)) 44%, transparent 76%),
+        radial-gradient(112% 86% at var(--fluid-c-x) var(--fluid-c-y), rgba(var(--fluid-c-rgb), var(--fluid-c-alpha)) 0%, rgba(var(--fluid-c-rgb), var(--fluid-c-soft-alpha)) 45%, transparent 78%),
+        radial-gradient(116% 148% at 64% 118%, transparent 0 20%, rgba(var(--fluid-c-rgb), var(--energy-soft-alpha)) 34%, rgba(var(--energy-rgb), var(--energy-soft-alpha)) 48%, transparent 70%),
+        radial-gradient(130% 86% at 50% 112%, rgba(var(--ambient-rgb), var(--horizon-alpha)) 0%, transparent 70%),
         linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--ground) 100%);
       color-scheme: light dark;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -133,22 +142,24 @@
     }
 
     .app::before {
-      inset: -12%;
+      inset: -14%;
       background:
-        radial-gradient(96% 74% at var(--fluid-a-x) var(--fluid-a-y), rgba(var(--fluid-a-rgb), var(--fluid-a-soft-alpha)) 0%, transparent 72%),
-        radial-gradient(88% 70% at var(--fluid-b-x) var(--fluid-b-y), rgba(var(--fluid-b-rgb), var(--fluid-b-soft-alpha)) 0%, transparent 74%),
-        radial-gradient(112% 78% at var(--fluid-c-x) var(--fluid-c-y), rgba(var(--fluid-c-rgb), var(--fluid-c-soft-alpha)) 0%, transparent 76%);
-      filter: blur(48px) saturate(1.08);
+        radial-gradient(110% 144% at 84% -20%, transparent 0 29%, rgba(var(--energy-core-rgb), var(--ridge-glow-alpha)) 36%, rgba(var(--energy-rgb), var(--ridge-soft-alpha)) 48%, transparent 66%),
+        radial-gradient(118% 132% at 84% -16%, transparent 0 25%, rgba(var(--energy-core-rgb), var(--energy-alpha)) 38%, rgba(var(--energy-rgb), var(--energy-soft-alpha)) 52%, rgba(var(--fluid-c-rgb), var(--energy-soft-alpha)) 64%, transparent 78%),
+        radial-gradient(88% 70% at var(--fluid-a-x) var(--fluid-a-y), rgba(var(--fluid-a-rgb), var(--fluid-a-soft-alpha)) 0%, transparent 70%),
+        radial-gradient(92% 74% at var(--fluid-b-x) var(--fluid-b-y), rgba(var(--fluid-b-rgb), var(--fluid-b-soft-alpha)) 0%, transparent 72%),
+        radial-gradient(98% 76% at var(--fluid-c-x) var(--fluid-c-y), rgba(var(--fluid-c-rgb), var(--fluid-c-soft-alpha)) 0%, transparent 74%);
+      filter: blur(18px) saturate(1.22);
       mix-blend-mode: screen;
       opacity: var(--glow-layer-opacity);
-      transform: translateZ(0) scale(1.03);
+      transform: translate3d(0, 0, 0) scale(1.02);
     }
 
     .app::after {
       background:
         radial-gradient(130% 88% at 50% 112%, rgba(0, 0, 0, var(--vignette-alpha)) 0%, transparent 62%),
-        linear-gradient(180deg, rgba(var(--mist-rgb), var(--mist-alpha)) 0%, transparent 40%),
-        repeating-linear-gradient(104deg, rgba(var(--mist-rgb), var(--grain-alpha)) 0 1px, transparent 1px 8px);
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
+      background-size: auto, 220px 220px;
       mix-blend-mode: soft-light;
       opacity: var(--texture-layer-opacity);
     }
@@ -337,72 +348,80 @@
       var themeTimer = 0;
       var palettes = {
         night: {
-          skyBase: "#070913",
-          skyTop: "#070913",
-          skyMid: "#171d2b",
-          ground: "#090b10",
+          skyBase: "#05040b",
+          skyTop: "#080612",
+          skyMid: "#181151",
+          ground: "#06040b",
           text: "#f4f7fb",
           muted: "#a8b4c5",
           surface: "#11161f",
           line: "#cad4e8",
-          accent: "#8bd7cf",
-          ambient: "#4d5568",
-          mist: "#b9c4d6",
-          sheen: "#78a3c8",
-          fluidA: "#6172d8",
-          fluidB: "#25b8a5",
-          fluidC: "#c06a86"
+          accent: "#a58cff",
+          ambient: "#170a2d",
+          mist: "#b6a7ff",
+          sheen: "#ff72dc",
+          energy: "#873cff",
+          energyCore: "#39d6ff",
+          fluidA: "#3018d8",
+          fluidB: "#ff4bc8",
+          fluidC: "#060817"
         },
         dawn: {
-          skyBase: "#eef2ef",
-          skyTop: "#8399b2",
-          skyMid: "#e5b89d",
-          ground: "#eef0e4",
+          skyBase: "#f8fbff",
+          skyTop: "#fff8fb",
+          skyMid: "#ffd7e9",
+          ground: "#e6f8ff",
           text: "#22313a",
           muted: "#66727a",
           surface: "#fff8ee",
           line: "#69776f",
-          accent: "#d5714a",
-          ambient: "#efc9b6",
-          mist: "#fff7e9",
-          sheen: "#cde9e6",
-          fluidA: "#83b8d9",
-          fluidB: "#f0a073",
-          fluidC: "#b69ee7"
+          accent: "#eb245b",
+          ambient: "#ffe8ef",
+          mist: "#ffffff",
+          sheen: "#f7b4ff",
+          energy: "#ff357e",
+          energyCore: "#fff4df",
+          fluidA: "#ff174a",
+          fluidB: "#df3aff",
+          fluidC: "#9de9ff"
         },
         day: {
-          skyBase: "#f4f8f7",
-          skyTop: "#9fd6eb",
-          skyMid: "#f4fbff",
-          ground: "#e9f0e7",
+          skyBase: "#f9fcff",
+          skyTop: "#fff9fb",
+          skyMid: "#ffe1ed",
+          ground: "#e7f8ff",
           text: "#1f3038",
           muted: "#586a73",
           surface: "#ffffff",
           line: "#40575e",
-          accent: "#c56a3a",
-          ambient: "#dcefe5",
+          accent: "#e91e63",
+          ambient: "#ffedf3",
           mist: "#ffffff",
-          sheen: "#d4f1f2",
-          fluidA: "#70c7db",
-          fluidB: "#88d5af",
-          fluidC: "#ee9a72"
+          sheen: "#ffb7ef",
+          energy: "#ff2f72",
+          energyCore: "#fff1dd",
+          fluidA: "#ff003d",
+          fluidB: "#d92aff",
+          fluidC: "#9eeeff"
         },
         dusk: {
-          skyBase: "#1b202a",
-          skyTop: "#425067",
-          skyMid: "#b27070",
-          ground: "#171b20",
+          skyBase: "#0c0713",
+          skyTop: "#140b24",
+          skyMid: "#28176b",
+          ground: "#07050d",
           text: "#fff5ec",
           muted: "#cfb8ad",
           surface: "#1b222b",
           line: "#f0c5b8",
-          accent: "#ffb06a",
-          ambient: "#9e5f72",
-          mist: "#ffd9cb",
-          sheen: "#d7b1e6",
-          fluidA: "#7f89d6",
-          fluidB: "#ed8f70",
-          fluidC: "#4ec1b4"
+          accent: "#d996ff",
+          ambient: "#261136",
+          mist: "#d0b4ff",
+          sheen: "#ff8ddb",
+          energy: "#b84dff",
+          energyCore: "#ffd1ec",
+          fluidA: "#4825f0",
+          fluidB: "#e148d5",
+          fluidC: "#090a18"
         }
       };
 
@@ -640,22 +659,25 @@
           "--ambient-rgb": rgbCsv(p.ambient),
           "--mist-rgb": rgbCsv(p.mist),
           "--sheen-rgb": rgbCsv(p.sheen),
+          "--energy-rgb": rgbCsv(p.energy),
+          "--energy-core-rgb": rgbCsv(p.energyCore),
           "--fluid-a-rgb": rgbCsv(p.fluidA),
           "--fluid-b-rgb": rgbCsv(p.fluidB),
           "--fluid-c-rgb": rgbCsv(p.fluidC),
-          "--fluid-a-alpha": String(clamp(.115 + model.light * .075, .115, .19).toFixed(3)),
-          "--fluid-a-soft-alpha": String(clamp(.038 + model.light * .032, .038, .07).toFixed(3)),
-          "--fluid-b-alpha": String(clamp(.105 + model.light * .065, .105, .17).toFixed(3)),
-          "--fluid-b-soft-alpha": String(clamp(.034 + model.light * .03, .034, .064).toFixed(3)),
-          "--fluid-c-alpha": String(clamp(.1 + model.light * .055, .1, .155).toFixed(3)),
-          "--fluid-c-soft-alpha": String(clamp(.032 + model.light * .026, .032, .058).toFixed(3)),
-          "--mist-alpha": String(clamp(.018 + model.light * .04, .018, .058).toFixed(3)),
-          "--sheen-alpha": String(clamp(.02 + model.light * .055, .02, .075).toFixed(3)),
-          "--horizon-alpha": String(clamp(.06 + model.light * .08, .06, .14).toFixed(3)),
-          "--grain-alpha": String(clamp(.006 + (1 - model.light) * .012, .006, .018).toFixed(3)),
+          "--fluid-a-alpha": String(clamp(.3 + model.light * .22, .3, .52).toFixed(3)),
+          "--fluid-a-soft-alpha": String(clamp(.1 + model.light * .09, .1, .19).toFixed(3)),
+          "--fluid-b-alpha": String(clamp(.28 + model.light * .21, .28, .49).toFixed(3)),
+          "--fluid-b-soft-alpha": String(clamp(.095 + model.light * .085, .095, .18).toFixed(3)),
+          "--fluid-c-alpha": String(clamp(.24 + model.light * .18, .24, .42).toFixed(3)),
+          "--fluid-c-soft-alpha": String(clamp(.085 + model.light * .075, .085, .16).toFixed(3)),
+          "--energy-alpha": String(clamp(.105 + model.light * .095, .105, .2).toFixed(3)),
+          "--energy-soft-alpha": String(clamp(.055 + model.light * .055, .055, .11).toFixed(3)),
+          "--mist-alpha": String(clamp(.035 + model.light * .085, .035, .12).toFixed(3)),
+          "--sheen-alpha": String(clamp(.055 + model.light * .075, .055, .13).toFixed(3)),
+          "--horizon-alpha": String(clamp(.09 + model.light * .1, .09, .19).toFixed(3)),
           "--vignette-alpha": String(clamp(.035 + (1 - model.light) * .095, .035, .13).toFixed(3)),
-          "--glow-layer-opacity": String(clamp(.34 + model.light * .26, .34, .6).toFixed(3)),
-          "--texture-layer-opacity": String(clamp(.44 + (1 - model.light) * .22, .44, .66).toFixed(3)),
+          "--glow-layer-opacity": String(clamp(.38 + model.light * .16, .38, .54).toFixed(3)),
+          "--texture-layer-opacity": String(clamp(.12 + (1 - model.light) * .08, .12, .2).toFixed(3)),
           "--fluid-a-x": model.fluidAX.toFixed(2) + "%",
           "--fluid-a-y": model.fluidAY.toFixed(2) + "%",
           "--fluid-b-x": model.fluidBX.toFixed(2) + "%",
