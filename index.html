@@ -110,14 +110,15 @@
     body::before {
       content: "";
       position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
+      inset: 0;
       z-index: 0;
       pointer-events: none;
       background: var(--atmosphere-background);
+      filter: saturate(1) brightness(1);
+      opacity: .92;
       transition: background 900ms linear;
+      animation: background-breathe 4.2s ease-in-out infinite;
+      will-change: filter, opacity;
     }
 
     a {
@@ -163,6 +164,8 @@
       mix-blend-mode: screen;
       opacity: var(--glow-layer-opacity);
       transform: translate3d(0, 0, 0) scale(1.02);
+      animation: glow-breathe 4.2s ease-in-out infinite;
+      will-change: filter, opacity;
     }
 
     .app::after {
@@ -192,6 +195,59 @@
         radial-gradient(32% 26% at var(--red-block-x) var(--red-block-y), rgba(var(--red-block-rgb), var(--red-block-alpha)) 0%, rgba(var(--red-block-rgb), var(--red-block-soft-alpha)) 40%, transparent 74%);
       filter: blur(10px) saturate(1.18);
       transition: background 900ms linear;
+      animation: block-breathe 4.2s ease-in-out infinite;
+      will-change: filter, opacity;
+    }
+
+    @keyframes background-breathe {
+      0% {
+        filter: saturate(.96) brightness(.96);
+        opacity: .86;
+      }
+
+      50% {
+        filter: saturate(1.2) brightness(1.08);
+        opacity: 1;
+      }
+
+      100% {
+        filter: saturate(.96) brightness(.96);
+        opacity: .86;
+      }
+    }
+
+    @keyframes glow-breathe {
+      0% {
+        filter: blur(18px) saturate(1.02) brightness(.9);
+        opacity: calc(var(--glow-layer-opacity) * .7);
+      }
+
+      50% {
+        filter: blur(18px) saturate(1.38) brightness(1.16);
+        opacity: calc(var(--glow-layer-opacity) * 1.28);
+      }
+
+      100% {
+        filter: blur(18px) saturate(1.02) brightness(.9);
+        opacity: calc(var(--glow-layer-opacity) * .7);
+      }
+    }
+
+    @keyframes block-breathe {
+      0% {
+        filter: blur(12px) saturate(1.04) brightness(.92);
+        opacity: .62;
+      }
+
+      50% {
+        filter: blur(8px) saturate(1.45) brightness(1.14);
+        opacity: 1;
+      }
+
+      100% {
+        filter: blur(12px) saturate(1.04) brightness(.92);
+        opacity: .62;
+      }
     }
 
     .masthead {
@@ -308,6 +364,8 @@
     @media (prefers-reduced-motion: reduce) {
       body::before,
       .app,
+      .app::before,
+      .app::after,
       .page::before,
       h1,
       .report-link,
@@ -315,6 +373,7 @@
       .report-year,
       .report-period,
       footer {
+        animation: none;
         transition: none;
       }
     }
