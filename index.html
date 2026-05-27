@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Annual Reports">
-  <meta name="theme-color" content="#060815">
+  <meta name="theme-color" content="#fff4a8">
   <title>Financial Reports</title>
   <link rel="icon" href="favicon.ico">
   <style>
@@ -12,53 +12,63 @@
       --page-w: 1120px;
       --edge: 40px;
       --radius: 8px;
-      --sky-base: #070913;
-      --sky-top: #070913;
-      --sky-mid: #171d2b;
-      --ground: #090b10;
-      --page-text: #f4f7fb;
-      --muted-text: #a8b4c5;
-      --meta-text: #f8fbff;
-      --meta-muted-text: #c6d3e2;
+      --sky-base: #fffbe3;
+      --sky-top: #fff8cc;
+      --sky-mid: #fff0a3;
+      --ground: #ffed9a;
+      --page-text: #1f1a00;
+      --muted-text: #3a3208;
+      --meta-text: #1f1a00;
+      --meta-muted-text: #3a3208;
       --title-shadow: none;
       --meta-strong-shadow: 0 1px 10px rgba(0, 0, 0, .12);
       --meta-muted-shadow: 0 1px 8px rgba(0, 0, 0, .1);
-      --surface-rgb: 17, 26, 41;
-      --line-rgb: 198, 214, 238;
-      --surface-alpha: .8;
-      --line-alpha: .23;
-      --accent: #8bd3ff;
-      --ambient-rgb: 8, 16, 40;
-      --mist-rgb: 122, 191, 255;
-      --sheen-rgb: 244, 112, 255;
-      --energy-rgb: 146, 85, 255;
-      --energy-core-rgb: 58, 224, 255;
-      --fluid-a-rgb: 74, 47, 255;
-      --fluid-b-rgb: 255, 70, 204;
-      --fluid-c-rgb: 0, 207, 232;
-      --fluid-a-alpha: .36;
-      --fluid-a-soft-alpha: .14;
-      --fluid-b-alpha: .34;
-      --fluid-b-soft-alpha: .13;
-      --fluid-c-alpha: .3;
-      --fluid-c-soft-alpha: .12;
-      --energy-alpha: .14;
-      --energy-soft-alpha: .08;
+      --surface-rgb: 255, 249, 207;
+      --line-rgb: 118, 96, 10;
+      --surface-alpha: .62;
+      --line-alpha: .13;
+      --accent: #9d7a00;
+      --ambient-rgb: 255, 237, 130;
+      --mist-rgb: 255, 253, 239;
+      --sheen-rgb: 255, 244, 166;
+      --energy-rgb: 255, 226, 83;
+      --energy-core-rgb: 255, 249, 121;
+      --fluid-a-rgb: 255, 239, 94;
+      --fluid-b-rgb: 246, 214, 66;
+      --fluid-c-rgb: 255, 235, 150;
+      --blue-block-rgb: 64, 150, 255;
+      --red-block-rgb: 235, 58, 74;
+      --blue-block-alpha: .34;
+      --blue-block-soft-alpha: .15;
+      --red-block-alpha: .3;
+      --red-block-soft-alpha: .13;
+      --fluid-a-alpha: .52;
+      --fluid-a-soft-alpha: .19;
+      --fluid-b-alpha: .49;
+      --fluid-b-soft-alpha: .18;
+      --fluid-c-alpha: .42;
+      --fluid-c-soft-alpha: .16;
+      --energy-alpha: .2;
+      --energy-soft-alpha: .11;
       --ridge-alpha: .24;
       --ridge-soft-alpha: .12;
       --ridge-glow-alpha: .18;
-      --mist-alpha: .05;
-      --sheen-alpha: .08;
-      --horizon-alpha: .12;
-      --vignette-alpha: .12;
-      --glow-layer-opacity: .48;
-      --texture-layer-opacity: .18;
+      --mist-alpha: .12;
+      --sheen-alpha: .13;
+      --horizon-alpha: .19;
+      --vignette-alpha: .035;
+      --glow-layer-opacity: .54;
+      --texture-layer-opacity: .12;
       --fluid-a-x: 18%;
       --fluid-a-y: 24%;
       --fluid-b-x: 78%;
       --fluid-b-y: 32%;
       --fluid-c-x: 50%;
       --fluid-c-y: 76%;
+      --blue-block-x: 18%;
+      --blue-block-y: 42%;
+      --red-block-x: 82%;
+      --red-block-y: 62%;
       --atmosphere-background:
         radial-gradient(82% 72% at 8% 10%, rgba(var(--mist-rgb), var(--mist-alpha)) 0%, transparent 62%),
         radial-gradient(112% 148% at 84% -22%, transparent 0 27%, rgba(var(--energy-core-rgb), var(--ridge-glow-alpha)) 34%, rgba(var(--energy-rgb), var(--ridge-alpha)) 42%, rgba(var(--fluid-b-rgb), var(--ridge-soft-alpha)) 53%, transparent 70%),
@@ -165,8 +175,23 @@
     }
 
     .page {
+      position: relative;
+      z-index: 0;
       width: var(--page-w);
       margin: 0 auto;
+    }
+
+    .page::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(34% 28% at var(--blue-block-x) var(--blue-block-y), rgba(var(--blue-block-rgb), var(--blue-block-alpha)) 0%, rgba(var(--blue-block-rgb), var(--blue-block-soft-alpha)) 42%, transparent 74%),
+        radial-gradient(32% 26% at var(--red-block-x) var(--red-block-y), rgba(var(--red-block-rgb), var(--red-block-alpha)) 0%, rgba(var(--red-block-rgb), var(--red-block-soft-alpha)) 40%, transparent 74%);
+      filter: blur(10px) saturate(1.18);
+      transition: background 900ms linear;
     }
 
     .masthead {
@@ -283,6 +308,7 @@
     @media (prefers-reduced-motion: reduce) {
       body::before,
       .app,
+      .page::before,
       h1,
       .report-link,
       .report-cover,
@@ -348,80 +374,99 @@
       var themeTimer = 0;
       var palettes = {
         night: {
-          skyBase: "#05040b",
-          skyTop: "#080612",
-          skyMid: "#181151",
-          ground: "#06040b",
-          text: "#f4f7fb",
-          muted: "#a8b4c5",
-          surface: "#11161f",
-          line: "#cad4e8",
-          accent: "#a58cff",
-          ambient: "#170a2d",
-          mist: "#b6a7ff",
-          sheen: "#ff72dc",
-          energy: "#873cff",
-          energyCore: "#39d6ff",
-          fluidA: "#3018d8",
-          fluidB: "#ff4bc8",
-          fluidC: "#060817"
+          skyBase: "#080414",
+          skyTop: "#130824",
+          skyMid: "#2d145b",
+          ground: "#0b0616",
+          text: "#f7f1ff",
+          muted: "#cdbde8",
+          surface: "#171024",
+          line: "#d9c4ff",
+          accent: "#b78cff",
+          ambient: "#21103f",
+          mist: "#a980ff",
+          sheen: "#e5b0ff",
+          energy: "#8f59ff",
+          energyCore: "#d9c4ff",
+          fluidA: "#4e2bd6",
+          fluidB: "#9a53ff",
+          fluidC: "#281052"
         },
         dawn: {
-          skyBase: "#f8fbff",
-          skyTop: "#fff8fb",
-          skyMid: "#ffd7e9",
-          ground: "#e6f8ff",
-          text: "#22313a",
-          muted: "#66727a",
-          surface: "#fff8ee",
-          line: "#69776f",
-          accent: "#eb245b",
-          ambient: "#ffe8ef",
-          mist: "#ffffff",
-          sheen: "#f7b4ff",
-          energy: "#ff357e",
-          energyCore: "#fff4df",
-          fluidA: "#ff174a",
-          fluidB: "#df3aff",
-          fluidC: "#9de9ff"
+          skyBase: "#fffdf0",
+          skyTop: "#fffbe2",
+          skyMid: "#fff3bd",
+          ground: "#fff5cc",
+          text: "#2d2600",
+          muted: "#5d520d",
+          surface: "#fff9d7",
+          line: "#8a7612",
+          accent: "#a27e00",
+          ambient: "#fff0a6",
+          mist: "#fffef2",
+          sheen: "#fff2ab",
+          energy: "#ffe273",
+          energyCore: "#fff98d",
+          fluidA: "#fff06a",
+          fluidB: "#ead95d",
+          fluidC: "#f8eaa4"
         },
         day: {
-          skyBase: "#f9fcff",
-          skyTop: "#fff9fb",
-          skyMid: "#ffe1ed",
-          ground: "#e7f8ff",
-          text: "#1f3038",
-          muted: "#586a73",
-          surface: "#ffffff",
-          line: "#40575e",
-          accent: "#e91e63",
-          ambient: "#ffedf3",
-          mist: "#ffffff",
-          sheen: "#ffb7ef",
-          energy: "#ff2f72",
-          energyCore: "#fff1dd",
-          fluidA: "#ff003d",
-          fluidB: "#d92aff",
-          fluidC: "#9eeeff"
+          skyBase: "#fffbe3",
+          skyTop: "#fff8cc",
+          skyMid: "#fff0a3",
+          ground: "#ffed9a",
+          text: "#1f1a00",
+          muted: "#5a4c08",
+          surface: "#fff9cf",
+          line: "#76600a",
+          accent: "#9d7a00",
+          ambient: "#ffed82",
+          mist: "#fffdef",
+          sheen: "#fff4a6",
+          energy: "#ffe253",
+          energyCore: "#fff979",
+          fluidA: "#ffef5e",
+          fluidB: "#f6d642",
+          fluidC: "#ffeb96"
+        },
+        afternoon: {
+          skyBase: "#fff8d2",
+          skyTop: "#fff3ba",
+          skyMid: "#ffeda0",
+          ground: "#ffe894",
+          text: "#211a00",
+          muted: "#554707",
+          surface: "#fff4bd",
+          line: "#725909",
+          accent: "#8f6d00",
+          ambient: "#f9df6e",
+          mist: "#fff8d4",
+          sheen: "#ffe57e",
+          energy: "#f6d445",
+          energyCore: "#fff36f",
+          fluidA: "#ffe756",
+          fluidB: "#e9c938",
+          fluidC: "#f7e184"
         },
         dusk: {
-          skyBase: "#0c0713",
-          skyTop: "#140b24",
-          skyMid: "#28176b",
-          ground: "#07050d",
-          text: "#fff5ec",
-          muted: "#cfb8ad",
-          surface: "#1b222b",
-          line: "#f0c5b8",
-          accent: "#d996ff",
-          ambient: "#261136",
-          mist: "#d0b4ff",
-          sheen: "#ff8ddb",
-          energy: "#b84dff",
-          energyCore: "#ffd1ec",
-          fluidA: "#4825f0",
-          fluidB: "#e148d5",
-          fluidC: "#090a18"
+          skyBase: "#3a2355",
+          skyTop: "#66518d",
+          skyMid: "#7b65a2",
+          ground: "#20122f",
+          text: "#fff3e4",
+          muted: "#dcc9f3",
+          surface: "#211433",
+          line: "#e7d5ff",
+          accent: "#d6b7ff",
+          ambient: "#4b3270",
+          mist: "#ceb4ff",
+          sheen: "#b99af2",
+          energy: "#9b6fff",
+          energyCore: "#f3e18a",
+          fluidA: "#7850d8",
+          fluidB: "#a978f5",
+          fluidC: "#351b62"
         }
       };
 
@@ -618,22 +663,25 @@
           if (now < noon) {
             return withFluidFields(linearTheme(palettes.dawn, palettes.day, progressBetween(now, today.sunrise, noon), .35, 1, .08, .38));
           }
-          return withFluidFields(linearTheme(palettes.day, palettes.dusk, progressBetween(now, noon, today.sunset), 1, .74, .38, .62));
+          return withFluidFields(linearTheme(palettes.day, palettes.afternoon, progressBetween(now, noon, today.sunset), 1, .95, .38, .54));
         }
 
         var nightStart = now < today.sunrise ? previous.sunset : today.sunset;
         var nightEnd = now < today.sunrise ? today.sunrise : next.sunrise;
-        var nightMiddle = midpoint(nightStart, nightEnd);
-        if (now < nightMiddle) {
-          return withFluidFields(linearTheme(palettes.dusk, palettes.night, progressBetween(now, nightStart, nightMiddle), .74, .05, .62, .82));
+        var nightDuration = nightEnd.valueOf() - nightStart.valueOf();
+        var eveningEnd = new Date(nightStart.valueOf() + Math.min(2 * 60 * 60 * 1000, nightDuration * .35));
+        if (now < eveningEnd) {
+          return withFluidFields(linearTheme(palettes.dusk, palettes.night, progressBetween(now, nightStart, eveningEnd), .45, .05, .62, .78));
         }
-        return withFluidFields(linearTheme(palettes.night, palettes.dawn, progressBetween(now, nightMiddle, nightEnd), .05, .35, .82, 1.08));
+        return withFluidFields(linearTheme(palettes.night, palettes.night, progressBetween(now, eveningEnd, nightEnd), .05, .05, .78, 1.08));
       }
 
       function setThemeVars(model) {
         var p = model.palette;
         var surfaceIsLight = luminance(p.surface) > .42;
-        var useDarkText = model.light >= .68 || surfaceIsLight;
+        var backgroundIsLight = luminance(p.skyTop) > .5 || luminance(p.skyMid) > .5;
+        var useDarkText = surfaceIsLight || backgroundIsLight;
+        var dayBlockStrength = clamp((model.light - .68) / .32, 0, 1);
         var primaryText = useDarkText ? "#050505" : p.text;
         var mutedText = useDarkText ? "#141414" : p.muted;
         var titleShadow = useDarkText ? "none" : "0 1px 14px rgba(0, 0, 0, .18)";
@@ -664,6 +712,12 @@
           "--fluid-a-rgb": rgbCsv(p.fluidA),
           "--fluid-b-rgb": rgbCsv(p.fluidB),
           "--fluid-c-rgb": rgbCsv(p.fluidC),
+          "--blue-block-rgb": "64, 150, 255",
+          "--red-block-rgb": "235, 58, 74",
+          "--blue-block-alpha": String((dayBlockStrength * .34).toFixed(3)),
+          "--blue-block-soft-alpha": String((dayBlockStrength * .15).toFixed(3)),
+          "--red-block-alpha": String((dayBlockStrength * .3).toFixed(3)),
+          "--red-block-soft-alpha": String((dayBlockStrength * .13).toFixed(3)),
           "--fluid-a-alpha": String(clamp(.3 + model.light * .22, .3, .52).toFixed(3)),
           "--fluid-a-soft-alpha": String(clamp(.1 + model.light * .09, .1, .19).toFixed(3)),
           "--fluid-b-alpha": String(clamp(.28 + model.light * .21, .28, .49).toFixed(3)),
