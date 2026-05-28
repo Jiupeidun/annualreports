@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Annual Reports">
-  <meta name="theme-color" content="#f2fbff">
+  <meta name="theme-color" content="#f6fcff">
   <title>Financial Reports</title>
   <link rel="icon" href="favicon.ico">
   <style>
@@ -12,36 +12,36 @@
       --page-w: 1120px;
       --edge: 40px;
       --radius: 8px;
-      --sky-base: #f7fdff;
-      --sky-top: #f2fbff;
-      --sky-mid: #dff4ff;
-      --ground: #cfeeff;
-      --page-text: #102233;
-      --muted-text: #2e5066;
-      --meta-text: #102233;
-      --meta-muted-text: #2e5066;
+      --sky-base: #f7fbff;
+      --sky-top: #f6fcff;
+      --sky-mid: #d9f1ff;
+      --ground: #e7e0fb;
+      --page-text: #132233;
+      --muted-text: #334f66;
+      --meta-text: #132233;
+      --meta-muted-text: #334f66;
       --title-shadow: none;
       --meta-strong-shadow: 0 1px 10px rgba(0, 0, 0, .12);
       --meta-muted-shadow: 0 1px 8px rgba(0, 0, 0, .1);
-      --surface-rgb: 246, 252, 255;
-      --line-rgb: 75, 113, 136;
+      --surface-rgb: 247, 251, 255;
+      --line-rgb: 84, 107, 143;
       --surface-alpha: .62;
       --line-alpha: .13;
-      --accent: #2f8ec7;
-      --ambient-rgb: 201, 239, 255;
+      --accent: #6c86d8;
+      --ambient-rgb: 205, 235, 255;
       --mist-rgb: 255, 255, 255;
-      --sheen-rgb: 213, 246, 255;
-      --energy-rgb: 191, 239, 255;
-      --energy-core-rgb: 247, 253, 255;
-      --fluid-a-rgb: 223, 247, 255;
-      --fluid-b-rgb: 199, 234, 255;
-      --fluid-c-rgb: 232, 248, 255;
-      --blue-block-rgb: 76, 165, 255;
-      --red-block-rgb: 255, 154, 150;
-      --blue-block-alpha: .26;
-      --blue-block-soft-alpha: .11;
-      --red-block-alpha: .2;
-      --red-block-soft-alpha: .085;
+      --sheen-rgb: 222, 252, 246;
+      --energy-rgb: 202, 224, 255;
+      --energy-core-rgb: 249, 253, 255;
+      --fluid-a-rgb: 216, 249, 244;
+      --fluid-b-rgb: 207, 221, 255;
+      --fluid-c-rgb: 255, 225, 232;
+      --blue-block-rgb: 118, 198, 255;
+      --red-block-rgb: 255, 166, 181;
+      --blue-block-alpha: .24;
+      --blue-block-soft-alpha: .1;
+      --red-block-alpha: .18;
+      --red-block-soft-alpha: .075;
       --fluid-a-alpha: .52;
       --fluid-a-soft-alpha: .19;
       --fluid-b-alpha: .49;
@@ -164,8 +164,8 @@
       mix-blend-mode: screen;
       opacity: var(--glow-layer-opacity);
       transform: translate3d(0, 0, 0) scale(1.02);
-      animation: glow-breathe 4.2s ease-in-out infinite;
-      will-change: filter, opacity;
+      animation: glow-breathe 4.2s ease-in-out infinite, aurora-flow 18s ease-in-out infinite alternate;
+      will-change: filter, opacity, transform;
     }
 
     .app::after {
@@ -195,8 +195,8 @@
         radial-gradient(32% 26% at var(--red-block-x) var(--red-block-y), rgba(var(--red-block-rgb), var(--red-block-alpha)) 0%, rgba(var(--red-block-rgb), var(--red-block-soft-alpha)) 40%, transparent 74%);
       filter: blur(10px) saturate(1.18);
       transition: background 900ms linear;
-      animation: block-breathe 4.2s ease-in-out infinite;
-      will-change: filter, opacity;
+      animation: block-breathe 4.2s ease-in-out infinite, color-field-flow 14s ease-in-out infinite alternate;
+      will-change: filter, opacity, transform;
     }
 
     @keyframes background-breathe {
@@ -247,6 +247,34 @@
       100% {
         filter: blur(12px) saturate(1.08) brightness(1);
         opacity: .56;
+      }
+    }
+
+    @keyframes aurora-flow {
+      0% {
+        transform: translate3d(-2.4%, -1.6%, 0) scale(1.04) rotate(-.35deg);
+      }
+
+      45% {
+        transform: translate3d(1.8%, 2.2%, 0) scale(1.08) rotate(.28deg);
+      }
+
+      100% {
+        transform: translate3d(3%, -.8%, 0) scale(1.05) rotate(.42deg);
+      }
+    }
+
+    @keyframes color-field-flow {
+      0% {
+        transform: translate3d(-2vw, 1.4vh, 0) scale(1.03);
+      }
+
+      50% {
+        transform: translate3d(2.4vw, -1.8vh, 0) scale(1.08);
+      }
+
+      100% {
+        transform: translate3d(1vw, 2vh, 0) scale(1.04);
       }
     }
 
@@ -433,99 +461,99 @@
       var themeTimer = 0;
       var palettes = {
         night: {
-          skyBase: "#fbf7ff",
-          skyTop: "#f8f2ff",
-          skyMid: "#eadcff",
-          ground: "#d8c5f2",
-          text: "#241a35",
-          muted: "#5a4b72",
-          surface: "#faf6ff",
-          line: "#806aa8",
-          accent: "#8d6bd1",
-          ambient: "#dfd0fb",
+          skyBase: "#fbf8ff",
+          skyTop: "#f9f4ff",
+          skyMid: "#eadfff",
+          ground: "#d9cef4",
+          text: "#241b34",
+          muted: "#584c70",
+          surface: "#fbf8ff",
+          line: "#806fa8",
+          accent: "#8e74d5",
+          ambient: "#e2d5fb",
           mist: "#ffffff",
-          sheen: "#efe4ff",
-          energy: "#c9aff8",
+          sheen: "#f2e8ff",
+          energy: "#cbb7f4",
           energyCore: "#fbf7ff",
-          fluidA: "#e5d5ff",
-          fluidB: "#c7a8ef",
-          fluidC: "#f2e9ff"
+          fluidA: "#e6d8ff",
+          fluidB: "#c6b0ee",
+          fluidC: "#f4ecff"
         },
         dawn: {
-          skyBase: "#fbfeff",
-          skyTop: "#f8fdff",
-          skyMid: "#eaf8ff",
-          ground: "#e6f5ff",
-          text: "#12283a",
-          muted: "#3a5c70",
+          skyBase: "#fbfdff",
+          skyTop: "#f7fcff",
+          skyMid: "#e7f7ff",
+          ground: "#edefff",
+          text: "#142638",
+          muted: "#3c5a6d",
           surface: "#f8fdff",
-          line: "#5e879e",
-          accent: "#3d94c7",
-          ambient: "#d8f4ff",
+          line: "#657f9c",
+          accent: "#6f8fd8",
+          ambient: "#d9f2ff",
           mist: "#ffffff",
-          sheen: "#e4f8ff",
-          energy: "#cfefff",
+          sheen: "#ddfbf1",
+          energy: "#d6e7ff",
           energyCore: "#fbfeff",
-          fluidA: "#e8f9ff",
-          fluidB: "#d8f0ff",
-          fluidC: "#f1fbff"
+          fluidA: "#dcfaf4",
+          fluidB: "#d9e5ff",
+          fluidC: "#ffe8ef"
         },
         day: {
-          skyBase: "#f7fdff",
-          skyTop: "#f2fbff",
-          skyMid: "#dff4ff",
-          ground: "#cfeeff",
-          text: "#102233",
-          muted: "#2e5066",
-          surface: "#f6fcff",
-          line: "#4b7188",
-          accent: "#2f8ec7",
-          ambient: "#c9efff",
+          skyBase: "#f7fbff",
+          skyTop: "#f6fcff",
+          skyMid: "#d9f1ff",
+          ground: "#e7e0fb",
+          text: "#132233",
+          muted: "#334f66",
+          surface: "#f7fbff",
+          line: "#546b8f",
+          accent: "#6c86d8",
+          ambient: "#cdefff",
           mist: "#ffffff",
-          sheen: "#d5f6ff",
-          energy: "#bfefff",
-          energyCore: "#f7fdff",
-          fluidA: "#dff7ff",
-          fluidB: "#c7eaff",
-          fluidC: "#e8f8ff"
+          sheen: "#defcf6",
+          energy: "#cae0ff",
+          energyCore: "#f9fdff",
+          fluidA: "#d8f9f4",
+          fluidB: "#cfddff",
+          fluidC: "#ffe1e8"
         },
         afternoon: {
-          skyBase: "#f4fbff",
-          skyTop: "#edfaff",
-          skyMid: "#d3edff",
-          ground: "#c5e6f8",
-          text: "#102333",
-          muted: "#2e5368",
-          surface: "#f1faff",
-          line: "#496e86",
-          accent: "#2d86bd",
-          ambient: "#bae6fb",
-          mist: "#f8fdff",
-          sheen: "#c9efff",
-          energy: "#abdff8",
-          energyCore: "#f0fbff",
-          fluidA: "#d1f2ff",
-          fluidB: "#b9def5",
-          fluidC: "#def3ff"
+          skyBase: "#f6faff",
+          skyTop: "#f1f9ff",
+          skyMid: "#d1eaff",
+          ground: "#ddd6f2",
+          text: "#142435",
+          muted: "#355269",
+          surface: "#f3faff",
+          line: "#58708f",
+          accent: "#7184d0",
+          ambient: "#c1e8fb",
+          mist: "#fbfdff",
+          sheen: "#d3f6ec",
+          energy: "#b8d8f5",
+          energyCore: "#f3fbff",
+          fluidA: "#d1f4ed",
+          fluidB: "#c4d3f4",
+          fluidC: "#f7dbe4"
         },
         dusk: {
-          skyBase: "#f6f0ff",
-          skyTop: "#f2eaff",
-          skyMid: "#dbc9f5",
-          ground: "#cab2e8",
-          text: "#251b36",
-          muted: "#5c4c73",
-          surface: "#f5efff",
-          line: "#846ca8",
-          accent: "#9471d4",
-          ambient: "#d5c4f1",
-          mist: "#fbf8ff",
-          sheen: "#e4d4fb",
-          energy: "#b996ee",
-          energyCore: "#f7f0ff",
-          fluidA: "#d7c4fb",
-          fluidB: "#b894e6",
-          fluidC: "#eadfff"
+          skyBase: "#f8f2ff",
+          skyTop: "#f5eeff",
+          skyMid: "#ded0f7",
+          ground: "#d1bfe9",
+          text: "#261d36",
+          muted: "#5b4e72",
+          surface: "#f7f1ff",
+          line: "#856faa",
+          accent: "#9276d1",
+          ambient: "#d9c8f1",
+          mist: "#fcf9ff",
+          sheen: "#e9d8fb",
+          energy: "#bfa0eb",
+          energyCore: "#f8f1ff",
+          fluidA: "#dbc8fb",
+          fluidB: "#b99ade",
+          fluidC: "#efe5ff"
         }
       };
 
@@ -771,12 +799,12 @@
           "--fluid-a-rgb": rgbCsv(p.fluidA),
           "--fluid-b-rgb": rgbCsv(p.fluidB),
           "--fluid-c-rgb": rgbCsv(p.fluidC),
-          "--blue-block-rgb": "76, 165, 255",
-          "--red-block-rgb": "255, 154, 150",
-          "--blue-block-alpha": String((dayBlockStrength * .26).toFixed(3)),
-          "--blue-block-soft-alpha": String((dayBlockStrength * .11).toFixed(3)),
-          "--red-block-alpha": String((dayBlockStrength * .2).toFixed(3)),
-          "--red-block-soft-alpha": String((dayBlockStrength * .085).toFixed(3)),
+          "--blue-block-rgb": "118, 198, 255",
+          "--red-block-rgb": "255, 166, 181",
+          "--blue-block-alpha": String((dayBlockStrength * .24).toFixed(3)),
+          "--blue-block-soft-alpha": String((dayBlockStrength * .1).toFixed(3)),
+          "--red-block-alpha": String((dayBlockStrength * .18).toFixed(3)),
+          "--red-block-soft-alpha": String((dayBlockStrength * .075).toFixed(3)),
           "--fluid-a-alpha": String(clamp(.3 + model.light * .22, .3, .52).toFixed(3)),
           "--fluid-a-soft-alpha": String(clamp(.1 + model.light * .09, .1, .19).toFixed(3)),
           "--fluid-b-alpha": String(clamp(.28 + model.light * .21, .28, .49).toFixed(3)),
