@@ -2,7 +2,7 @@ import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import type { KeyboardEvent, PointerEvent } from "react";
 import { SensoryUIProvider } from "@/components/ui/sensory-ui/config/provider";
 import { usePlaySound } from "@/components/ui/sensory-ui/config/use-play-sound";
-import { reports, type Report } from "./reports";
+import { appAssetPath, reports, type Report } from "./reports";
 import { useAnalytics } from "./useAnalytics";
 import { useAtmosphereTheme } from "./useAtmosphereTheme";
 
@@ -18,7 +18,7 @@ function currentReportHref(): string {
     String(stamp.getDate()).padStart(2, "0")
   ].join("");
 
-  return `/2026_Annual_Report.pdf?v=${version}`;
+  return `${appAssetPath("2026_Annual_Report.pdf")}?v=${version}`;
 }
 
 function usePrefersReducedMotion(): boolean {
