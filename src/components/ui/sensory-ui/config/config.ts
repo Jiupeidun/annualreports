@@ -38,8 +38,6 @@ export interface SensoryUIConfig {
 
 /**
  * Default config - used when no overrides are provided.
- * Edit sensory.config.js at the project root or pass a `config` prop to
- * <SensoryUIProvider> to customise at runtime.
  */
 export const defaultConfig: SensoryUIConfig = {
   enabled: true,

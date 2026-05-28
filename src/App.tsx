@@ -1,7 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import type { KeyboardEvent, PointerEvent } from "react";
-import { SensoryUIProvider } from "@/components/ui/sensory-ui/config/provider";
-import { usePlaySound } from "@/components/ui/sensory-ui/config/use-play-sound";
+import { playCoverSound, prepareCoverSound } from "./playCoverSound";
 import { appAssetPath, reports, type Report } from "./reports";
 import { useAnalytics } from "./useAnalytics";
 import { useAtmosphereTheme } from "./useAtmosphereTheme";
@@ -23,7 +22,8 @@ function currentReportHref(): string {
 
 function usePrefersReducedMotion(): boolean {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 
   useEffect(() => {
@@ -41,9 +41,10 @@ function usePrefersReducedMotion(): boolean {
 type ReportCoverProps = {
   report: Report;
   beamActive: boolean;
+  beamReady: boolean;
 };
 
-function ReportCover({ report, beamActive }: ReportCoverProps) {
+function ReportCover({ report, beamActive, beamReady }: ReportCoverProps) {
   const cover = (
     <picture className="report-picture">
       <source srcSet={report.webp} type="image/webp" />
@@ -53,14 +54,14 @@ function ReportCover({ report, beamActive }: ReportCoverProps) {
         width="300"
         height="424"
         alt={report.alt}
-        loading={report.eager ? undefined : "lazy"}
+        loading={report.eager ? "eager" : "lazy"}
         decoding="async"
-        fetchPriority={report.eager ? "high" : undefined}
+        fetchPriority={report.priority ? "high" : undefined}
       />
     </picture>
   );
 
-  if (!report.versioned) {
+  if (!report.versioned || !beamActive || !beamReady) {
     return cover;
   }
 
@@ -69,14 +70,14 @@ function ReportCover({ report, beamActive }: ReportCoverProps) {
       <BorderBeam
         className="report-cover-beam"
         size="md"
-        colorVariant="ocean"
+        colorVariant="sunset"
         theme="light"
-        strength={0.5}
-        duration={3.4}
-        borderRadius={8}
-        brightness={1.12}
-        saturation={0.96}
-        hueRange={18}
+        strength={1}
+        duration={2.65}
+        borderRadius={10}
+        brightness={1.62}
+        saturation={1.34}
+        hueRange={32}
         active={beamActive}
       >
         {cover}
@@ -93,9 +94,10 @@ type ReportCardProps = {
 };
 
 function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps) {
-  const { play } = usePlaySound({ sound: "interaction.toggle", volume: 0.5 });
+  const coverFrameRef = useRef<HTMLSpanElement | null>(null);
   const pulseTimer = useRef(0);
   const [isClicking, setIsClicking] = useState(false);
+  const [beamReady, setBeamReady] = useState(!report.versioned);
 
   const triggerPressEffect = useCallback(() => {
     window.clearTimeout(pulseTimer.current);
@@ -108,6 +110,31 @@ function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps
 
   useEffect(() => () => window.clearTimeout(pulseTimer.current), []);
 
+  useEffect(() => {
+    if (!report.versioned || beamReady) {
+      return;
+    }
+
+    const node = coverFrameRef.current;
+    if (!node || !("IntersectionObserver" in window)) {
+      setBeamReady(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setBeamReady(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "240px" }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [beamReady, report.versioned]);
+
   const handlePointerDown = useCallback(
     (event: PointerEvent<HTMLAnchorElement>) => {
       if (event.button !== 0) {
@@ -115,12 +142,12 @@ function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps
       }
 
       triggerPressEffect();
-      play();
+      playCoverSound();
       if (report.versioned) {
         onRefreshHref();
       }
     },
-    [onRefreshHref, play, report.versioned, triggerPressEffect]
+    [onRefreshHref, report.versioned, triggerPressEffect]
   );
 
   const handleKeyDown = useCallback(
@@ -130,13 +157,20 @@ function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps
       }
 
       triggerPressEffect();
-      play();
+      playCoverSound();
       if (report.versioned) {
         onRefreshHref();
       }
     },
-    [onRefreshHref, play, report.versioned, triggerPressEffect]
+    [onRefreshHref, report.versioned, triggerPressEffect]
   );
+
+  const handleFocus = useCallback(() => {
+    prepareCoverSound();
+    if (report.versioned) {
+      onRefreshHref();
+    }
+  }, [onRefreshHref, report.versioned]);
 
   return (
     <a
@@ -146,11 +180,12 @@ function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps
       rel="noopener"
       className={`report-link${isClicking ? " is-clicking" : ""}`}
       onPointerDown={handlePointerDown}
+      onPointerEnter={prepareCoverSound}
       onKeyDown={handleKeyDown}
-      onFocus={report.versioned ? onRefreshHref : undefined}
+      onFocus={handleFocus}
     >
-      <span className="report-cover-frame">
-        <ReportCover report={report} beamActive={beamActive} />
+      <span ref={coverFrameRef} className="report-cover-frame">
+        <ReportCover report={report} beamActive={beamActive} beamReady={beamReady} />
       </span>
       <span className="report-meta">
         <span className="report-year">{report.year}</span>
@@ -171,28 +206,26 @@ export default function App() {
   }, []);
 
   return (
-    <SensoryUIProvider config={{ theme: "soft", volume: 0.12 }}>
-      <main className="app">
-        <div className="page">
-          <header className="masthead">
-            <h1>Annual Reports</h1>
-          </header>
-          <section className="reports" aria-label="Annual reports">
-            {reports.map((report) => (
-              <ReportCard
-                key={report.year}
-                report={report}
-                href={report.versioned ? versionedHref : report.href}
-                onRefreshHref={refreshCurrentReportHref}
-                beamActive={!prefersReducedMotion}
-              />
-            ))}
-          </section>
-          <footer>
-            <p>&copy; Kertin. All rights reserved.</p>
-          </footer>
-        </div>
-      </main>
-    </SensoryUIProvider>
+    <main className="app">
+      <div className="page">
+        <header className="masthead">
+          <h1>Annual Reports</h1>
+        </header>
+        <section className="reports" aria-label="Annual reports">
+          {reports.map((report) => (
+            <ReportCard
+              key={report.year}
+              report={report}
+              href={report.versioned ? versionedHref : report.href}
+              onRefreshHref={refreshCurrentReportHref}
+              beamActive={!prefersReducedMotion}
+            />
+          ))}
+        </section>
+        <footer>
+          <p>&copy; Kertin. All rights reserved.</p>
+        </footer>
+      </div>
+    </main>
   );
 }

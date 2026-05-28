@@ -7,6 +7,7 @@ export type Report = {
   period: string;
   id?: string;
   eager?: boolean;
+  priority?: boolean;
   versioned?: boolean;
 };
 
@@ -22,7 +23,8 @@ export const reports = [
     alt: "2019 annual report cover",
     year: "2019",
     period: "Jan 2019 - Mar 2020",
-    eager: true
+    eager: true,
+    priority: true
   },
   {
     href: appAssetPath("2020financialReport.pdf"),

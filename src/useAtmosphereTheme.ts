@@ -1,11 +1,5 @@
 import { useEffect } from "react";
 
-const rad = Math.PI / 180;
-const dayMs = 86400000;
-const J1970 = 2440588;
-const J2000 = 2451545;
-const e = rad * 23.4397;
-
 type Palette = {
   skyBase: string;
   skyTop: string;
@@ -24,17 +18,6 @@ type Palette = {
   fluidA: string;
   fluidB: string;
   fluidC: string;
-};
-
-type LocationState = {
-  lat: number;
-  lon: number;
-  timeZone: string;
-};
-
-type SunTimes = {
-  sunrise: Date;
-  sunset: Date;
 };
 
 type Rgb = {
@@ -187,94 +170,6 @@ function parseDebugTime(): Date | null {
   return date && Number.isFinite(date.valueOf()) ? date : null;
 }
 
-function toJulian(date: Date): number {
-  return date.valueOf() / dayMs - 0.5 + J1970;
-}
-
-function fromJulian(j: number): Date {
-  return new Date((j + 0.5 - J1970) * dayMs);
-}
-
-function toDays(date: Date): number {
-  return toJulian(date) - J2000;
-}
-
-function declination(l: number, b: number): number {
-  return Math.asin(Math.sin(b) * Math.cos(e) + Math.cos(b) * Math.sin(e) * Math.sin(l));
-}
-
-function solarMeanAnomaly(d: number): number {
-  return rad * (357.5291 + 0.98560028 * d);
-}
-
-function eclipticLongitude(M: number): number {
-  const C = rad * (1.9148 * Math.sin(M) + 0.02 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M));
-  return M + C + rad * 102.9372 + Math.PI;
-}
-
-function julianCycle(d: number, lw: number): number {
-  return Math.round(d - 0.0009 - lw / (2 * Math.PI));
-}
-
-function approxTransit(Ht: number, lw: number, n: number): number {
-  return 0.0009 + (Ht + lw) / (2 * Math.PI) + n;
-}
-
-function solarTransitJ(ds: number, M: number, L: number): number {
-  return J2000 + ds + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * L);
-}
-
-function hourAngle(horizon: number, phi: number, dec: number): number {
-  return Math.acos((Math.sin(horizon) - Math.sin(phi) * Math.sin(dec)) / (Math.cos(phi) * Math.cos(dec)));
-}
-
-function getSunTimes(date: Date, lat: number, lon: number): SunTimes {
-  const lw = rad * -lon;
-  const phi = rad * lat;
-  const d = toDays(date);
-  const n = julianCycle(d, lw);
-  const ds = approxTransit(0, lw, n);
-  const M = solarMeanAnomaly(ds);
-  const L = eclipticLongitude(M);
-  const dec = declination(L, 0);
-  const Jnoon = solarTransitJ(ds, M, L);
-  const Jset = solarTransitJ(approxTransit(hourAngle(-0.833 * rad, phi, dec), lw, n), M, L);
-  const Jrise = Jnoon - (Jset - Jnoon);
-
-  if (![Jrise, Jnoon, Jset].every(Number.isFinite)) {
-    const fallback = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0));
-    return {
-      sunrise: new Date(fallback.getTime() + 6 * 60 * 60 * 1000),
-      sunset: new Date(fallback.getTime() + 18 * 60 * 60 * 1000)
-    };
-  }
-
-  return {
-    sunrise: fromJulian(Jrise),
-    sunset: fromJulian(Jset)
-  };
-}
-
-function getZonedParts(date: Date, timeZone: string): { year: number; month: number; day: number } {
-  const formatter = new Intl.DateTimeFormat("en-CA", {
-    timeZone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  });
-  const values: Record<string, string> = {};
-
-  formatter.formatToParts(date).forEach((part) => {
-    values[part.type] = part.value;
-  });
-
-  return {
-    year: Number(values.year),
-    month: Number(values.month),
-    day: Number(values.day)
-  };
-}
-
 function getZonedMinuteOfDay(date: Date, timeZone: string): number {
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone,
@@ -289,12 +184,6 @@ function getZonedMinuteOfDay(date: Date, timeZone: string): number {
   });
 
   return Number(values.hour) * 60 + Number(values.minute);
-}
-
-function getTimesForZonedDate(now: Date, location: LocationState, offsetDays: number): SunTimes {
-  const parts = getZonedParts(now, location.timeZone);
-  const localNoon = new Date(Date.UTC(parts.year, parts.month - 1, parts.day + offsetDays, 12));
-  return getSunTimes(localNoon, location.lat, location.lon);
 }
 
 function hexToRgb(hex: string): Rgb {
@@ -343,14 +232,6 @@ function mixPalette(a: Palette, b: Palette, t: number): Palette {
 function rgbCsv(hex: string): string {
   const rgb = hexToRgb(hex);
   return `${rgb.r}, ${rgb.g}, ${rgb.b}`;
-}
-
-function midpoint(start: Date, end: Date): Date {
-  return new Date((start.valueOf() + end.valueOf()) / 2);
-}
-
-function progressBetween(now: Date, start: Date, end: Date): number {
-  return clamp((now.valueOf() - start.valueOf()) / (end.valueOf() - start.valueOf()), 0, 1);
 }
 
 type ThemeStop = {
@@ -423,8 +304,8 @@ function withFluidFields(model: BaseAtmosphereModel): AtmosphereModel {
   };
 }
 
-function buildAtmosphereModel(now: Date, location: LocationState): AtmosphereModel {
-  const minute = getZonedMinuteOfDay(now, location.timeZone);
+function buildAtmosphereModel(now: Date, timeZone: string): AtmosphereModel {
+  const minute = getZonedMinuteOfDay(now, timeZone);
 
   if (minute >= 12 * 60) {
     return withFluidFields(themeFromStops(
@@ -460,27 +341,13 @@ function buildAtmosphereModel(now: Date, location: LocationState): AtmosphereMod
   ));
 }
 
-function idle(callback: () => void): () => void {
-  if ("requestIdleCallback" in window) {
-    const id = window.requestIdleCallback(() => callback());
-    return () => window.cancelIdleCallback?.(id);
-  }
-
-  const id = globalThis.setTimeout(callback, 1200);
-  return () => globalThis.clearTimeout(id);
-}
-
 export function useAtmosphereTheme(): void {
   useEffect(() => {
     const rootStyle = document.documentElement.style;
     const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
     const activeVars: Record<string, string> = {};
     const debugTime = parseDebugTime();
-    let locationState = {
-      lat: 31.2304,
-      lon: 121.4737,
-      timeZone: "Asia/Shanghai"
-    };
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Shanghai";
     let themeTimer = 0;
     let cancelled = false;
 
@@ -570,7 +437,7 @@ export function useAtmosphereTheme(): void {
     }
 
     function applyTheme(): void {
-      setThemeVars(buildAtmosphereModel(getThemeTime(), locationState));
+      setThemeVars(buildAtmosphereModel(getThemeTime(), timeZone));
     }
 
     function scheduleTheme(): void {
@@ -586,42 +453,6 @@ export function useAtmosphereTheme(): void {
       themeTimer = window.setTimeout(scheduleTheme, 60000 - (Date.now() % 60000));
     }
 
-    const cancelGeolocationIdle = idle(() => {
-      if (cancelled || debugTime || !navigator.geolocation || !navigator.permissions) {
-        return;
-      }
-
-      navigator.permissions
-        .query({ name: "geolocation" as PermissionName })
-        .then((permission) => {
-          if (cancelled || permission.state !== "granted") {
-            return;
-          }
-
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              if (cancelled) {
-                return;
-              }
-
-              locationState = {
-                lat: position.coords.latitude,
-                lon: position.coords.longitude,
-                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
-              };
-              scheduleTheme();
-            },
-            () => {},
-            {
-              enableHighAccuracy: false,
-              maximumAge: 30 * 60 * 1000,
-              timeout: 7000
-            }
-          );
-        })
-        .catch(() => {});
-    });
-
     document.addEventListener("visibilitychange", scheduleTheme, { passive: true });
     window.addEventListener("pageshow", scheduleTheme, { passive: true });
     scheduleTheme();
@@ -629,7 +460,6 @@ export function useAtmosphereTheme(): void {
     return () => {
       cancelled = true;
       window.clearTimeout(themeTimer);
-      cancelGeolocationIdle();
       document.removeEventListener("visibilitychange", scheduleTheme);
       window.removeEventListener("pageshow", scheduleTheme);
     };
