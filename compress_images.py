@@ -8,7 +8,7 @@ from PIL import Image
 import os
 import sys
 
-def compress_images(quality=80, max_width=300, output_dir='compressed'):
+def compress_images(quality=80, max_width=300, output_dir='public/compressed'):
     """
     压缩图片
     
