@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import type { KeyboardEvent, PointerEvent } from "react";
 import { SensoryUIProvider } from "@/components/ui/sensory-ui/config/provider";
 import { usePlaySound } from "@/components/ui/sensory-ui/config/use-play-sound";
@@ -94,6 +94,19 @@ type ReportCardProps = {
 
 function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps) {
   const { play } = usePlaySound({ sound: "interaction.toggle", volume: 0.5 });
+  const pulseTimer = useRef(0);
+  const [isClicking, setIsClicking] = useState(false);
+
+  const triggerPressEffect = useCallback(() => {
+    window.clearTimeout(pulseTimer.current);
+    setIsClicking(false);
+    window.requestAnimationFrame(() => {
+      setIsClicking(true);
+      pulseTimer.current = window.setTimeout(() => setIsClicking(false), 520);
+    });
+  }, []);
+
+  useEffect(() => () => window.clearTimeout(pulseTimer.current), []);
 
   const handlePointerDown = useCallback(
     (event: PointerEvent<HTMLAnchorElement>) => {
@@ -101,12 +114,13 @@ function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps
         return;
       }
 
+      triggerPressEffect();
       play();
       if (report.versioned) {
         onRefreshHref();
       }
     },
-    [onRefreshHref, play, report.versioned]
+    [onRefreshHref, play, report.versioned, triggerPressEffect]
   );
 
   const handleKeyDown = useCallback(
@@ -115,12 +129,13 @@ function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps
         return;
       }
 
+      triggerPressEffect();
       play();
       if (report.versioned) {
         onRefreshHref();
       }
     },
-    [onRefreshHref, play, report.versioned]
+    [onRefreshHref, play, report.versioned, triggerPressEffect]
   );
 
   return (
@@ -129,12 +144,14 @@ function ReportCard({ report, href, onRefreshHref, beamActive }: ReportCardProps
       href={href}
       target="_blank"
       rel="noopener"
-      className="report-link"
+      className={`report-link${isClicking ? " is-clicking" : ""}`}
       onPointerDown={handlePointerDown}
       onKeyDown={handleKeyDown}
       onFocus={report.versioned ? onRefreshHref : undefined}
     >
-      <ReportCover report={report} beamActive={beamActive} />
+      <span className="report-cover-frame">
+        <ReportCover report={report} beamActive={beamActive} />
+      </span>
       <span className="report-meta">
         <span className="report-year">{report.year}</span>
         <span className="report-period">{report.period}</span>
