@@ -61,6 +61,7 @@
   --vignette-alpha: .035;
   --glow-layer-opacity: .68;
   --texture-layer-opacity: .12;
+  --content-veil-alpha: .12;
   --fluid-a-x: 18%;
   --fluid-a-y: 24%;
   --fluid-b-x: 78%;
@@ -204,12 +205,22 @@ a {
   background:
     radial-gradient(48% 36% at var(--blue-block-x) var(--blue-block-y), rgba(var(--blue-block-rgb), var(--blue-block-alpha)) 0%, rgba(var(--blue-block-rgb), var(--blue-block-soft-alpha)) 45%, transparent 78%),
     radial-gradient(46% 34% at var(--red-block-x) var(--red-block-y), rgba(var(--red-block-rgb), var(--red-block-alpha)) 0%, rgba(var(--red-block-rgb), var(--red-block-soft-alpha)) 44%, transparent 78%),
-    conic-gradient(from 160deg at 52% 54%, transparent 0 18%, rgba(var(--fluid-a-rgb), var(--flow-band-soft-alpha)) 28%, rgba(var(--fluid-c-rgb), var(--flow-band-alpha)) 44%, transparent 58%, rgba(var(--energy-rgb), var(--flow-veil-alpha)) 72%, transparent 90%),
-    radial-gradient(54% 38% at var(--fluid-c-x) var(--fluid-c-y), rgba(var(--fluid-c-rgb), calc(var(--fluid-c-soft-alpha) * 1.3)) 0%, transparent 78%);
+    conic-gradient(from 160deg at 78% 68%, transparent 0 22%, rgba(var(--fluid-a-rgb), var(--flow-band-soft-alpha)) 32%, rgba(var(--fluid-c-rgb), var(--flow-band-alpha)) 48%, transparent 64%, rgba(var(--energy-rgb), var(--flow-veil-alpha)) 78%, transparent 92%),
+    radial-gradient(50% 34% at var(--fluid-c-x) var(--fluid-c-y), rgba(var(--fluid-c-rgb), calc(var(--fluid-c-soft-alpha) * 1.08)) 0%, transparent 80%);
   filter: blur(18px) saturate(1.46);
   transition: background 1600ms linear;
   animation: block-breathe 24s ease-in-out infinite, color-field-flow 60s ease-in-out infinite alternate;
   will-change: opacity, transform;
+}
+
+.page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(54% 58% at 50% 42%, rgba(var(--mist-rgb), var(--content-veil-alpha)) 0%, rgba(var(--mist-rgb), calc(var(--content-veil-alpha) * .42)) 42%, transparent 74%);
+  mix-blend-mode: soft-light;
 }
 
 @keyframes background-breathe {
@@ -293,7 +304,7 @@ h1 {
   margin: 0;
   font-size: 36px;
   line-height: 1.2;
-  font-weight: 300;
+  font-weight: 360;
   letter-spacing: 0;
   text-align: center;
   text-shadow: var(--title-shadow);
@@ -314,7 +325,7 @@ h1 {
   gap: 18px;
   contain: layout paint style;
   content-visibility: auto;
-  contain-intrinsic-size: 230px 250px;
+  contain-intrinsic-size: 230px 286px;
   color: var(--page-text);
   transition: color 700ms linear, transform 380ms cubic-bezier(.2, .8, .2, 1);
 }
@@ -336,7 +347,7 @@ h1 {
 
 .report-cover-frame {
   position: relative;
-  width: min(144px, 100%);
+  width: min(160px, 100%);
   max-width: 100%;
   display: block;
   margin: 0 auto;
@@ -350,6 +361,77 @@ h1 {
 .report-link.is-clicking .report-cover-frame {
   animation: cover-press-release 520ms cubic-bezier(.16, 1, .3, 1);
   will-change: transform;
+}
+
+.report-cover-shell {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius);
+  isolation: isolate;
+  line-height: 0;
+  background: rgba(var(--surface-rgb), var(--surface-alpha));
+}
+
+.report-cover-shell::before,
+.report-cover-shell::after {
+  content: "";
+  position: absolute;
+  inset: -26%;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.report-cover-shell::before {
+  background:
+    radial-gradient(46% 36% at 18% 18%, rgba(var(--mist-rgb), .28) 0%, transparent 58%),
+    radial-gradient(54% 42% at 80% 72%, rgba(var(--fluid-c-rgb), .2) 0%, transparent 64%),
+    linear-gradient(112deg, transparent 12%, rgba(var(--fluid-a-rgb), .12) 28%, rgba(var(--energy-rgb), .2) 42%, rgba(var(--mist-rgb), .24) 50%, rgba(var(--fluid-b-rgb), .14) 63%, transparent 82%);
+  background-size: 180% 180%, 160% 160%, 220% 220%;
+  filter: blur(10px) saturate(1.24);
+  mix-blend-mode: screen;
+  opacity: .34;
+  transform: translate3d(-18%, 10%, 0) rotate(-8deg) scale(1.08);
+  animation: cover-light-flow 7.8s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+.report-cover-shell::after {
+  inset: 0;
+  background:
+    linear-gradient(108deg, transparent 0 30%, rgba(255, 255, 255, .28) 44%, transparent 58%),
+    radial-gradient(70% 44% at 18% 8%, rgba(var(--mist-rgb), .16) 0%, transparent 70%);
+  mix-blend-mode: soft-light;
+  opacity: .18;
+  transform: translate3d(-34%, 0, 0);
+  animation: cover-sheen-sweep 9.2s cubic-bezier(.45, 0, .2, 1) infinite;
+  will-change: transform, opacity;
+}
+
+.report-cover-shell.is-current::before {
+  opacity: .48;
+  filter: blur(9px) saturate(1.34);
+}
+
+.report-cover-shell.is-current::after {
+  opacity: .26;
+}
+
+.report-link:hover .report-cover-shell::before,
+.report-link:focus-visible .report-cover-shell::before,
+.report-link.is-clicking .report-cover-shell::before {
+  opacity: .62;
+  animation-duration: 4.8s;
+}
+
+.report-link:hover .report-cover-shell::after,
+.report-link:focus-visible .report-cover-shell::after,
+.report-link.is-clicking .report-cover-shell::after {
+  opacity: .36;
+  animation-duration: 5.8s;
 }
 
 .report-cover-beam {
@@ -371,6 +453,10 @@ h1 {
   border-radius: calc(var(--radius) - 2px);
 }
 
+.report-cover-beam .report-cover-shell {
+  border-radius: calc(var(--radius) - 2px);
+}
+
 .report-cover {
   width: 100%;
   max-width: none;
@@ -382,6 +468,34 @@ h1 {
   border-radius: var(--radius);
   background: rgba(var(--surface-rgb), var(--surface-alpha));
   transition: background 700ms linear;
+}
+
+@keyframes cover-light-flow {
+  0% {
+    transform: translate3d(-22%, 12%, 0) rotate(-9deg) scale(1.08);
+  }
+
+  46% {
+    transform: translate3d(11%, -7%, 0) rotate(5deg) scale(1.2);
+  }
+
+  100% {
+    transform: translate3d(23%, 10%, 0) rotate(10deg) scale(1.12);
+  }
+}
+
+@keyframes cover-sheen-sweep {
+  0% {
+    transform: translate3d(-42%, 0, 0) skewX(-8deg);
+  }
+
+  38% {
+    transform: translate3d(22%, 0, 0) skewX(-8deg);
+  }
+
+  100% {
+    transform: translate3d(42%, 0, 0) skewX(-8deg);
+  }
 }
 
 @keyframes cover-press-release {
@@ -409,8 +523,8 @@ h1 {
 .report-year {
   display: block;
   color: var(--meta-text);
-  font-size: 1.08rem;
-  font-weight: 300;
+  font-size: 1.12rem;
+  font-weight: 360;
   line-height: 1.1;
   text-shadow: var(--meta-strong-shadow);
   transition: color 700ms linear, text-shadow 700ms linear;
@@ -458,9 +572,13 @@ footer p {
   .app::before,
   .app::after,
   .page::before,
+  .page::after,
   h1,
   .report-link,
   .report-cover-frame,
+  .report-cover-shell,
+  .report-cover-shell::before,
+  .report-cover-shell::after,
   .report-cover-beam,
   .report-cover,
   .report-year,
