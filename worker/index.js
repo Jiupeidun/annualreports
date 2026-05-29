@@ -1,6 +1,4 @@
 const AUTH_PATH = "/__pdf-auth";
-const COOKIE_NAME = "annual_reports_pdf_auth";
-const SESSION_SECONDS = 12 * 60 * 60;
 
 function isPdfPath(pathname) {
   return pathname.toLowerCase().endsWith(".pdf");
@@ -14,38 +12,15 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
-function safeNextUrl(requestUrl, value) {
+function safePdfPath(requestUrl, value) {
   try {
     const candidate = new URL(value || "/", requestUrl);
 
     if (candidate.origin !== requestUrl.origin || !isPdfPath(candidate.pathname)) {
-      return "/";
+      return null;
     }
 
     return `${candidate.pathname}${candidate.search}`;
-  } catch {
-    return "/";
-  }
-}
-
-function getCookie(request, name) {
-  const cookie = request.headers.get("Cookie");
-
-  if (!cookie) {
-    return null;
-  }
-
-  const match = cookie
-    .split(";")
-    .map((part) => part.trim())
-    .find((part) => part.startsWith(`${name}=`));
-
-  if (!match) {
-    return null;
-  }
-
-  try {
-    return decodeURIComponent(match.slice(name.length + 1));
   } catch {
     return null;
   }
@@ -63,58 +38,6 @@ function timingSafeEqual(a, b) {
   }
 
   return difference === 0;
-}
-
-function bytesToBase64Url(bytes) {
-  let binary = "";
-
-  bytes.forEach((byte) => {
-    binary += String.fromCharCode(byte);
-  });
-
-  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
-}
-
-async function sign(value, secret) {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value));
-  return bytesToBase64Url(new Uint8Array(signature));
-}
-
-async function createSessionCookie(request, env) {
-  const expiresAt = Math.floor(Date.now() / 1000) + SESSION_SECONDS;
-  const payload = String(expiresAt);
-  const signature = await sign(payload, env.PDF_PASSWORD);
-  const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
-
-  return `${COOKIE_NAME}=${encodeURIComponent(`${payload}.${signature}`)}; Path=/; HttpOnly${secure}; SameSite=Lax; Max-Age=${SESSION_SECONDS}`;
-}
-
-async function hasValidSession(request, env) {
-  const cookie = getCookie(request, COOKIE_NAME);
-
-  if (!cookie) {
-    return false;
-  }
-
-  const [expiresAt, signature] = cookie.split(".");
-  const expiresAtNumber = Number(expiresAt);
-
-  if (!expiresAt || !signature || !Number.isFinite(expiresAtNumber)) {
-    return false;
-  }
-
-  if (expiresAtNumber <= Math.floor(Date.now() / 1000)) {
-    return false;
-  }
-
-  return timingSafeEqual(signature, await sign(expiresAt, env.PDF_PASSWORD));
 }
 
 function passwordPage(request, next, options = {}) {
@@ -226,21 +149,10 @@ function passwordPage(request, next, options = {}) {
   });
 }
 
-async function serveProtectedPdf(request, env) {
-  const requestUrl = new URL(request.url);
-
-  if (!env.PDF_PASSWORD) {
-    return new Response("PDF password is not configured.", {
-      status: 500,
-      headers: { "Cache-Control": "no-store" }
-    });
-  }
-
-  if (!(await hasValidSession(request, env))) {
-    return passwordPage(request, `${requestUrl.pathname}${requestUrl.search}`);
-  }
-
-  const assetResponse = await env.ASSETS.fetch(request);
+async function fetchPdfAsset(request, env, pdfPath) {
+  const assetUrl = new URL(pdfPath, request.url);
+  const assetRequest = new Request(assetUrl, { method: "GET" });
+  const assetResponse = await env.ASSETS.fetch(assetRequest);
   const response = new Response(assetResponse.body, assetResponse);
 
   response.headers.set("Cache-Control", "private, no-store");
@@ -249,19 +161,44 @@ async function serveProtectedPdf(request, env) {
   return response;
 }
 
+function pdfPasswordIsConfigured(env) {
+  return typeof env.PDF_PASSWORD === "string" && env.PDF_PASSWORD.length > 0;
+}
+
+function passwordNotConfiguredResponse() {
+  return new Response("PDF password is not configured.", {
+    status: 500,
+    headers: { "Cache-Control": "no-store" }
+  });
+}
+
+function serveProtectedPdf(request, env) {
+  const requestUrl = new URL(request.url);
+
+  if (!pdfPasswordIsConfigured(env)) {
+    return passwordNotConfiguredResponse();
+  }
+
+  return passwordPage(request, `${requestUrl.pathname}${requestUrl.search}`);
+}
+
 async function handlePasswordSubmit(request, env) {
   const requestUrl = new URL(request.url);
 
-  if (!env.PDF_PASSWORD) {
-    return new Response("PDF password is not configured.", {
-      status: 500,
-      headers: { "Cache-Control": "no-store" }
-    });
+  if (!pdfPasswordIsConfigured(env)) {
+    return passwordNotConfiguredResponse();
   }
 
   const form = await request.formData();
   const password = String(form.get("password") ?? "");
-  const next = safeNextUrl(requestUrl, String(form.get("next") ?? "/"));
+  const next = safePdfPath(requestUrl, String(form.get("next") ?? ""));
+
+  if (!next) {
+    return new Response("Invalid PDF target.", {
+      status: 400,
+      headers: { "Cache-Control": "no-store" }
+    });
+  }
 
   if (!timingSafeEqual(password, env.PDF_PASSWORD)) {
     return passwordPage(request, next, {
@@ -270,14 +207,7 @@ async function handlePasswordSubmit(request, env) {
     });
   }
 
-  return new Response(null, {
-    status: 303,
-    headers: {
-      Location: next,
-      "Set-Cookie": await createSessionCookie(request, env),
-      "Cache-Control": "no-store"
-    }
-  });
+  return fetchPdfAsset(request, env, next);
 }
 
 export default {
