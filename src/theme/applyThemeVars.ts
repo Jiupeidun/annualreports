@@ -47,15 +47,6 @@ export function createThemeVarWriter(
     const flowFieldStrength = clamp(0.38 + model.flow * 0.3 + model.light * 0.12, 0.38, 0.84);
     const primaryText = backgroundIsLight ? "#071529" : "#fbf7ff";
     const mutedText = backgroundIsLight ? "#263a59" : "#efe4ff";
-    const titleShadow = backgroundIsLight
-      ? "0 1px 0 rgba(255, 255, 255, .72), 0 10px 30px rgba(28, 38, 92, .2)"
-      : "0 1px 2px rgba(0, 0, 0, .58), 0 0 18px rgba(20, 0, 58, .34)";
-    const strongShadow = backgroundIsLight
-      ? "0 1px 0 rgba(255, 255, 255, .68), 0 8px 22px rgba(26, 38, 86, .22)"
-      : "0 1px 2px rgba(0, 0, 0, .58), 0 8px 22px rgba(0, 0, 0, .28)";
-    const mutedShadow = backgroundIsLight
-      ? "0 1px 0 rgba(255, 255, 255, .64), 0 6px 16px rgba(26, 38, 86, .2)"
-      : "0 1px 2px rgba(0, 0, 0, .56), 0 6px 16px rgba(0, 0, 0, .24)";
     const vars: Record<string, string> = {
       "--sky-base": p.skyBase,
       "--sky-top": p.skyTop,
@@ -65,9 +56,6 @@ export function createThemeVarWriter(
       "--muted-text": mutedText,
       "--meta-text": primaryText,
       "--meta-muted-text": mutedText,
-      "--title-shadow": titleShadow,
-      "--meta-strong-shadow": strongShadow,
-      "--meta-muted-shadow": mutedShadow,
       "--surface-rgb": rgbCsv(p.surface),
       "--line-rgb": rgbCsv(p.line),
       "--surface-alpha": String(clamp(0.62 + (1 - model.light) * 0.18, 0.62, 0.84).toFixed(3)),
