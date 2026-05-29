@@ -42,19 +42,20 @@ export function createThemeVarWriter(
 
   return (model: AtmosphereModel): void => {
     const p = model.palette;
-    const backgroundIsLight = luminance(p.skyTop) > 0.5 || luminance(p.skyMid) > 0.5 || luminance(p.ground) > 0.5;
+    const backgroundBrightness = Math.max(luminance(p.skyTop), luminance(p.skyMid), luminance(p.ground));
+    const backgroundIsLight = model.light > 0.44 || backgroundBrightness > 0.42;
     const flowFieldStrength = clamp(0.38 + model.flow * 0.3 + model.light * 0.12, 0.38, 0.84);
-    const primaryText = backgroundIsLight ? "#071827" : "#f6efff";
-    const mutedText = backgroundIsLight ? "#243f56" : "#dbcaff";
+    const primaryText = backgroundIsLight ? "#071529" : "#fbf7ff";
+    const mutedText = backgroundIsLight ? "#263a59" : "#efe4ff";
     const titleShadow = backgroundIsLight
-      ? "0 1px 1px rgba(255, 255, 255, .42), 0 10px 30px rgba(30, 84, 140, .16)"
-      : "0 1px 2px rgba(0, 0, 0, .32), 0 10px 28px rgba(0, 0, 0, .22)";
+      ? "0 1px 0 rgba(255, 255, 255, .72), 0 10px 30px rgba(28, 38, 92, .2)"
+      : "0 1px 2px rgba(0, 0, 0, .58), 0 0 18px rgba(20, 0, 58, .34)";
     const strongShadow = backgroundIsLight
-      ? "0 1px 1px rgba(255, 255, 255, .38), 0 8px 22px rgba(26, 80, 130, .15)"
-      : "0 1px 2px rgba(0, 0, 0, .34), 0 8px 22px rgba(0, 0, 0, .2)";
+      ? "0 1px 0 rgba(255, 255, 255, .68), 0 8px 22px rgba(26, 38, 86, .22)"
+      : "0 1px 2px rgba(0, 0, 0, .58), 0 8px 22px rgba(0, 0, 0, .28)";
     const mutedShadow = backgroundIsLight
-      ? "0 1px 1px rgba(255, 255, 255, .32), 0 6px 18px rgba(26, 80, 130, .12)"
-      : "0 1px 2px rgba(0, 0, 0, .3)";
+      ? "0 1px 0 rgba(255, 255, 255, .64), 0 6px 16px rgba(26, 38, 86, .2)"
+      : "0 1px 2px rgba(0, 0, 0, .56), 0 6px 16px rgba(0, 0, 0, .24)";
     const vars: Record<string, string> = {
       "--sky-base": p.skyBase,
       "--sky-top": p.skyTop,
