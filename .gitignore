@@ -94,11 +94,11 @@ jspm_packages/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+dist/
 
 # Gatsby files
 .cache/
-public
+# Keep Vite public/ tracked: it contains source PDFs, covers, and deployment headers.
 
 # Storybook build outputs
 .out
