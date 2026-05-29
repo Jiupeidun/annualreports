@@ -11,6 +11,8 @@
   --page-w: 1120px;
   --edge: 40px;
   --radius: 0.625rem;
+  --cover-radius: var(--radius);
+  --cover-beam-padding: 2px;
   --sky-base: #f0f9ff;
   --sky-top: #edf8ff;
   --sky-mid: #bfdff6;
@@ -347,7 +349,7 @@ h1 {
   max-width: 100%;
   display: block;
   margin: 0 auto;
-  border-radius: var(--radius);
+  border-radius: var(--cover-radius);
   overflow: visible;
   transform: translate3d(0, 0, 0) scale(1);
   transform-origin: 50% 70%;
@@ -365,7 +367,7 @@ h1 {
   width: 100%;
   max-width: 100%;
   overflow: hidden;
-  border-radius: var(--radius);
+  border-radius: var(--cover-radius);
   isolation: isolate;
   line-height: 0;
   background: rgba(var(--surface-rgb), var(--surface-alpha));
@@ -434,10 +436,11 @@ h1 {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 2px;
-  border-radius: var(--radius);
+  padding: var(--cover-beam-padding);
+  border-radius: calc(var(--cover-radius) + var(--cover-beam-padding));
   line-height: 0;
   isolation: isolate;
+  overflow: hidden;
   background: rgba(255, 236, 186, .34);
   box-shadow:
     0 0 0 1px rgba(255, 226, 154, .46),
@@ -446,11 +449,11 @@ h1 {
 
 .report-cover-beam .report-cover {
   width: 100%;
-  border-radius: calc(var(--radius) - 2px);
+  border-radius: inherit;
 }
 
 .report-cover-beam .report-cover-shell {
-  border-radius: calc(var(--radius) - 2px);
+  border-radius: var(--cover-radius);
 }
 
 .report-cover {

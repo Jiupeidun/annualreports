@@ -1,4 +1,5 @@
-import { Suspense, lazy, memo } from "react";
+import { Suspense, lazy, memo, useEffect, useState } from "react";
+import type { BorderBeamColorVariant } from "border-beam";
 import type { Report } from "../reports";
 
 type BorderBeamModule = {
@@ -13,6 +14,10 @@ function loadBorderBeam(): Promise<BorderBeamModule> {
 }
 
 const BorderBeam = lazy(loadBorderBeam);
+const coverRadiusPx = 10;
+const coverBeamPaddingPx = 2;
+const randomBuffer = new Uint32Array(1);
+const borderBeamColorVariants = ["sunset", "colorful", "ocean"] as const satisfies readonly BorderBeamColorVariant[];
 
 export function preloadBorderBeam(): void {
   void loadBorderBeam();
@@ -24,7 +29,60 @@ type ReportCoverProps = {
   beamReady: boolean;
 };
 
+type BorderBeamSettings = {
+  colorVariant: BorderBeamColorVariant;
+  strength: number;
+  duration: number;
+  brightness: number;
+  saturation: number;
+  hueRange: number;
+};
+
+function randomUnit(): number {
+  const cryptoObject = globalThis.crypto;
+
+  if (cryptoObject && typeof cryptoObject.getRandomValues === "function") {
+    cryptoObject.getRandomValues(randomBuffer);
+    return randomBuffer[0] / 0x100000000;
+  }
+
+  return Math.random();
+}
+
+function randomBetween(min: number, max: number): number {
+  return min + (max - min) * randomUnit();
+}
+
+function randomItem<T>(items: readonly T[]): T {
+  return items[Math.floor(randomUnit() * items.length)] ?? items[0];
+}
+
+function createBorderBeamSettings(): BorderBeamSettings {
+  return {
+    colorVariant: randomItem(borderBeamColorVariants),
+    strength: randomBetween(0.82, 1),
+    duration: randomBetween(2.35, 3.05),
+    brightness: randomBetween(1.34, 1.88),
+    saturation: randomBetween(1.1, 1.5),
+    hueRange: randomBetween(18, 48)
+  };
+}
+
 function ReportCoverComponent({ report, beamActive, beamReady }: ReportCoverProps) {
+  const [beamSettings, setBeamSettings] = useState(createBorderBeamSettings);
+
+  useEffect(() => {
+    if (!report.versioned || !beamActive || !beamReady) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setBeamSettings(createBorderBeamSettings());
+    }, beamSettings.duration * 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [beamActive, beamReady, beamSettings.duration, report.versioned]);
+
   const cover = (
     <span className={`report-cover-shell${report.versioned ? " is-current" : ""}`}>
       <picture className="report-picture">
@@ -52,14 +110,14 @@ function ReportCoverComponent({ report, beamActive, beamReady }: ReportCoverProp
       <BorderBeam
         className="report-cover-beam"
         size="md"
-        colorVariant="sunset"
+        colorVariant={beamSettings.colorVariant}
         theme="light"
-        strength={1}
-        duration={2.65}
-        borderRadius={10}
-        brightness={1.62}
-        saturation={1.34}
-        hueRange={32}
+        strength={beamSettings.strength}
+        duration={beamSettings.duration}
+        borderRadius={coverRadiusPx + coverBeamPaddingPx}
+        brightness={beamSettings.brightness}
+        saturation={beamSettings.saturation}
+        hueRange={beamSettings.hueRange}
         active={beamActive}
       >
         {cover}
