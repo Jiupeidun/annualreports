@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
-    "build:github-pages": "vite build --mode github-pages",
+    "build:github-pages": "node scripts/build-github-pages-redirect.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit"
   },
