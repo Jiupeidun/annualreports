@@ -6,6 +6,26 @@
   <meta name="description" content="Annual Reports">
   <meta name="theme-color" content="#f6fcff">
   <title>Annual Reports</title>
+  <script>
+    (() => {
+      const cloudflareOrigin = "https://annualreports.kkertin1214.workers.dev";
+      const githubPagesBase = "/annualreports";
+
+      if (location.hostname !== "jiupeidun.github.io" || !location.pathname.startsWith(githubPagesBase)) {
+        return;
+      }
+
+      const target = new URL(cloudflareOrigin);
+      const strippedPath = location.pathname.slice(githubPagesBase.length);
+
+      target.pathname = strippedPath === "" || strippedPath === "/" || strippedPath === "/index.html"
+        ? "/"
+        : strippedPath;
+      target.search = location.search;
+      target.hash = location.hash;
+      location.replace(target.href);
+    })();
+  </script>
   <link rel="icon" href="%BASE_URL%favicon.ico">
   <link rel="preload" as="image" href="%BASE_URL%compressed/2019financialReport_cover.webp" type="image/webp" fetchpriority="high">
 </head>
