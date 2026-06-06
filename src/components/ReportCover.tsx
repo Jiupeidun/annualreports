@@ -30,7 +30,7 @@ function ReportCoverComponent({ report, beamActive, beamReady }: ReportCoverProp
   const cover = (
     <span className={`report-cover-shell${report.versioned ? " is-current" : ""}`}>
       <picture className="report-picture">
-        <source srcSet={report.webp} type="image/webp" />
+        {report.webp ? <source srcSet={report.webp} type="image/webp" /> : null}
         <img
           className="report-cover"
           src={report.image}

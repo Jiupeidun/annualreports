@@ -1,10 +1,10 @@
 export type Report = {
-  href: string;
-  webp: string;
+  href?: string;
+  webp?: string;
   image: string;
   alt: string;
   year: string;
-  period: string;
+  period?: string;
   id?: string;
   eager?: boolean;
   priority?: boolean;
@@ -85,7 +85,13 @@ export const reports = [
     image: appAssetPath("compressed/2026_Annual_Report_cover.jpg"),
     alt: "2026 annual report cover",
     year: "2026",
-    period: "Apr 2026 - Present",
+    period: "Apr 2026 - Dec 2026",
     versioned: true
+  },
+  {
+    image: appAssetPath("compressed/2027_Annual_Report_cover.jpg"),
+    alt: "2027 annual report cover",
+    year: "2027",
+    period: "Jan 2027 - Dec 2027"
   }
 ] satisfies readonly Report[];

@@ -102,25 +102,44 @@ function ReportCardComponent({ report, beamActive }: ReportCardProps) {
     [preloadReportEnhancements, refreshReportHref]
   );
 
+  const cardClassName = `report-link${isClicking ? " is-clicking" : ""}`;
+  const cardContent = (
+    <>
+      <span ref={coverFrameRef} className="report-cover-frame">
+        <ReportCover report={report} beamActive={beamActive} beamReady={beamReady} />
+      </span>
+      <span className="report-meta">
+        <span className="report-year">{report.year}</span>
+        {report.period ? <span className="report-period">{report.period}</span> : null}
+      </span>
+    </>
+  );
+
+  if (!report.href) {
+    return (
+      <article
+        id={report.id}
+        className={`${cardClassName} report-link--static`}
+        aria-label={report.alt}
+      >
+        {cardContent}
+      </article>
+    );
+  }
+
   return (
     <a
       id={report.id}
       href={report.href}
       target="_blank"
       rel="noopener"
-      className={`report-link${isClicking ? " is-clicking" : ""}`}
+      className={cardClassName}
       onPointerDown={handlePointerDown}
       onPointerEnter={preloadReportEnhancements}
       onKeyDown={handleKeyDown}
       onFocus={handleFocus}
     >
-      <span ref={coverFrameRef} className="report-cover-frame">
-        <ReportCover report={report} beamActive={beamActive} beamReady={beamReady} />
-      </span>
-      <span className="report-meta">
-        <span className="report-year">{report.year}</span>
-        <span className="report-period">{report.period}</span>
-      </span>
+      {cardContent}
     </a>
   );
 }

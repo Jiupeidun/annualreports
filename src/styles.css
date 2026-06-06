@@ -432,6 +432,20 @@ h1 {
   animation-duration: 5.8s;
 }
 
+.report-link--static {
+  cursor: default;
+}
+
+.report-link--static:hover .report-cover-shell::before {
+  opacity: .34;
+  animation-duration: 7.8s;
+}
+
+.report-link--static:hover .report-cover-shell::after {
+  opacity: .18;
+  animation-duration: 9.2s;
+}
+
 .report-cover-beam {
   width: 100%;
   max-width: 100%;
