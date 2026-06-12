@@ -1,9 +1,9 @@
 @font-face {
-  font-family: "Geist Variable";
+  font-family: "Goldman Sans";
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url("../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2") format("woff2-variations");
+  src: url("../GoldmanSans_Rg.ttf") format("truetype");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
@@ -85,7 +85,7 @@
     radial-gradient(130% 86% at 50% 112%, rgba(var(--ambient-rgb), var(--horizon-alpha)) 0%, transparent 70%),
     linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, var(--ground) 100%);
   color-scheme: light dark;
-  font-family: "Geist Variable", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Goldman Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 16px;
   font-weight: 280;
   font-synthesis: none;
