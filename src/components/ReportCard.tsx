@@ -111,7 +111,6 @@ function ReportCardComponent({ report, beamActive }: ReportCardProps) {
       <span className="report-meta">
         <span className="report-year">{report.year}</span>
         {report.period ? <span className="report-period">{report.period}</span> : null}
-        {report.versioned ? <span className="report-status">Current Report</span> : null}
       </span>
     </>
   );

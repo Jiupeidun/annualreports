@@ -56,12 +56,12 @@ function ReportCoverComponent({ report, beamActive, beamReady }: ReportCoverProp
         size="md"
         colorVariant="sunset"
         theme="light"
-        strength={0.52}
-        duration={5.8}
+        strength={1}
+        duration={2.65}
         borderRadius={coverRadiusPx + coverBeamPaddingPx}
-        brightness={1.12}
-        saturation={1.06}
-        hueRange={18}
+        brightness={1.62}
+        saturation={1.34}
+        hueRange={32}
         active={beamActive}
       >
         {cover}
