@@ -13,6 +13,17 @@
   --radius: 0.625rem;
   --cover-radius: var(--radius);
   --cover-beam-padding: 2px;
+  --archive-rule-alpha: .16;
+  --archive-rule-soft-alpha: .075;
+  --archive-meta-alpha: .76;
+  --current-border-alpha: .5;
+  --current-glow-alpha: .2;
+  --grid-row-gap: 56px;
+  --grid-column-gap: 24px;
+  --title-size: 34px;
+  --year-size: 1.04rem;
+  --period-size: .72rem;
+  --status-size: .64rem;
   --sky-base: #f0f9ff;
   --sky-top: #edf8ff;
   --sky-mid: #bfdff6;
@@ -293,15 +304,16 @@ a {
 }
 
 .masthead {
-  min-height: 56px;
+  position: relative;
+  min-height: 68px;
   display: grid;
   place-items: center;
-  margin-bottom: 56px;
+  margin-bottom: 44px;
 }
 
 h1 {
   margin: 0;
-  font-size: 36px;
+  font-size: var(--title-size);
   line-height: 1.2;
   font-weight: 360;
   letter-spacing: 0;
@@ -310,10 +322,74 @@ h1 {
   transition: color 700ms linear;
 }
 
+.archive-meta {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  max-width: 100%;
+  padding: 6px 9px;
+  border: 1px solid rgba(var(--line-rgb), var(--archive-rule-alpha));
+  border-radius: 999px;
+  color: var(--muted-text);
+  background: rgba(var(--surface-rgb), .12);
+  font-size: .68rem;
+  font-weight: 360;
+  line-height: 1;
+  opacity: var(--archive-meta-alpha);
+  backdrop-filter: blur(10px);
+  transition: color 700ms linear, border-color 700ms linear, background 700ms linear;
+}
+
+.archive-meta span {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.archive-meta span + span {
+  padding-left: 9px;
+  border-left: 1px solid rgba(var(--line-rgb), var(--archive-rule-soft-alpha));
+}
+
 .reports {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 56px 24px;
+  gap: var(--grid-row-gap) var(--grid-column-gap);
+  padding: 32px 0 10px;
+  border-top: 1px solid rgba(var(--line-rgb), var(--archive-rule-alpha));
+  border-bottom: 1px solid rgba(var(--line-rgb), var(--archive-rule-soft-alpha));
+  isolation: isolate;
+}
+
+.reports::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent calc(20% - .5px),
+      rgba(var(--line-rgb), var(--archive-rule-soft-alpha)) calc(20% - .5px) calc(20% + .5px),
+      transparent calc(20% + .5px) calc(40% - .5px),
+      rgba(var(--line-rgb), var(--archive-rule-soft-alpha)) calc(40% - .5px) calc(40% + .5px),
+      transparent calc(40% + .5px) calc(60% - .5px),
+      rgba(var(--line-rgb), var(--archive-rule-soft-alpha)) calc(60% - .5px) calc(60% + .5px),
+      transparent calc(60% + .5px) calc(80% - .5px),
+      rgba(var(--line-rgb), var(--archive-rule-soft-alpha)) calc(80% - .5px) calc(80% + .5px),
+      transparent calc(80% + .5px)
+    ),
+    linear-gradient(
+      180deg,
+      transparent calc(50% - .5px),
+      rgba(var(--line-rgb), calc(var(--archive-rule-soft-alpha) * .8)) calc(50% - .5px) calc(50% + .5px),
+      transparent calc(50% + .5px)
+    );
+  opacity: .72;
 }
 
 .report-link {
@@ -321,6 +397,8 @@ h1 {
   display: grid;
   grid-template-rows: auto auto;
   gap: 18px;
+  position: relative;
+  z-index: 1;
   contain: layout paint style;
   content-visibility: auto;
   contain-intrinsic-size: 230px 286px;
@@ -410,12 +488,12 @@ h1 {
 }
 
 .report-cover-shell.is-current::before {
-  opacity: .48;
-  filter: blur(9px) saturate(1.34);
+  opacity: .32;
+  filter: blur(8px) saturate(1.18);
 }
 
 .report-cover-shell.is-current::after {
-  opacity: .26;
+  opacity: .18;
 }
 
 .report-link:hover .report-cover-shell::before,
@@ -455,10 +533,10 @@ h1 {
   line-height: 0;
   isolation: isolate;
   overflow: hidden;
-  background: rgba(255, 236, 186, .34);
+  background: rgba(255, 236, 186, .16);
   box-shadow:
-    0 0 0 1px rgba(255, 226, 154, .46),
-    0 0 22px rgba(255, 158, 76, .42);
+    0 0 0 1px rgba(255, 226, 154, var(--current-border-alpha)),
+    0 12px 26px rgba(255, 158, 76, var(--current-glow-alpha));
 }
 
 .report-cover-beam .report-cover {
@@ -536,7 +614,7 @@ h1 {
 .report-year {
   display: block;
   color: var(--meta-text);
-  font-size: 1.12rem;
+  font-size: var(--year-size);
   font-weight: 360;
   line-height: 1.1;
   transition: color 700ms linear;
@@ -546,11 +624,25 @@ h1 {
   display: block;
   margin-top: 6px;
   color: var(--meta-muted-text);
-  font-size: .76rem;
+  font-size: var(--period-size);
   font-weight: 320;
   line-height: 1.3;
   transition: color 700ms linear;
   white-space: nowrap;
+}
+
+.report-status {
+  display: block;
+  margin-top: 9px;
+  color: var(--meta-text);
+  font-size: var(--status-size);
+  font-weight: 520;
+  letter-spacing: .08em;
+  line-height: 1;
+  opacity: .68;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 700ms linear, opacity 700ms linear;
 }
 
 .report-link:hover .report-year,
@@ -618,18 +710,39 @@ footer p {
   }
 
   .masthead {
-    min-height: 44px;
-    margin-bottom: 34px;
+    min-height: auto;
+    margin-bottom: 30px;
+    gap: 14px;
   }
 
   h1 {
-    font-size: 30px;
+    font-size: 28px;
+  }
+
+  .archive-meta {
+    position: static;
+    justify-self: center;
+    width: max-content;
+    max-width: 100%;
+    padding: 6px 8px;
+    font-size: .64rem;
   }
 
   .reports {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-items: center;
-    gap: 42px 16px;
+    gap: 40px 16px;
+    padding: 26px 0 8px;
+  }
+
+  .reports::before {
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent calc(50% - .5px),
+        rgba(var(--line-rgb), var(--archive-rule-soft-alpha)) calc(50% - .5px) calc(50% + .5px),
+        transparent calc(50% + .5px)
+      );
   }
 
   .report-link {
@@ -642,6 +755,20 @@ footer p {
 
   .report-cover-frame {
     width: min(136px, 100%);
+  }
+
+  .report-year {
+    font-size: 1rem;
+  }
+
+  .report-period {
+    font-size: .7rem;
+  }
+
+  .report-status {
+    margin-top: 8px;
+    font-size: .58rem;
+    letter-spacing: .075em;
   }
 
   footer {
